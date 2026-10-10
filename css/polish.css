@@ -15,9 +15,11 @@ html .sv.sv-up{transform:translate3d(0,calc(var(--svy)*-1),0)}
 html .sv.sv-in{opacity:1;transform:none;filter:blur(0)}
 html .sv.sv-in.sv-done{filter:none;will-change:auto;transition:none}
 body.calm .sv{opacity:1;transform:none;filter:none;transition:none;will-change:auto}
-.eb{position:fixed;left:0;right:0;z-index:2;pointer-events:none;-webkit-backdrop-filter:blur(var(--blur-edge));backdrop-filter:blur(var(--blur-edge))}
-#ebT{top:0;height:calc(86px + env(safe-area-inset-top,0px));-webkit-mask-image:linear-gradient(to bottom,#000 20%,transparent);mask-image:linear-gradient(to bottom,#000 20%,transparent)}
-#ebB{bottom:0;height:calc(112px + env(safe-area-inset-bottom,0px));-webkit-mask-image:linear-gradient(to top,#000 20%,transparent);mask-image:linear-gradient(to top,#000 20%,transparent)}
+/* прогрессивное размытие по краям: несколько слоёв с нарастающим блюром (создаются в js/scroll-reveal.js) */
+.eb{position:fixed;left:-24px;right:-24px;z-index:2;pointer-events:none}
+.eb i{position:absolute;inset:0;pointer-events:none;-webkit-backdrop-filter:blur(calc(var(--blur-edge) * var(--f,1)));backdrop-filter:blur(calc(var(--blur-edge) * var(--f,1)))}
+#ebT{top:0;height:calc(104px + env(safe-area-inset-top,0px))}
+#ebB{bottom:0;height:calc(128px + env(safe-area-inset-bottom,0px))}
 body.calm .eb{display:none}
 /* предисловие: только первые визиты (счётчик в head) */
 html[data-pf="0"] .br-preface{display:none!important}
@@ -27,7 +29,7 @@ html[data-pf="0"] .br-preface{display:none!important}
  html{scroll-behavior:auto}
  body{-webkit-overflow-scrolling:touch;touch-action:manipulation}
  :root{--svb:4px;--svy:10px}
- .eb{-webkit-backdrop-filter:blur(calc(var(--blur-edge)*.75));backdrop-filter:blur(calc(var(--blur-edge)*.75))}
+ :root{--blur-edge:6px}
  input,select,textarea{font-size:16px!important}
  #panel,#npanel,#ppanel,#xp,#lm,#brSearch,#brHist,.br-guide-scroll,#hpanel{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
  #brRb,.br-toolbar,.br-preface,.br-guide,#panel,#npanel,#ppanel,#hpanel{-webkit-backdrop-filter:blur(12px) saturate(1.1);backdrop-filter:blur(12px) saturate(1.1)}
