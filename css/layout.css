@@ -29,7 +29,6 @@ body.calm #sbl{display:none}
  #sbl{-webkit-backdrop-filter:blur(calc(var(--blur-scroll)*.75)) saturate(1.1);backdrop-filter:blur(calc(var(--blur-scroll)*.75)) saturate(1.1)}
  body.br-mode .hero,body.br-mode .hero{min-height:0}
 }
-@media (prefers-reduced-motion:reduce){#sbl{display:none}}
 /* телефон: после паузы кнопки не отключаются (первое касание больше не «проглатывается»), а лишь притухают */
 @media (hover:none) and (pointer:coarse){
  body.idle :is(#lang,#dock,#fold,#lamp){opacity:.45!important;pointer-events:auto!important}

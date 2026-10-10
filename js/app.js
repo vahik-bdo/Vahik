@@ -243,7 +243,7 @@ addEventListener('scroll',()=>{if(!run)t=c=scrollY},{passive:true})})();
 $('#bulb').onclick=e=>{e.stopPropagation();$('#fb').click()};
 {const P=ParticleEngine.prototype,L=P.loop,mob=matchMedia('(pointer:coarse)').matches||innerWidth<700,low=(navigator.deviceMemory||8)<=4||(navigator.hardwareConcurrency||8)<=4;let last=0,slow=0;
 P.loop=function(t){if(this.q===undefined){this.q=(mob?.6:1)*(low?.6:1);this.seed()}if(last){const d=t-last;slow=d>30?slow+1:Math.max(0,slow-1);if(slow>40&&this.q>.25){this.q*=.6;slow=0;this.seed()}}last=t;return L.call(this,t)};
-if(matchMedia('(prefers-reduced-motion:reduce)').matches)document.body.classList.add('calm')}
+}
 
 var XT={"find": ["Поиск", "Search", "Որոնում", "Szukaj", "Suche", "Keresés"], "ph": ["Найти в книге…", "Search the book…", "Որոնել գրքում…", "Szukaj w książce…", "Im Buch suchen…", "Keresés a könyvben…"], "res": ["Продолжить чтение", "Continue reading", "Շարունակել ընթերցումը", "Wróć do czytania", "Weiterlesen", "Olvasás folytatása"], "none": ["Ничего не найдено", "Nothing found", "Ոչինչ չի գտնվել", "Nic nie znaleziono", "Nichts gefunden", "Nincs találat"], "sea": ["Море", "Sea", "Ծով", "Morze", "Meer", "Tenger"], "bell": ["Колокол", "Bell", "Զանգ", "Dzwon", "Glocke", "Harang"]},XS=null;
 function xl(k){const a=XT[k];return a?(a[LI()]||a[1]):''}

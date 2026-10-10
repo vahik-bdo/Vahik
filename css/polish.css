@@ -45,4 +45,11 @@ html[data-pf="0"] .br-preface{display:none!important}
  .br-toolbar{background:var(--panel)}
  .br-vtext::selection,.br-cassv::selection{background:rgba(240,207,122,.3)}
 }
-@media (prefers-reduced-motion:reduce){html .sv{opacity:1;transform:none;filter:none;transition:none}.eb{display:none}}
+@media (prefers-reduced-motion:reduce){html .sv{opacity:1;transform:none;filter:none;transition:none}}
+
+/* блюр на ПК: сильнее и шире, т.к. экран больше; prefers-reduced-motion его больше не отключает (это статичное размытие, не движение) */
+@media (hover:hover) and (pointer:fine){:root{--blur-edge:10px;--blur-scroll:8px}#ebT{height:calc(180px + env(safe-area-inset-top,0px))}#ebB{height:calc(200px + env(safe-area-inset-bottom,0px))}}
+/* крест не анимируется, пока страница скрыта (no-flash): нет рывка в первых кадрах */
+html:not(.rdy) .cross,html:not(.rdy) .crossw{animation:none!important}
+html:not(.rdy) .cross{opacity:0}
+@media (prefers-reduced-motion:reduce){.cross,.crossw{animation:none!important}}
