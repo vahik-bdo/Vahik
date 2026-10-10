@@ -1,0 +1,51 @@
+/* ===== общее: iOS = Android, читаемость ===== */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
+body{text-rendering:optimizeLegibility;font-kerning:normal;font-optical-sizing:auto}
+.br-vtext,.br-cassv,.br-preface p{line-height:1.72;letter-spacing:.004em;text-wrap:pretty;-webkit-hyphens:auto;hyphens:auto}
+main{padding-left:max(1.4rem,env(safe-area-inset-left));padding-right:max(1.4rem,env(safe-area-inset-right))}
+/* дыра: заголовок предисловия оставался невидимым (opacity:0) */
+.br-preface h2::before{display:none}
+.br-preface h2{opacity:1!important;transform:none!important;filter:none!important}
+.br-preface h2{margin-top:.4rem}
+/* ===== анимация страницы при прокрутке: блюр-появление/уход у верхнего и нижнего края ===== */
+:root{--svb:4px;--svy:16px}
+html .sv{opacity:.15;transform:translate3d(0,var(--svy),0);filter:blur(var(--svb));
+ transition:opacity .8s cubic-bezier(.22,1,.36,1) var(--sd,0s),transform .9s cubic-bezier(.22,1,.36,1) var(--sd,0s),filter .7s ease-out var(--sd,0s);will-change:opacity,transform,filter}
+html .sv.sv-up{transform:translate3d(0,calc(var(--svy)*-1),0)}
+html .sv.sv-in{opacity:1;transform:none;filter:blur(0)}
+html .sv.sv-in.sv-done{filter:none;will-change:auto;transition:none}
+body.calm .sv{opacity:1;transform:none;filter:none;transition:none;will-change:auto}
+:root{--eb1:3px;--eb2:7px}
+.eb{position:fixed;left:0;right:0;z-index:2;pointer-events:none}
+.eb::before,.eb::after{content:"";position:absolute;inset:0}
+.eb::before{-webkit-backdrop-filter:blur(var(--eb1));backdrop-filter:blur(var(--eb1))}
+.eb::after{-webkit-backdrop-filter:blur(var(--eb2));backdrop-filter:blur(var(--eb2))}
+#ebT{top:0;height:calc(100px + env(safe-area-inset-top,0px))}
+#ebB{bottom:0;height:calc(124px + env(safe-area-inset-bottom,0px))}
+#ebT::before{-webkit-mask-image:linear-gradient(to bottom,#000 0,rgba(0,0,0,.86) 18%,rgba(0,0,0,.58) 42%,rgba(0,0,0,.28) 66%,rgba(0,0,0,.08) 86%,transparent);mask-image:linear-gradient(to bottom,#000 0,rgba(0,0,0,.86) 18%,rgba(0,0,0,.58) 42%,rgba(0,0,0,.28) 66%,rgba(0,0,0,.08) 86%,transparent)}
+#ebT::after{-webkit-mask-image:linear-gradient(to bottom,#000 0,rgba(0,0,0,.7) 22%,rgba(0,0,0,.32) 45%,rgba(0,0,0,.08) 66%,transparent 82%);mask-image:linear-gradient(to bottom,#000 0,rgba(0,0,0,.7) 22%,rgba(0,0,0,.32) 45%,rgba(0,0,0,.08) 66%,transparent 82%)}
+#ebB::before{-webkit-mask-image:linear-gradient(to top,#000 0,rgba(0,0,0,.86) 18%,rgba(0,0,0,.58) 42%,rgba(0,0,0,.28) 66%,rgba(0,0,0,.08) 86%,transparent);mask-image:linear-gradient(to top,#000 0,rgba(0,0,0,.86) 18%,rgba(0,0,0,.58) 42%,rgba(0,0,0,.28) 66%,rgba(0,0,0,.08) 86%,transparent)}
+#ebB::after{-webkit-mask-image:linear-gradient(to top,#000 0,rgba(0,0,0,.7) 22%,rgba(0,0,0,.32) 45%,rgba(0,0,0,.08) 66%,transparent 82%);mask-image:linear-gradient(to top,#000 0,rgba(0,0,0,.7) 22%,rgba(0,0,0,.32) 45%,rgba(0,0,0,.08) 66%,transparent 82%)}
+body.calm .eb{display:none}
+/* предисловие: только первые визиты (счётчик в head) */
+html[data-pf="0"] .br-preface{display:none!important}
+.br-verse.target{transition:background .9s ease,box-shadow .9s ease}
+/* ===== только телефоны/планшеты (iPhone и Android одинаково), ПК не затрагивается ===== */
+@media (hover:none) and (pointer:coarse){
+ html{scroll-behavior:auto}
+ body{-webkit-overflow-scrolling:touch;touch-action:manipulation}
+ :root{--svb:3px;--svy:10px}
+ :root{--eb1:2.5px;--eb2:5px}
+ input,select,textarea{font-size:16px!important}
+ #panel,#npanel,#ppanel,#xp,#lm,#brSearch,#brHist,.br-guide-scroll,#hpanel{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+ #brRb,.br-toolbar,.br-preface,.br-guide,#panel,#npanel,#ppanel,#hpanel{-webkit-backdrop-filter:blur(8px) saturate(1.1);backdrop-filter:blur(8px) saturate(1.1)}
+ button,.br-vnum,.br-vchip{-webkit-touch-callout:none;touch-action:manipulation}
+ .br-vtext,.br-cassv{-webkit-touch-callout:default}
+}
+/* старые iPhone (iOS < 16.2) без color-mix */
+@supports not (background:color-mix(in srgb,red,blue)){
+ .br-preface{border-color:var(--line);background:var(--panel)}
+ .br-toolbar{background:var(--panel)}
+ .br-vtext::selection,.br-cassv::selection{background:rgba(240,207,122,.3)}
+}
+@media (prefers-reduced-motion:reduce){html .sv{opacity:1;transform:none;filter:none;transition:none}.eb{display:none}}

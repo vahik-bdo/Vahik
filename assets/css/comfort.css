@@ -1,0 +1,22 @@
+/* Shared moderate glass effect, including reduced-cost mobile surfaces. */
+:root { --smb: 8px; --svb: 4px; --eb1: 2px; --eb2: 4px; }
+#panel,#npanel,#ppanel,#xp,#hpanel,#lm,#brRb,#brRt,#brPop,.br-toolbar,#hts,#tb {
+ backdrop-filter: blur(8px) saturate(1.1); -webkit-backdrop-filter: blur(8px) saturate(1.1);
+}
+#modal,#pfm,#lpk,#brHist { backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+/* Keep reading text crisp while scrolling; glass remains on controls. */
+#sbl { display: none; }
+.contact-footer { padding: 2rem 1rem 4rem; text-align: center; }
+.contact-link { display: inline-flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: .6rem; padding: .8rem 1.1rem; border: 1px solid var(--line); border-radius: 18px; color: var(--fg); background: var(--panel); text-decoration: none; font: 500 14px/1.5 Manrope,'Noto Sans Armenian',sans-serif; }
+.contact-link svg { width: 20px; height: 20px; color: var(--head); }
+.contact-handle { color: var(--head); }
+.contact-link:hover { border-color: var(--head); }
+.contact-link:focus-visible { outline: 2px solid var(--head); outline-offset: 4px; }
+.reader-status { padding: 3rem 1rem; text-align: center; color: var(--dim); }
+@media (max-width:700px),(pointer:coarse) {
+ :root { --smb: 6px; }
+ #panel,#npanel,#ppanel,#xp,#hpanel,#lm,#brRb,#brRt,#brPop,.br-toolbar,#hts,#tb { backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+}
+@media (prefers-reduced-motion: reduce) { .contact-link { transition: none; } }
+
+.reader-loading #brRail,.reader-loading #bFind,.reader-loading #bHeart { pointer-events: none; opacity: .5; }
