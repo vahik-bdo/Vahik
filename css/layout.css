@@ -1,0 +1,37 @@
+/* основной перевод поднят наверх: текст сразу под заголовком, предисловие и справка — ниже */
+#brRoot{display:flex;flex-direction:column}
+#brRoot>.br-preface,#brRoot>.br-guide{width:100%}
+#brRoot>.br-sources{order:19}
+#brRoot>.br-preface{order:-1;margin-top:0;cursor:pointer;padding-top:.9rem;padding-bottom:.9rem}
+.br-preface:not(.open)>:not(h2){display:none}
+.br-preface:not(.open) h2{margin:0}
+.br-preface h2::after{display:none!important}
+.br-preface h2::before{display:inline;content:"▾";margin:0 .5em 0 0;font-size:.7em;opacity:.7;letter-spacing:0}
+.br-preface.open h2::before{content:"▴"}
+.br-preface.open{cursor:auto;padding-top:1.35rem;padding-bottom:1.25rem}
+.br-preface.open h2{margin:.15rem 0 .85rem;cursor:pointer}
+#brRoot>.br-guide{order:21}
+main{padding-top:calc(5vh + env(safe-area-inset-top,0px))}
+body.br-mode .hero{min-height:0;padding-top:0;margin-bottom:1.2rem}
+body.br-mode .hero h1{margin-bottom:.3em}
+.br-head{margin-top:0;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:center;column-gap:.7rem;row-gap:.1rem;text-align:center}
+.br-head h2::after{display:none}
+.br-meta{margin:0;font-size:.82rem}
+.br-meta::before{content:"·";margin-right:.7rem;opacity:.7}
+/* убрано: серая подпись под заголовком и название перевода над стихами */
+.hero p{display:none!important}
+#brReader .br-src{display:none!important}
+body.br-mode .hero .crossw{zoom:.62}
+/* блюр экрана при быстрой прокрутке (медленное чтение не размывается) */
+#sbl{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:0;-webkit-backdrop-filter:blur(var(--blur-scroll)) saturate(1.1);backdrop-filter:blur(var(--blur-scroll)) saturate(1.1);transition:opacity .6s ease-out;will-change:opacity;transform:translateZ(0)}
+body.calm #sbl{display:none}
+@media (hover:none) and (pointer:coarse){
+ #sbl{-webkit-backdrop-filter:blur(calc(var(--blur-scroll)*.75)) saturate(1.1);backdrop-filter:blur(calc(var(--blur-scroll)*.75)) saturate(1.1)}
+ body.br-mode .hero,body.br-mode .hero{min-height:0}
+}
+@media (prefers-reduced-motion:reduce){#sbl{display:none}}
+/* телефон: после паузы кнопки не отключаются (первое касание больше не «проглатывается»), а лишь притухают */
+@media (hover:none) and (pointer:coarse){
+ body.idle :is(#lang,#dock,#fold,#lamp){opacity:.45!important;pointer-events:auto!important}
+ #lang #lb{min-width:44px;min-height:44px}
+}
