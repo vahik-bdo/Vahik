@@ -34,3 +34,12 @@ body.calm #sbl{display:none}
  body.idle :is(#lang,#dock,#fold,#lamp){opacity:.45!important;pointer-events:auto!important}
  #lang #lb{min-width:44px;min-height:44px}
 }
+/* телефон: меню «···» — один ряд; размер кнопок считается от ширины экрана (10 кнопок помещаются и на 360px) */
+@media (max-width:640px){
+ #dock{--bs:min(36px,calc((100vw - 68px)/10));gap:3px}
+ #dm{flex-wrap:nowrap;gap:3px;max-width:none;overflow:visible}
+ #dm>*{flex:0 0 auto}
+ #dock .btn.rnd,#dock #dt,#dm>.btn{width:var(--bs);height:var(--bs);min-width:0;min-height:0;padding:0}
+ #dock .btn.rnd svg,#dock #dt svg,#dm>.btn svg{width:calc(var(--bs)*.5);height:calc(var(--bs)*.5)}
+ #hc{top:-3px;right:-3px}
+}
