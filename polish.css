@@ -48,7 +48,7 @@ html[data-pf="0"] .br-preface{display:none!important}
 @media (prefers-reduced-motion:reduce){html .sv{opacity:1;transform:none;filter:none;transition:none}}
 
 /* блюр на ПК: сильнее и шире, т.к. экран больше; prefers-reduced-motion его больше не отключает (это статичное размытие, не движение) */
-@media (hover:hover) and (pointer:fine){:root{--blur-edge:10px;--blur-scroll:8px}#ebT{height:calc(180px + env(safe-area-inset-top,0px))}#ebB{height:calc(200px + env(safe-area-inset-bottom,0px))}}
+@media (hover:hover) and (pointer:fine){:root{--blur-edge:10px;--blur-scroll:8px}#ebT{height:calc(150px + env(safe-area-inset-top,0px))}#ebB{height:calc(170px + env(safe-area-inset-bottom,0px))}}
 /* крест не анимируется, пока страница скрыта (no-flash): нет рывка в первых кадрах */
 html:not(.rdy) .cross,html:not(.rdy) .crossw{animation:none!important}
 html:not(.rdy) .cross{opacity:0}

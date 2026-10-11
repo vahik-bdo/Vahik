@@ -1,0 +1,24 @@
+/* ===== облегчение: плавная прокрутка на телефонах, планшетах и слабых ПК =====
+   Принцип: на постоянных элементах поверх прокручиваемого текста размытие заднего плана (backdrop-filter) пересчитывается КАЖДЫЙ кадр —
+   это главная причина «неплавности». У панелей фон и так почти непрозрачный (88–94%), поэтому размытие там не видно, а стоит дорого. */
+.btn,#brRb,#brRt,.br-toolbar,.br-preface,.br-guide,#lm,#hts,#fold::after{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+/* окна поверх страницы (настройки, поиск, подсказки) блюр сохраняют: страница под ними не прокручивается */
+
+/* появление текста при прокрутке: без постоянного will-change (десятки слоёв в памяти) */
+html .sv{will-change:auto}
+@media (hover:none) and (pointer:coarse){
+ html .sv,html .sv.sv-in{filter:none}
+ html .sv{transition:opacity .7s cubic-bezier(.22,1,.36,1) var(--sd,0s),transform .8s cubic-bezier(.22,1,.36,1) var(--sd,0s)}
+ #sbl{display:none!important}
+ #ebT{height:calc(110px + env(safe-area-inset-top,0px))}
+ #ebB{height:calc(120px + env(safe-area-inset-bottom,0px))}
+}
+/* бесконечные декоративные анимации заменены конечными (после них — статичный кадр) */
+.hero h1{animation:sheen 9s ease-in-out 2}
+.crossw{animation:glow 6s ease-in-out 2}
+/* режим «lite»: включается сам, если сайт на этом устройстве идёт рывками (или на слабых устройствах) */
+html.lite .sv,html.lite .sv.sv-in{filter:none}
+html.lite .sv{transition:opacity .5s ease var(--sd,0s),transform .5s ease var(--sd,0s)}
+html.lite #sbl,html.lite .eb i{display:none!important}
+html.lite .hero h1,html.lite .crossw{animation:none}
+html.lite #bg{animation:none!important}
