@@ -1,0 +1,7 @@
+#torchF,#torchH{position:fixed;left:0;top:0;width:440px;height:720px;pointer-events:none;display:none;will-change:transform}
+#torchH{z-index:200}#torchF{z-index:201}
+#torchDot{position:fixed;left:0;top:0;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;background:#fff3d6;box-shadow:0 0 0 1px rgba(60,20,0,.55),0 0 8px 2px rgba(255,190,90,.9);z-index:202;pointer-events:none;display:none}
+body.candle #torchDot{display:block}
+body.candle #torchH,body.candle #torchF{display:block}
+body.candle,body.candle *{cursor:none!important}
+body.candle #wick{display:none!important}

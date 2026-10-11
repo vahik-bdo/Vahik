@@ -1,0 +1,7 @@
+.br-guide{max-width:1100px;margin:0 auto 1.25rem;border:1px solid var(--line);border-radius:18px;background:var(--panel);overflow:hidden}
+.br-guide summary{cursor:pointer;padding:.85rem 1rem;font:700 13px Manrope,'Noto Sans Armenian',sans-serif;color:var(--head);letter-spacing:.02em}
+.br-guide-in{padding:0 1rem 1rem}.br-guide-in>p{margin:.1rem 0 .7rem;color:var(--dim);font:500 12px/1.55 Manrope,'Noto Sans Armenian',sans-serif}
+
+.br-guide-scroll{overflow:auto}.br-guide table{width:100%;border-collapse:collapse;min-width:640px;font:500 11px/1.35 Manrope,'Noto Sans Armenian',sans-serif}.br-guide th,.br-guide td{padding:.55rem .6rem;border-top:1px solid var(--line);text-align:left;vertical-align:top}.br-guide thead th{color:var(--head);font-weight:750}.br-guide tbody th{white-space:nowrap;color:var(--head)}.br-guide td b{display:block;color:var(--fg);font-weight:650}.br-guide td small{display:inline-block;margin-top:.2rem;font-size:9.5px;color:var(--dim)}
+.br-src.nasb,.br-src.elb{letter-spacing:.05em}.br-src.nasb{font-weight:750}.br-src.elb{font-weight:750}
+@media(max-width:760px){.br-guide{margin-inline:.2rem}.br-modes{max-width:100%;overflow:auto}.br-modes button{white-space:nowrap}}
