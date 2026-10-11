@@ -1,4 +1,5 @@
 {
+  "id": "./",
   "name": "Новый Завет",
   "short_name": "Новый Завет",
   "description": "Чтение Нового Завета: четыре перевода, заметки, молитвы. Работает без интернета.",
@@ -10,8 +11,27 @@
   "theme_color": "#000000",
   "lang": "ru",
   "icons": [
-    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
-    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
-    {"src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": [
+    "books",
+    "education"
   ]
 }
