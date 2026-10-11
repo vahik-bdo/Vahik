@@ -63,10 +63,8 @@ function bubble(cls,html){const b=document.createElement('div');b.className='vc-
 function greet(){
  msgs.innerHTML='';
  const h=document.createElement('div');h.className='vc-hello';
- h.innerHTML='<div class="vc-hc">'+CROSS+'</div><p></p><div class="vc-s"></div>';
+ h.innerHTML='<div class="vc-hc">'+CROSS+'</div><p></p>';
  h.querySelector('p').textContent=L().hi;
- const w=h.querySelector('.vc-s');
- L().s.forEach(q=>{const b=document.createElement('button');b.type='button';b.textContent=q;b.onclick=()=>ask(q);w.appendChild(b)});
  msgs.appendChild(h);
 }
 
