@@ -1,8 +1,0 @@
-[{
-      "relation": ["delegate_permission/common.handle_all_urls"],
-      "target": {
-        "namespace": "android_app",
-        "package_name": "app.vahe.twa",
-        "sha256_cert_fingerprints": ["F4:D5:F5:00:72:FF:8A:F8:4F:C6:F0:B9:29:87:CA:10:D4:E5:48:A6:9A:8B:CA:D4:E0:09:B4:74:1C:41:68:D0"]
-      }
-    }]

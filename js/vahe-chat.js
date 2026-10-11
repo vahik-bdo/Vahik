@@ -29,6 +29,10 @@ const L=()=>T[document.documentElement.lang]||T.ru;
 const SEND='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5"/></svg>';
 const NEW='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 1 1 2.5 5.8M4 19v-4.5h4.5"/></svg>';
 const CROSS='<i class="vc-cross" aria-hidden="true"></i>';
+const BUBBLE='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.3 7.4L3 20.5l1.7-5A8.4 8.4 0 1 1 21 11.5z"/><circle cx="8.4" cy="11.6" r=".6" fill="currentColor"/><circle cx="12.3" cy="11.6" r=".6" fill="currentColor"/><circle cx="16.2" cy="11.6" r=".6" fill="currentColor"/></svg>';
+const MQ='(max-width:600px),(pointer:coarse) and (max-height:520px)';
+const mob=()=>matchMedia(MQ).matches;
+const canType=()=>matchMedia('(hover:hover) and (pointer:fine)').matches;
 
 if(!API_URL||!document.body)return;
 
@@ -70,23 +74,43 @@ async function ask(q){
  q=(q||'').trim();if(!q||busy)return;
  const l=L();
  msgs.querySelectorAll('.vc-hello').forEach(e=>e.remove());
- bubble('me','<p>'+esc(q)+'</p>');ta.value='';fit();
+ bubble('me','<p>'+esc(q)+'</p>');ta.value='';fit();if(!canType())ta.blur();
  if(!navigator.onLine){bubble('bot err','<p>'+esc(l.off)+'</p>');return}
  busy=true;go.disabled=true;
- const wait=bubble('bot','<span class="vc-fl"></span>');
+ const wait=bubble('bot','<span class="vc-dots"><i></i><i></i><i></i></span>');
  try{
   const ctl=new AbortController(),to=setTimeout(()=>ctl.abort(),60000);
   const r=await fetch(API_URL.replace(/\/$/,'')+'/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:q.slice(0,1000),session_id:sid}),signal:ctl.signal});
   clearTimeout(to);
   if(r.status===429){wait.className='vc-b bot err';wait.innerHTML='<p>'+esc(l.lim)+'</p>'}
   else if(!r.ok)throw new Error(r.status);
-  else{const j=await r.json();wait.innerHTML=md(String(j.reply||''))}
+  else{const j=await r.json();wait.innerHTML=md(String(j.reply||''));reveal(wait)}
  }catch(e){wait.className='vc-b bot err';wait.innerHTML='<p>'+esc(l.err)+'</p>'}
- busy=false;go.disabled=!ta.value.trim();msgs.scrollTop=msgs.scrollHeight;
+ busy=false;go.disabled=!ta.value.trim();
+ /* длинный ответ показываем с начала, чтобы слова проявлялись в порядке чтения */
+ if(!wait.classList.contains('err')&&wait.offsetHeight>msgs.clientHeight-24)msgs.scrollTop=Math.max(0,wait.offsetTop-12);else msgs.scrollTop=msgs.scrollHeight;
+}
+
+/* плавное проявление ответа по словам */
+function reveal(el){
+ if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+ const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT),nodes=[];
+ while(w.nextNode())nodes.push(w.currentNode);
+ let n=0;nodes.forEach(t=>{n+=(t.nodeValue.match(/\S+/g)||[]).length});
+ const step=Math.max(12,Math.min(45,3200/Math.max(n,1)));let i=0;
+ nodes.forEach(t=>{
+  const f=document.createDocumentFragment();
+  t.nodeValue.split(/(\s+)/).forEach(p=>{
+   if(!p)return;
+   if(/^\s+$/.test(p)){f.appendChild(document.createTextNode(p));return}
+   const s=document.createElement('span');s.className='vc-wd';s.style.animationDelay=(i++*step)+'ms';s.textContent=p;f.appendChild(s);
+  });
+  t.parentNode.replaceChild(f,t);
+ });
 }
 function fit(){ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeight,112)+'px';go.disabled=busy||!ta.value.trim()}
 
-const fab=document.createElement('button');fab.type='button';fab.className='vc-fab';fab.id='vcFab';fab.innerHTML=CROSS;
+const fab=document.createElement('button');fab.type='button';fab.className='vc-fab';fab.id='vcFab';fab.innerHTML=BUBBLE;
 const tip=document.createElement('div');tip.className='vc-tip';tip.id='vcTip';
 document.body.append(tip,fab);
 
@@ -114,12 +138,24 @@ function build(){
  box.querySelector('.vc-new').onclick=()=>{if(busy)return;sid=newSid();ss.set('vcSid',sid);greet()};
  box.querySelector('form').onsubmit=e=>{e.preventDefault();ask(ta.value)};
  ta.addEventListener('input',fit);
+ ta.addEventListener('focus',()=>box.classList.add('kb'));ta.addEventListener('blur',()=>box.classList.remove('kb'));
  ta.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();ask(ta.value)}});
  greet();fill();
 }
 const isOpen=()=>box&&box.classList.contains('open');
-function open(){build();fill();tip.classList.remove('show');fab.classList.add('hide');box.classList.add('open');setTimeout(()=>{try{ta.focus({preventScroll:true})}catch(e){}},350)}
-function close(){if(box)box.classList.remove('open');fab.classList.remove('hide')}
+const vv=window.visualViewport;
+function vfit(){
+ if(!box)return;
+ if(isOpen()&&mob()&&vv){box.style.setProperty('--vch',vv.height+'px');box.style.setProperty('--vct',vv.offsetTop+'px');if(document.activeElement===ta)msgs.scrollTop=msgs.scrollHeight}
+ else{box.style.removeProperty('--vch');box.style.removeProperty('--vct')}
+}
+if(vv){vv.addEventListener('resize',vfit);vv.addEventListener('scroll',vfit)}
+addEventListener('orientationchange',()=>setTimeout(vfit,250));
+/* клавиатура открывается только когда человек сам нажал на поле ввода (на телефоне автофокуса нет) */
+function open(){build();fill();tip.classList.remove('show');fab.classList.add('hide');box.classList.add('open');
+ if(mob())document.documentElement.classList.add('vc-lock');vfit();
+ if(canType())setTimeout(()=>{try{ta.focus({preventScroll:true})}catch(e){}},350)}
+function close(){if(box){box.classList.remove('open','kb');if(document.activeElement===ta)ta.blur()}fab.classList.remove('hide');document.documentElement.classList.remove('vc-lock');vfit()}
 
 fab.onclick=open;tip.onclick=open;
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&isOpen())close()});
