@@ -7,22 +7,22 @@ const T={
  ru:{t:'Vahe',sub:'Помощник по тексту Нового Завета',hi:'Здравствуйте! Спросите о том, что читаете: трудное место, смысл слов, события и люди.',tip:'Есть вопрос по тексту?',
   ph:'Ваш вопрос…',send:'Отправить',x:'Закрыть',nw:'Начать заново',open:'Спросить Vahe',
   note:'Это ИИ, он может ошибаться. Сверяйтесь с текстом.',
-  err:'Не удалось получить ответ. Попробуйте ещё раз чуть позже.',off:'Нет подключения к интернету. Помощнику нужна сеть.',lim:'Слишком много вопросов подряд. Подождите несколько минут.',
+  err:'Не удалось получить ответ. Попробуйте ещё раз чуть позже.',off:'Нет подключения к интернету. Помощнику нужна сеть.',lim:'Слишком много вопросов подряд. Подождите несколько минут.',lng:'Разговор стал длинным. Нажмите круговую стрелку вверху и начните заново.',day:'На сегодня вопросов больше нет. Загляните завтра.',
   s:['О чём Евангелие от Иоанна?','Что значит «Слово стало плотию»?','Как понимать Нагорную проповедь?']},
  en:{t:'Vahe',sub:'Helper for reading the New Testament',hi:'Hello! Ask about what you are reading: a hard passage, the meaning of words, events and people.',tip:'A question about the text?',
   ph:'Your question…',send:'Send',x:'Close',nw:'Start over',open:'Ask Vahe',
   note:'This is an AI and can make mistakes. Check it against the text.',
-  err:'Could not get an answer. Please try again a little later.',off:'No internet connection. The helper needs a network.',lim:'Too many questions in a row. Please wait a few minutes.',
+  err:'Could not get an answer. Please try again a little later.',off:'No internet connection. The helper needs a network.',lim:'Too many questions in a row. Please wait a few minutes.',lng:'This conversation has grown long. Tap the circular arrow at the top to start over.',day:'No more questions for today. Please come back tomorrow.',
   s:['What is the Gospel of John about?','What does “the Word became flesh” mean?','How should I read the Sermon on the Mount?']},
  hy:{t:'Vahe',sub:'Նոր Կտակարանի ընթերցման օգնական',hi:'Բարև ձեզ։ Հարցրեք ընթերցածի մասին՝ դժվար հատված, բառերի իմաստ, դեպքեր և մարդիկ։',tip:'Հարց ունե՞ք տեքստի մասին',
   ph:'Ձեր հարցը…',send:'Ուղարկել',x:'Փակել',nw:'Սկսել նորից',open:'Հարցնել Vahe-ին',
   note:'Սա արհեստական բանականություն է և կարող է սխալվել։ Ստուգեք տեքստի հետ։',
-  err:'Չհաջողվեց պատասխան ստանալ։ Փորձեք մի փոքր ուշ։',off:'Ինտերնետ կապ չկա։ Օգնականին ցանց է պետք։',lim:'Շատ հարցեր հաջորդաբար։ Սպասեք մի քանի րոպե։',
+  err:'Չհաջողվեց պատասխան ստանալ։ Փորձեք մի փոքր ուշ։',off:'Ինտերնետ կապ չկա։ Օգնականին ցանց է պետք։',lim:'Շատ հարցեր հաջորդաբար։ Սպասեք մի քանի րոպե։',lng:'Զրույցը երկարել է։ Սեղմեք վերևի շրջանաձև սլաքը՝ նորից սկսելու համար։',day:'Այսօրվա համար հարցերը սպառվել են։ Այցելեք վաղը։',
   s:['Ինչի՞ մասին է Հովհաննեսի Ավետարանը','Ի՞նչ է նշանակում «Բանը մարմին եղավ»','Ինչպե՞ս հասկանալ Լեռան քարոզը']},
  de:{t:'Vahe',sub:'Lesehilfe zum Neuen Testament',hi:'Hallo! Frag nach dem, was du liest: eine schwierige Stelle, die Bedeutung von Worten, Ereignisse und Personen.',tip:'Frage zum Text?',
   ph:'Deine Frage…',send:'Senden',x:'Schließen',nw:'Neu beginnen',open:'Vahe fragen',
   note:'Das ist eine KI und kann sich irren. Prüfe es am Text.',
-  err:'Keine Antwort erhalten. Bitte versuche es etwas später noch einmal.',off:'Keine Internetverbindung. Die Lesehilfe braucht ein Netz.',lim:'Zu viele Fragen hintereinander. Bitte warte ein paar Minuten.',
+  err:'Keine Antwort erhalten. Bitte versuche es etwas später noch einmal.',off:'Keine Internetverbindung. Die Lesehilfe braucht ein Netz.',lim:'Zu viele Fragen hintereinander. Bitte warte ein paar Minuten.',lng:'Das Gespräch ist lang geworden. Tippe oben auf den Kreispfeil, um neu zu beginnen.',day:'Für heute sind keine Fragen mehr möglich. Komm morgen wieder.',
   s:['Worum geht es im Johannesevangelium?','Was bedeutet „das Wort wurde Fleisch“?','Wie ist die Bergpredigt zu verstehen?']}
 };
 const L=()=>T[document.documentElement.lang]||T.ru;
@@ -82,7 +82,7 @@ async function ask(q){
   const ctl=new AbortController(),to=setTimeout(()=>ctl.abort(),60000);
   const r=await fetch(API_URL.replace(/\/$/,'')+'/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:q.slice(0,1000),session_id:sid}),signal:ctl.signal});
   clearTimeout(to);
-  if(r.status===429){wait.className='vc-b bot err';wait.innerHTML='<p>'+esc(l.lim)+'</p>'}
+  if(r.status===429){let c='';try{c=(await r.json()).error}catch(e){}wait.className='vc-b bot err';wait.innerHTML='<p>'+esc(c==='session_limit'?l.lng:c==='daily_limit'?l.day:l.lim)+'</p>'}
   else if(!r.ok)throw new Error(r.status);
   else{const j=await r.json();wait.innerHTML=md(String(j.reply||''));reveal(wait)}
  }catch(e){wait.className='vc-b bot err';wait.innerHTML='<p>'+esc(l.err)+'</p>'}
