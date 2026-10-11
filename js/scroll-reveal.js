@@ -2,7 +2,7 @@
 const SEL='.br-preface,.br-guide,.br-head,.br-verse,.br-empty,.br-nav,.br-sources';
 /* края экрана: N слоёв блюра (каждый сильнее предыдущего в RATIO раз), маски перекрываются на две полосы и спадают по smoothstep;
    сверху — слой b: текст плавно растворяется в цвет фона (var(--bg)), поэтому нет ни «каши», ни резкой границы */
-const COARSE=matchMedia('(hover:none) and (pointer:coarse)').matches,N=COARSE?5:7,RATIO=COARSE?1.9:1.75;
+const COARSE=matchMedia('(hover:none) and (pointer:coarse)').matches,N=COARSE?3:2,RATIO=COARSE?2.2:2.4;
 const EASE=[1,.926,.741,.5,.259,.074,0],FADE=[.95,.88,.70,.475,.246,.07,0];
 const ramp=(v,a,b)=>EASE.map((e,s)=>'rgba(0,0,0,'+(v?v[s]:e)+') '+(a+(b-a)*s/6).toFixed(2)+'%').join(',');
 function edge(id,dir){const d=document.createElement('div');d.id=id;d.className='eb';const R=100/(N+1);

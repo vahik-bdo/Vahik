@@ -36,10 +36,17 @@ body.calm #sbl{display:none}
 }
 /* телефон: меню «···» — один ряд; размер кнопок считается от ширины экрана (10 кнопок помещаются и на 360px) */
 @media (max-width:640px){
- #dock{--bs:min(36px,calc((100vw - 68px)/10));gap:3px}
+ #dock{--bs:min(36px,calc((100vw - 64px)/9));gap:3px}
  #dm{flex-wrap:nowrap;gap:3px;max-width:none;overflow:visible}
  #dm>*{flex:0 0 auto}
  #dock .btn.rnd,#dock #dt,#dm>.btn{width:var(--bs);height:var(--bs);min-width:0;min-height:0;padding:0}
  #dock .btn.rnd svg,#dock #dt svg,#dm>.btn svg{width:calc(var(--bs)*.5);height:calc(var(--bs)*.5)}
  #hc{top:-3px;right:-3px}
 }
+
+/* из меню «···» убраны «Заметки» и «Поиск» (код остаётся, кнопки просто скрыты) */
+#dm #bNotes,#dm #bFind,#dm #bNew{display:none!important}
+/* ссылка на Telegram в самом низу страницы (блок #end в режиме чтения скрыт, поэтому свой футер) */
+.site-foot{position:relative;z-index:3;text-align:center;padding:1rem 1rem calc(11rem + env(safe-area-inset-bottom,0px))}
+.site-foot .ct-foot{margin:0}
+body.br-mode main{padding-bottom:6vh}

@@ -50,16 +50,13 @@ body.idle #brRail.open,body.idle #brPop.open{opacity:1!important;pointer-events:
 @keyframes brSwap{from{opacity:0;transform:translateY(10px);filter:blur(6px)}}
 .br-reader.swap{animation:brSwap .7s cubic-bezier(.22,1,.36,1)}
 @media(pointer:coarse){.br-reader.swap{animation-name:brSwapM}@keyframes brSwapM{from{opacity:0;transform:translateY(8px)}}}
-#panel,#npanel,#ppanel,#xp,#hpanel{backdrop-filter:blur(var(--blur)) saturate(1.15);-webkit-backdrop-filter:blur(var(--blur)) saturate(1.15);transition:opacity .5s cubic-bezier(.22,1,.36,1),transform .65s cubic-bezier(.22,1,.36,1)}
 .btn{transition:transform .4s cubic-bezier(.22,1,.36,1),border-color .4s,background .4s,color .4s,box-shadow .4s}
 .br-verse{transition:background .45s,box-shadow .45s}
 #brScrim{backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);transition:opacity .5s ease}
 #brCommentary{transition:transform .6s cubic-bezier(.22,1,.36,1)}
 #modal{backdrop-filter:blur(8px)}
-@media(max-width:700px),(pointer:coarse){#panel,#npanel,#ppanel,#xp,#brRb,#brPop,#brHist,#hpanel{backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}}
 /* smoothness slider */
 #panel,#npanel,#ppanel,#xp,#hpanel{backdrop-filter:blur(var(--blur)) saturate(1.15);-webkit-backdrop-filter:blur(var(--blur)) saturate(1.15);transition:opacity calc(.5s*var(--smd,1)) cubic-bezier(.22,1,.36,1),transform calc(.65s*var(--smd,1)) cubic-bezier(.22,1,.36,1)}
-#brRb,#brPop{backdrop-filter:blur(var(--blur)) saturate(1.15);-webkit-backdrop-filter:blur(var(--blur)) saturate(1.15)}
 #brPop{transition:opacity calc(.5s*var(--smd,1)) cubic-bezier(.22,1,.36,1),transform calc(.65s*var(--smd,1)) cubic-bezier(.22,1,.36,1)}
 #brRail{transition:opacity calc(1.2s*var(--smd,1)) ease,translate calc(.7s*var(--smd,1)) cubic-bezier(.22,1,.36,1)}
 #brHist{transition:opacity calc(.6s*var(--smd,1)) ease}.bh-card{transition:transform calc(.8s*var(--smd,1)) cubic-bezier(.22,1,.36,1)}
@@ -69,11 +66,9 @@ body.idle #brRail.open,body.idle #brPop.open{opacity:1!important;pointer-events:
 .btn{transition:transform calc(.4s*var(--smd,1)) cubic-bezier(.22,1,.36,1),border-color calc(.4s*var(--smd,1)),background calc(.4s*var(--smd,1)),color calc(.4s*var(--smd,1)),box-shadow calc(.4s*var(--smd,1))}
 .br-verse{transition:background calc(.45s*var(--smd,1)),box-shadow calc(.45s*var(--smd,1))}
 .br-reader.swap{animation-duration:calc(.7s*var(--smd,1))}
-@media(max-width:700px),(pointer:coarse){#panel,#npanel,#ppanel,#xp,#brRb,#brPop,#hpanel{backdrop-filter:blur(calc(var(--blur)*.7));-webkit-backdrop-filter:blur(calc(var(--blur)*.7))}}
 #panel,#npanel,#ppanel,#xp,#brPop,#hpanel{transition-duration:calc(.5s*var(--smd,1)),calc(.65s*var(--smd,1))}
 .btn{transition-duration:calc(.4s*var(--smd,1))}
 #brRail{transition-duration:calc(1.2s*var(--smd,1)),calc(.7s*var(--smd,1))}
-.br-reader.swap{animation-duration:calc(.7s*var(--smd,1))}
 #brHist,#brScrim{transition-duration:calc(.6s*var(--smd,1))}
 .bh-card{transition-duration:calc(.8s*var(--smd,1))}
 #brCommentary{transition-duration:calc(.6s*var(--smd,1))}
