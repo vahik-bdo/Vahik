@@ -46,7 +46,7 @@ function ensureOverlays(){
 }
 function localizedTitle(){return T('title')}
 function updateHero(){
- const h=q('.hero h1'),s=q('.hero p');if(h)h.textContent=localizedTitle();if(s)s.textContent=T('subtitle');document.title=localizedTitle()+' — '+T('subtitle');document.body.classList.add('br-mode');
+ const h=q('.hero h1'),s=q('.hero p');if(h)h.textContent=localizedTitle();if(s)s.textContent=T('subtitle');document.title=localizedTitle();document.body.classList.add('br-mode');
 }
 function translationGuide(){const g=G(),rows=[
 ['Русский','Кассиан',g.ruNote],
