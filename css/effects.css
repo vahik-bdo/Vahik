@@ -8,7 +8,7 @@ main{padding-left:max(1.4rem,env(safe-area-inset-left));padding-right:max(1.4rem
 .br-preface h2{opacity:1!important;transform:none!important;filter:none!important}
 .br-preface h2{margin-top:.4rem}
 /* ===== анимация страницы при прокрутке: блюр-появление/уход у верхнего и нижнего края ===== */
-:root{--svb:6px;--svy:16px}
+:root{--svb:3px;--svy:14px}
 html .sv{opacity:.15;transform:translate3d(0,var(--svy),0);filter:blur(var(--svb));
  transition:opacity .8s cubic-bezier(.22,1,.36,1) var(--sd,0s),transform .9s cubic-bezier(.22,1,.36,1) var(--sd,0s),filter .7s ease-out var(--sd,0s);will-change:opacity,transform,filter}
 html .sv.sv-up{transform:translate3d(0,calc(var(--svy)*-1),0)}
@@ -48,7 +48,7 @@ html[data-pf="0"] .br-preface{display:none!important}
 @media (prefers-reduced-motion:reduce){html .sv{opacity:1;transform:none;filter:none;transition:none}}
 
 /* блюр на ПК: сильнее и шире, т.к. экран больше; prefers-reduced-motion его больше не отключает (это статичное размытие, не движение) */
-@media (hover:hover) and (pointer:fine){:root{--blur-edge:10px;--blur-scroll:8px}#ebT{height:calc(150px + env(safe-area-inset-top,0px))}#ebB{height:calc(170px + env(safe-area-inset-bottom,0px))}}
+@media (hover:hover) and (pointer:fine){:root{--blur-edge:7px;--blur-scroll:2.5px}#ebT{height:calc(150px + env(safe-area-inset-top,0px))}#ebB{height:calc(170px + env(safe-area-inset-bottom,0px))}}
 /* крест не анимируется, пока страница скрыта (no-flash): нет рывка в первых кадрах */
 html:not(.rdy) .cross,html:not(.rdy) .crossw{animation:none!important}
 html:not(.rdy) .cross{opacity:0}

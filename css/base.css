@@ -1,4 +1,4 @@
-:root{--blur:12px;--blur-edge:6px;--blur-scroll:6px}
+:root{--blur:12px;--blur-edge:6px;--blur-scroll:3px}
 
 :root{--head:#8fd3c8;--base-font-size:20px;--bg:#070b14;--fg:#d9dde8;--dim:#7d8699;--accent:#d8b45a;--panel:rgba(14,20,34,.88);--line:rgba(216,180,90,.22);--ff:'Literata','Noto Serif Armenian','PT Serif',Georgia,'Times New Roman',serif}
 [data-theme=dark-black]{--bg:#000;--fg:#e8e8e8;--dim:#808080;--accent:#e0b958;--panel:rgba(12,12,12,.92);--line:rgba(224,185,88,.22)}
