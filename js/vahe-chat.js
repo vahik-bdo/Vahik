@@ -29,7 +29,7 @@ const L=()=>T[document.documentElement.lang]||T.ru;
 const SEND='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5"/></svg>';
 const NEW='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 1 1 2.5 5.8M4 19v-4.5h4.5"/></svg>';
 const CROSS='<i class="vc-cross" aria-hidden="true"></i>';
-const BUBBLE='<svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="vcg1" x1="12" y1="8" x2="86" y2="92" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1f7bff"/><stop offset=".55" stop-color="#3d98ff"/><stop offset="1" stop-color="#7cc4ff"/></linearGradient><radialGradient id="vcg2" cx="30" cy="22" r="60" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs><path class="vc-bb" d="M50 8C75 8 91 20 91 44c0 14-4 23-11 28v20L50 80C24 80 9 66 9 44 9 20 25 8 50 8Z" fill="url(#vcg1)"/><path d="M50 8C75 8 91 20 91 44c0 14-4 23-11 28v20L50 80C24 80 9 66 9 44 9 20 25 8 50 8Z" fill="url(#vcg2)"/><rect class="vc-ey" x="29" y="32" width="10" height="23" rx="5" fill="#fff"/><rect class="vc-ey" x="61" y="32" width="10" height="23" rx="5" fill="#fff"/></svg>';
+const BUBBLE='<svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="vcg1" x1="12" y1="8" x2="86" y2="92" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4a86ff"/><stop offset=".6" stop-color="#2f62e6"/><stop offset="1" stop-color="#4f86ff"/></linearGradient><radialGradient id="vcg2" cx="30" cy="22" r="60" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs><path d="M50 8C75 8 91 20 91 44c0 14-4 23-11 28v20L50 80C24 80 9 66 9 44 9 20 25 8 50 8Z" fill="url(#vcg1)"/><path d="M50 8C75 8 91 20 91 44c0 14-4 23-11 28v20L50 80C24 80 9 66 9 44 9 20 25 8 50 8Z" fill="url(#vcg2)"/><rect class="vc-ey" x="29" y="32" width="10" height="23" rx="5" fill="#eaf1ff"/><rect class="vc-ey" x="61" y="32" width="10" height="23" rx="5" fill="#eaf1ff"/></svg>';
 const MQ='(max-width:600px),(pointer:coarse) and (max-height:520px)';
 const mob=()=>matchMedia(MQ).matches;
 const canType=()=>matchMedia('(hover:hover) and (pointer:fine)').matches;
@@ -131,7 +131,7 @@ function fill(){
 function build(){
  if(box)return;
  box=document.createElement('section');box.id='vc';box.setAttribute('role','dialog');box.setAttribute('aria-label','Vahe');
- box.innerHTML='<div class="vc-h"><span class="vc-av">'+CROSS+'</span><div><b></b><small></small></div><button class="vc-new" type="button">'+NEW+'</button><button class="vc-x" type="button">×</button></div>'+
+ box.innerHTML='<div class="vc-h"><span class="vc-av">'+BUBBLE+'</span><div><b></b><small></small></div><button class="vc-new" type="button">'+NEW+'</button><button class="vc-x" type="button">×</button></div>'+
   '<div class="vc-w"><div class="vc-m" aria-live="polite"></div></div>'+
   '<form class="vc-f"><textarea rows="1" maxlength="1000"></textarea><button class="vc-go" type="submit" disabled>'+SEND+'</button></form><p class="vc-n"></p>';
  document.body.appendChild(box);
@@ -144,6 +144,7 @@ function build(){
  ta.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();ask(ta.value)}});
  greet();fill();
 }
+let cov=0;
 const isOpen=()=>box&&box.classList.contains('open');
 const vv=window.visualViewport;
 function vfit(){
@@ -155,9 +156,9 @@ if(vv){vv.addEventListener('resize',vfit);vv.addEventListener('scroll',vfit)}
 addEventListener('orientationchange',()=>setTimeout(vfit,250));
 /* клавиатура открывается только когда человек сам нажал на поле ввода (на телефоне автофокуса нет) */
 function open(){build();fill();tip.classList.remove('show');fab.classList.add('hide');box.classList.add('open');
- if(mob())document.documentElement.classList.add('vc-lock');vfit();
+ if(mob()){document.documentElement.classList.add('vc-lock');clearTimeout(cov);cov=setTimeout(()=>{if(isOpen())document.documentElement.classList.add('vc-cover')},480)}vfit();
  if(canType())setTimeout(()=>{try{ta.focus({preventScroll:true})}catch(e){}},350)}
-function close(){if(box){box.classList.remove('open','kb');if(document.activeElement===ta)ta.blur()}fab.classList.remove('hide');document.documentElement.classList.remove('vc-lock');vfit()}
+function close(){if(box){box.classList.remove('open','kb');if(document.activeElement===ta)ta.blur()}fab.classList.remove('hide');clearTimeout(cov);document.documentElement.classList.remove('vc-lock','vc-cover');vfit()}
 
 fab.onclick=open;tip.onclick=open;
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&isOpen())close()});
