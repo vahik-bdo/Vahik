@@ -74,7 +74,7 @@ function renderElb(){return renderWithGaps(ELB1905,'elb',ELB_GAPS)}
 function render(){normalizeMode();if(!NTLOADED[br.mode]){const rr=q('#brReader');if(rr)rr.innerHTML='<div class="br-empty">'+esc(NTWAIT[lang()]||NTWAIT.ru)+'</div>';return loadBible(br.mode).then(render)}const names=BRBN[lang()]||BRBN.ru,nm=names[br.book]||BRBN.ru[br.book]||br.book,m=br.mode,body=m==='arar'?renderArar():m==='nasb'?renderNasb():m==='elb'?renderElb():renderCass();
 q('#brBook').value=br.book;q('#brChapter').value=br.chapter;
 q('#brChapterTitle').textContent=nm+' '+br.chapter;q('#brMeta').textContent=sourceLabel(m);
-q('#brReader').innerHTML=body;
+q('#brReader').innerHTML=body;applyCmp();
 qa('#brModes [data-mode]').forEach(b=>{b.classList.toggle('on',b.dataset.mode===m);b.textContent=modeLabel(b.dataset.mode)});
 q('#brPrev').textContent='‹ '+T('prev');q('#brNext').textContent=T('next')+' ›';
 qa('#brReader .br-vnum').forEach(b=>b.onclick=()=>openCommentary(+b.dataset.v));
@@ -109,9 +109,9 @@ q('#brRt').onclick=e=>{e.stopPropagation();const R=q('#brRail');R.classList.togg
 q('#brHx').onclick=closeHist;q('#brHist').onclick=e=>{if(e.target.id==='brHist')closeHist()};
 document.addEventListener('click',e=>{if(e.target.closest('#brRail,#brPop'))return;closePop();q('#brRail').classList.remove('open')})}
 function buildRail(){const b=q('#brRb');if(!b)return;{const t=q('#brRt');if(t)t.setAttribute('aria-label',tr('a_menu'))}const svg=d=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
-const it=[['book',svg(IC.book),T('book')],['chap',svg(IC.chap),T('chapter')],...(modeOptions().length>1?[['mode',svg(IC.tr),T('translation')]]:[]),['find',svg(IC.find),T('search')],['notes',svg('<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/>'),tr('notes')],['hist',svg(IC.hist),hl('history')]];
+const it=[['book',svg(IC.book),T('book')],['chap',svg(IC.chap),T('chapter')],...(modeOptions().length>1?[['mode',svg(IC.tr),T('translation')]]:[]),['cmp',svg('<rect x="3" y="4" width="8" height="16" rx="1.6"/><rect x="13" y="4" width="8" height="16" rx="1.6"/>'),CL('btn')],['find',svg(IC.find),T('search')],['notes',svg('<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/>'),tr('notes')],['hist',svg(IC.hist),hl('history')]];
 b.innerHTML='<div id="brRpos"></div>'+it.map(([a,i,l])=>`<button type="button" class="br-rb" data-a="${a}">${i}<span>${esc(l)}</span></button>`).join('')+`<div class="br-rpn"><button type="button" data-a="prev" aria-label="${esc(T('prev'))}">‹</button><button type="button" data-a="next" aria-label="${esc(T('next'))}">›</button></div>`;
-b.onclick=e=>{const x=e.target.closest('[data-a]');if(!x)return;e.stopPropagation();rail(x.dataset.a)};railSync()}
+b.onclick=e=>{const x=e.target.closest('[data-a]');if(!x)return;e.stopPropagation();rail(x.dataset.a)};railSync();cmpRail()}
 function rail(a){const R=q('#brRail');
 if(a==='prev'){q('#brPrev').click();return}if(a==='next'){q('#brNext').click();return}
 if(a==='notes'){closePop();R.classList.remove('open');const d=document.getElementById('dock');if(d&&!d.classList.contains('open'))document.getElementById('dt').click();document.getElementById('bNotes').click();return}
@@ -121,9 +121,10 @@ function popToggle(k){const p=q('#brPop');if(p.classList.contains('open')&&p.dat
 p.dataset.k=k;const names=BRBN[lang()]||BRBN.ru;let h='';
 if(k==='book'){for(const g of GROUPS)h+=`<h5>${esc(T(g))}</h5><div class="bp-list">`+BOOKS.filter(b=>b.group===g).map(b=>`<button type="button" class="bp-i${b.k===br.book?' on':''}" data-b="${b.k}">${esc(names[b.k]||BRBN.ru[b.k])}</button>`).join('')+'</div>'}
 else if(k==='chap'){h=`<h5>${esc(names[br.book]||BRBN.ru[br.book])}</h5><div class="bp-grid">`+Array.from({length:B().chapters},(_,i)=>`<button type="button" class="bp-n${i+1===br.chapter?' on':''}" data-c="${i+1}">${i+1}</button>`).join('')+'</div>'}
+else if(k==='cmp')h=cmpPop();
 else h=`<h5>${esc(T('translation'))}</h5><div class="bp-list">`+modeOptions().map(([m])=>`<button type="button" class="bp-i${br.mode===m?' on':''}" data-m="${m}">${esc(modeLabel(m))}</button>`).join('')+`</div><p class="bp-h">${esc(T('modeHelp'))}</p>`;
 p.innerHTML=h;p.classList.add('open');
-p.onclick=e=>{const x=e.target.closest('button');if(!x)return;e.stopPropagation();
+p.onclick=e=>{const x=e.target.closest('button');if(!x)return;e.stopPropagation();if(x.dataset.x){cmpAct(x.dataset.x,x.dataset.v);p.innerHTML=cmpPop();return}
 if(x.dataset.b)fire('#brBook',x.dataset.b);else if(x.dataset.c)fire('#brChapter',x.dataset.c);else if(x.dataset.m)q('#brModes [data-mode="'+x.dataset.m+'"]').click();
 closePop();q('#brRail').classList.remove('open')};
 const on=p.querySelector('.on');if(on)setTimeout(()=>{p.scrollTop=Math.max(0,on.offsetTop-p.clientHeight/2)},60)}
@@ -186,6 +187,43 @@ document.addEventListener('pointerup',e=>{if(e.pointerType==='mouse'||e.button>0
  const now=performance.now();if(now-tapT<320&&Math.hypot(e.clientX-tapX,e.clientY-tapY)<42){tapT=0;touchLike=now;likeAt(t,e.clientX,e.clientY)}else{tapT=now;tapX=e.clientX;tapY=e.clientY}},{passive:true});
 document.addEventListener('mousedown',e=>{if(e.detail>1&&e.target.closest&&e.target.closest('#brReader .br-verse')&&!e.target.closest('button,a'))e.preventDefault()});
 document.addEventListener('dblclick',e=>{if(performance.now()-touchLike<700)return;const t=e.target;if(!t.closest||!t.closest('#brReader')||t.closest('button,a'))return;likeAt(t,e.clientX,e.clientY)});
+/* ---- compare translations: tap-to-reveal and side-by-side ---- */
+const CMPKEY='nt-cmp-v1';
+const cmp={on:false,stat:false,k:null};
+try{Object.assign(cmp,JSON.parse(localStorage.getItem(CMPKEY)||'{}'))}catch(e){}
+const CMPL={
+ ru:{btn:'Сравнение',title:'Сравнение переводов',on:'Включить сравнение',second:'Второй перевод',always:'Показывать сразу, рядом',hintTap:'Коснитесь стиха — под ним раскроется второй перевод. Коснитесь ещё раз, чтобы скрыть.',hintStat:'Второй перевод виден всегда: на компьютере в две колонки, на телефоне под каждым стихом.'},
+ en:{btn:'Compare',title:'Compare translations',on:'Turn on comparison',second:'Second translation',always:'Always show side by side',hintTap:'Tap a verse to open the second translation under it. Tap again to hide.',hintStat:'The second translation is always visible: two columns on desktop, below each verse on a phone.'},
+ hy:{btn:'Համեմատել',title:'Թարգմանությունների համեմատում',on:'Միացնել համեմատումը',second:'Երկրորդ թարգմանություն',always:'Միշտ ցույց տալ կողք կողքի',hintTap:'Հպեք համարին՝ երկրորդ թարգմանությունը կբացվի ներքևում։ Կրկին հպեք՝ թաքցնելու համար։',hintStat:'Երկրորդ թարգմանությունը միշտ երևում է՝ համակարգչում երկու սյունակով, հեռախոսում՝ համարի տակ։'},
+ de:{btn:'Vergleich',title:'Übersetzungen vergleichen',on:'Vergleich einschalten',second:'Zweite Übersetzung',always:'Immer nebeneinander zeigen',hintTap:'Vers antippen: darunter öffnet sich die zweite Übersetzung. Nochmal tippen zum Ausblenden.',hintStat:'Die zweite Übersetzung ist immer sichtbar: am Computer zwei Spalten, am Handy unter dem Vers.'}
+};
+const CL=k=>(CMPL[lang()]||CMPL.ru)[k];
+const CMPNAME={cass:['Русский','Кассиан'],arar:['Հայերեն','Նոր Արարատ 2018'],nasb:['English','NASB'],elb:['Deutsch','Elberfelder 1905']};
+const CMPLANG={cass:'ru',arar:'hy',nasb:'en',elb:'de'};
+const dataOf=k=>k==='cass'?CASSIAN:k==='arar'?ARARAT:k==='nasb'?NASB:ELB1905;
+function cmpKey(){const o=Object.keys(CMPNAME).filter(k=>k!==br.mode);return o.includes(cmp.k)?cmp.k:(br.mode==='cass'?'arar':'cass')}
+function saveCmp(){try{localStorage.setItem(CMPKEY,JSON.stringify(cmp))}catch(e){}}
+function cmpRail(){const b=q('#brRb [data-a="cmp"]');if(b)b.classList.toggle('on',!!cmp.on)}
+function applyCmp(){const r=q('#brReader');if(!r)return;
+ document.body.classList.toggle('br-cmp',!!cmp.on);document.body.classList.toggle('br-cmp-static',!!(cmp.on&&cmp.stat));cmpRail();
+ if(!cmp.on){qa('#brReader .br-alt').forEach(x=>x.remove());qa('#brReader .has-alt,#brReader .alt-open').forEach(x=>x.classList.remove('has-alt','alt-open'));return}
+ const k=cmpKey(),b=br.book,c=br.chapter;
+ if(!NTLOADED[k]){loadBible(k).then(()=>{if(cmp.on&&cmpKey()===k&&br.book===b&&br.chapter===c)applyCmp()});return}
+ const ch=(dataOf(k)[br.book]||{})[br.chapter]||{},lg=CMPLANG[k],nm=CMPNAME[k][0]+' \u00b7 '+CMPNAME[k][1];
+ qa('#brReader .br-verse').forEach(a=>{const old=a.querySelector(':scope>.br-alt');if(old)old.remove();const v=+a.id.slice(4),t=ch[v];
+  const d=document.createElement('div');d.className='br-alt';
+  d.innerHTML='<div class="br-alt-in"><div class="br-alt-box"><div class="br-src alt">'+esc(nm)+'</div><div class="br-vtext" lang="'+lg+'">'+(t?txt(t):'<i class="br-alt-no">\u2014</i>')+'</div></div></div>';
+  a.appendChild(d);a.classList.add('has-alt')})}
+function cmpPop(){const k=cmpKey();
+ let h='<h5>'+esc(CL('title'))+'</h5><div class="bp-list"><button type="button" class="bp-i'+(cmp.on?' on':'')+'" data-x="on">'+(cmp.on?'\u2713 ':'')+esc(CL('on'))+'</button></div>';
+ if(cmp.on){h+='<h5>'+esc(CL('second'))+'</h5><div class="bp-list">'+Object.keys(CMPNAME).filter(x=>x!==br.mode).map(x=>'<button type="button" class="bp-i'+(x===k?' on':'')+'" data-x="lang" data-v="'+x+'">'+esc(CMPNAME[x][0]+' \u00b7 '+CMPNAME[x][1])+'</button>').join('')+'</div><div class="bp-list"><button type="button" class="bp-i'+(cmp.stat?' on':'')+'" data-x="stat">'+(cmp.stat?'\u2713 ':'')+esc(CL('always'))+'</button></div><p class="bp-h">'+esc(cmp.stat?CL('hintStat'):CL('hintTap'))+'</p>'}
+ return h}
+function cmpAct(a,v){if(a==='on')cmp.on=!cmp.on;else if(a==='lang')cmp.k=v;else if(a==='stat')cmp.stat=!cmp.stat;saveCmp();applyCmp()}
+/* tap on a verse toggles the second translation; delayed so a double-tap (like) does not flicker it */
+document.addEventListener('click',e=>{if(!cmp.on||cmp.stat)return;const t=e.target;if(!t.closest)return;const a=t.closest('#brReader .br-verse');if(!a||t.closest('button,a'))return;
+ try{if(String(getSelection()).length)return}catch(x){}
+ if(a._ct){clearTimeout(a._ct);a._ct=0;return}
+ a._ct=setTimeout(()=>{a._ct=0;a.classList.toggle('alt-open')},340)});
 markLikes();
 mount(false);
 })();
