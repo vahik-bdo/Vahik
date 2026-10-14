@@ -126,15 +126,15 @@ window.NTRemaster=(au,g,k)=>{const c=au.c,F=outbus(au),wet={wind:.3,birds:.24,bo
   g.connect(m,0,0);g.connect(d);d.connect(lp);lp.connect(m,0,1);m.connect(F.comp)}
  const s=c.createGain();s.gain.value=wet;g.connect(s);s.connect(k==='birds'?F.room:F.hall)};
 /* живой слой поверх записи: щебет птиц, дополнительный порыв ветра, длинный раскат после грома */
-window.NTLive=(au,k,dur)=>{const later=(fn,ms)=>{const id=setTimeout(fn,ms);(au.effectTimers=au.effectTimers||[]).push(id);return id};const c=au.c,K=kit(au),F=outbus(au),hall=F.hall,room=F.room;
+window.NTLive=(au,k,dur)=>{const c=au.c,K=kit(au),F=outbus(au),hall=F.hall,room=F.room;
  const out=(node,p,wet)=>{const pn=c.createStereoPanner?c.createStereoPanner():c.createGain();if(pn.pan)pn.pan.value=p;node.connect(pn);pn.connect(F.comp);const w=c.createGain();w.gain.value=wet;pn.connect(w);w.connect(room)};
  const chirp=(f0,f1,len,v,p,vib)=>{const t=c.currentTime,o=c.createOscillator(),g=c.createGain();o.frequency.setValueAtTime(f0,t);o.frequency.linearRampToValueAtTime(f1,t+len);
   if(vib){const l=c.createOscillator(),ld=c.createGain();l.frequency.value=vib;ld.gain.value=f0*.03;l.connect(ld);ld.connect(o.frequency);l.start(t);l.stop(t+len+.05)}
   g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+len);o.connect(g);out(g,p,.35);o.start(t);o.stop(t+len+.05)};
- if(k==='birds'){const n=7+Math.floor(R()*4);for(let i=0;i<n;i++)later(()=>{const p=rr(-.85,.85),base=rr(2600,5600),ty=R();
-   if(ty<.4){const m=3+Math.floor(R()*3),d=rr(.07,.12);for(let j=0;j<m;j++)later(()=>chirp(base*rr(.95,1.05),base*rr(.75,1.25),d,rr(.025,.05),p),j*d*1000*1.5)}
-   else if(ty<.75){const m=10+Math.floor(R()*8);for(let j=0;j<m;j++)later(()=>chirp(base*1.1,base*1.02,.03,rr(.012,.025),p),j*42)}
-   else{const f=rr(1700,2500);chirp(f,f*1.35,.32,.04,p,rr(18,26));later(()=>chirp(f*1.35,f*.9,.4,.035,p,rr(18,26)),380)}},rr(0,Math.max(.5,dur-1.5))*1000)}
+ if(k==='birds'){const n=7+Math.floor(R()*4);for(let i=0;i<n;i++)setTimeout(()=>{const p=rr(-.85,.85),base=rr(2600,5600),ty=R();
+   if(ty<.4){const m=3+Math.floor(R()*3),d=rr(.07,.12);for(let j=0;j<m;j++)setTimeout(()=>chirp(base*rr(.95,1.05),base*rr(.75,1.25),d,rr(.025,.05),p),j*d*1000*1.5)}
+   else if(ty<.75){const m=10+Math.floor(R()*8);for(let j=0;j<m;j++)setTimeout(()=>chirp(base*1.1,base*1.02,.03,rr(.012,.025),p),j*42)}
+   else{const f=rr(1700,2500);chirp(f,f*1.35,.32,.04,p,rr(18,26));setTimeout(()=>chirp(f*1.35,f*.9,.4,.035,p,rr(18,26)),380)}},rr(0,Math.max(.5,dur-1.5))*1000)}
  else if(k==='wind'){const t=c.currentTime,s=c.createBufferSource(),b=c.createBiquadFilter(),g=c.createGain(),pn=c.createStereoPanner?c.createStereoPanner():c.createGain();
   s.buffer=K.pink;s.loop=true;b.type='bandpass';b.Q.value=.7;b.frequency.setValueAtTime(300,t);b.frequency.linearRampToValueAtTime(900,t+dur*.45);b.frequency.linearRampToValueAtTime(380,t+dur);
   g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.2,t+dur*.4);g.gain.linearRampToValueAtTime(0,t+dur);if(pn.pan){pn.pan.setValueAtTime(-.7,t);pn.pan.linearRampToValueAtTime(.7,t+dur)}
