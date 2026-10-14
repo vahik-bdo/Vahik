@@ -12,7 +12,7 @@ addEventListener('wheel',e=>{if(e.ctrlKey||e.defaultPrevented)return;const el=sc
 /* клавиатура: PageUp/PageDown/Space/Home/End/стрелки на главной странице — плавно */
 addEventListener('keydown',e=>{if(e.defaultPrevented||e.ctrlKey||e.metaKey||e.altKey)return;
  const a=document.activeElement,tg=a&&a.tagName;if(tg==='INPUT'||tg==='TEXTAREA'||tg==='SELECT'||tg==='BUTTON'||(a&&a.isContentEditable))return;
- if(e.target.closest&&e.target.closest('#pfm,#panel,#npanel,#ppanel,#hpanel,#modal,#brSearch,#brHist,#brPop'))return;
+ if(e.target.closest&&e.target.closest('#menuDialog,#pfm,#panel,#npanel,#ppanel,#hpanel,#modal,#brSearch,#brHist,#brPop'))return;
  const h=innerHeight,k=e.key;let d=null,abs=null;
  if(k==='PageDown'||(k===' '&&!e.shiftKey))d=h*.88;else if(k==='PageUp'||(k===' '&&e.shiftKey))d=-h*.88;
  else if(k==='ArrowDown')d=70;else if(k==='ArrowUp')d=-70;else if(k==='Home')abs=0;else if(k==='End')abs=document.documentElement.scrollHeight;else return;
