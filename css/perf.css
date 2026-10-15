@@ -22,3 +22,17 @@ html.lite .sv{transition:opacity .5s ease var(--sd,0s),transform .5s ease var(--
 html.lite #sbl,html.lite .eb i{display:none!important}
 html.lite .hero h1,html.lite .crossw{animation:none}
 html.lite #bg{animation:none!important}
+/* Android/телефоны: текст всегда виден, без появления «из тумана» при прокрутке */
+@media (hover:none) and (pointer:coarse){
+  html .sv,
+  html .sv.sv-in,
+  html .sv.sv-up{
+    opacity:1!important;
+    transform:none!important;
+    filter:none!important;
+    transition:none!important;
+    will-change:auto!important;
+  }
+  /* слои backdrop-filter на краях: самая дорогая часть, оставляем только мягкое затухание в цвет фона (.eb b) */
+  .eb i{display:none!important}
+}
