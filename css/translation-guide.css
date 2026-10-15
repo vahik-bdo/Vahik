@@ -7,7 +7,8 @@
 @media(max-width:760px){.br-guide{margin-inline:.2rem}.br-modes{max-width:100%;overflow:auto}.br-modes button{white-space:nowrap}}
 
 /* ⓘ «О переводе» */
-.br-info{font-size:17px;line-height:1;min-width:38px;min-height:38px;color:var(--head)!important}
+.br-info{display:inline-flex;align-items:center;gap:.35rem;margin-left:.5rem;padding:.3rem .7rem;min-height:32px;border:1px solid var(--line);border-radius:99px;background:transparent;color:var(--head);font:600 12px Manrope,'Noto Sans Armenian',sans-serif;cursor:pointer;vertical-align:middle}.br-info span:first-child{font-size:16px;line-height:1}.br-info:focus-visible{outline:2px solid var(--accent)}@media (hover:hover){.br-info:hover{border-color:var(--accent)}}@media(pointer:coarse){.br-info{min-height:40px}}
+.br-guide-sec{margin:1rem 0 .3rem;font:700 12px Manrope,'Noto Sans Armenian',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
 html.tri-lock{overflow:hidden}
 .tri-ov{position:fixed;inset:0;z-index:100000;background:rgba(0,0,0,.62);display:flex;align-items:center;justify-content:center;padding:max(12px,env(safe-area-inset-top)) 12px max(12px,env(safe-area-inset-bottom));-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);animation:triIn .2s ease}
 .tri-box{position:relative;box-sizing:border-box;width:min(640px,100%);max-height:100%;overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:18px;padding:1.4rem 1.2rem 1.5rem;font:400 15px/1.65 Manrope,'Noto Sans Armenian',sans-serif;box-shadow:0 20px 60px rgba(0,0,0,.45)}

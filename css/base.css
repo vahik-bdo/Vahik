@@ -251,3 +251,6 @@ body.idle #panel.open,body.idle #npanel.open,body.idle #ppanel.open,body.idle #x
 @media(max-width:700px){}
 
 [data-theme=dark-sky]{--bg:#08182a;--fg:#dce8f5;--dim:#8fa8c2;--accent:#8ec5f0;--panel:rgba(10,28,46,.9);--line:rgba(142,197,240,.24)}
+
+/* темы: ровная сетка из 9 кружков */
+#themes{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:6px;justify-items:center}#themes .sw{width:100%;max-width:36px;height:auto;aspect-ratio:1}#autoTh{margin-top:.6rem}

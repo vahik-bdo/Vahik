@@ -118,7 +118,7 @@ class UIManager{
   constructor(st,fx,au){this.st=st;this.fx=fx;this.au=au;this.idleT=null;this.init()}
   init(){
     const d=this.st.d,R=document.documentElement;
-    const themes=[['blue-dark','#070b14'],['dark-black','#000'],['nardo-grey','#4a4c50'],['warm-parchment','#f4ebd8'],['forest','#08130e'],['bordeaux','#16080d'],['dusk','#120d1f'],['ice','#e3ecf3'],['dark-sky','#08182a']];
+    const themes=[['blue-dark','#070b14'],['forest','#08130e'],['dark-sky','#08182a'],['nardo-grey','#4a4c50'],['bordeaux','#16080d'],['dusk','#120d1f'],['warm-parchment','#f4ebd8'],['dark-black','#000'],['ice','#e3ecf3']];/* порядок: Пн…Вс, затем остальные */
     $('#themes').innerHTML=themes.map(([k,c])=>`<div class="sw" role="button" tabindex="0" aria-label="${k}" data-th="${k}" style="background:${c}"></div>`).join('');
     $('#themes').onclick=e=>{const t=e.target.dataset.th;if(t){this.st.set('autoTheme',false);this.theme(t)}};
     $('#autoTh').onclick=()=>{const v=!this.st.d.autoTheme;this.st.set('autoTheme',v);if(v)this.applyAuto();this.mark()};
