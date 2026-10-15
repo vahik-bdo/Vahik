@@ -317,7 +317,7 @@ setInterval(()=>{TR.forEach(([q,i])=>$$(q).classList.toggle('on',!!same(i)));$$(
 
 function xInit3(){const $$=s=>document.querySelector(s),ic=d=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+d+'</svg>';
 Object.assign(XT,{notes:['Заметки','Notes','Նշումներ','Notatki','Notizen','Jegyzetek'],prayers:['Молитвы','Prayers','Աղոթքներ','Modlitwy','Gebete','Imák'],settings:['Настройки','Settings','Կարգավորումներ','Ustawienia','Einstellungen','Beállítások'],newnote:['Новая заметка','New note','Նոր նշում','Nowa notatka','Neue Notiz','Új jegyzet'],fs:['Во весь экран','Fullscreen','Ամբողջ էկրան','Pełny ekran','Vollbild','Teljes képernyő']});
-const n0=($$('#nc')||{}).textContent||'0',bn=$$('#bNotes');bn.classList.add('rnd');bn.innerHTML=ic('<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/>')+'<i id="nc">'+n0+'</i>';
+const n0=($$('#nc')||{}).textContent||'0',bn=$$('#bNotes');bn.classList.add('rnd');bn.innerHTML=ic('<path d="M4 20l4-1 11-11a2.1 2.1 0 0 0-3-3L5 16z"/>')+'<i id="nc">'+n0+'</i>';
 const nc=$$('#nc'),vis=()=>{nc.style.display=nc.textContent.trim()==='0'?'none':''};vis();new MutationObserver(vis).observe(nc,{childList:true,characterData:true,subtree:true});
 const bp=$$('#bPr');bp.removeAttribute('data-t');bp.classList.add('rnd');bp.innerHTML=ic('<path d="M12 3v18M7.5 8.5h9"/>');
 const bs=$$('#bSet');bs.removeAttribute('data-t');bs.classList.add('rnd');bs.innerHTML=ic('<path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/>');
