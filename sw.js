@@ -1,6 +1,6 @@
 /* Service worker: офлайн + надёжные обновления.
    BUILD подставляется автоматически (tools/bump.js, GitHub Action) — вручную ничего поднимать не нужно. */
-const BUILD = '31723e9b80';
+const BUILD = '9aa81f0581';
 const CORE = 'nz-core-' + BUILD, DATA = 'nz-data-v1', FONTS = 'nz-fonts-v1';
 const CORE_FILES = ["index.html", "css/armenian.css", "css/base.css", "css/compare.css", "css/contact.css", "css/hy-latin.css", "css/cross.css", "css/effects.css", "css/fixes.css", "css/layout.css", "css/likes.css", "css/perf.css", "css/preface-modal.css", "css/reader.css", "css/torch.css", "css/tour.css", "css/translation-guide.css", "js/app.js", "js/contact.js", "js/hy-latin.js", "js/install.js", "js/perf.js", "js/preface-gate.js", "js/reader.js", "js/translation-info.js", "js/ready.js", "js/scroll-blur.js", "js/scroll-reveal.js", "js/smooth-scroll.js", "js/soundscape.js", "js/torch.js", "js/tour.js", "manifest.webmanifest", "icons/apple-touch-icon.png", "icons/favicon-48.png", "icons/icon-192.png", "icons/icon-512.png", "icons/maskable-512.png"];
 /* тяжёлое (тексты Библии, звуки) лежит в отдельном кэше: не перекачивается при каждом обновлении сайта */
