@@ -2,8 +2,8 @@
 
 :root{--head:#8fd3c8;--base-font-size:20px;--bg:#070b14;--fg:#d9dde8;--dim:#7d8699;--accent:#d8b45a;--panel:rgba(14,20,34,.88);--line:rgba(216,180,90,.22);--ff:'Literata','Noto Serif Armenian','PT Serif',Georgia,'Times New Roman',serif}
 [data-theme=dark-black]{--bg:#000;--fg:#e8e8e8;--dim:#808080;--accent:#e0b958;--panel:rgba(12,12,12,.92);--line:rgba(224,185,88,.22)}
-[data-theme=nardo-grey]{--bg:#4a4c50;--fg:#eceef1;--dim:#b4b8bf;--accent:#f0cf7a;--panel:rgba(50,52,56,.92);--line:rgba(240,207,122,.3)}
-[data-theme=warm-parchment]{--bg:#f4ebd8;--fg:#2e2518;--dim:#8a7a5c;--accent:#8c5a1c;--panel:rgba(244,235,216,.94);--line:rgba(140,90,28,.3)}
+[data-theme=nardo-grey]{--bg:#4a4c50;--fg:#eceef1;--dim:#c8ccd2;--accent:#f0cf7a;--panel:rgba(50,52,56,.92);--line:rgba(240,207,122,.3)}
+[data-theme=warm-parchment]{--bg:#f4ebd8;--fg:#2e2518;--dim:#6e5f43;--accent:#8c5a1c;--panel:rgba(244,235,216,.94);--line:rgba(140,90,28,.3)}
 [data-font=sans]{--ff:'Manrope','Noto Sans Armenian',system-ui,sans-serif}
 *{box-sizing:border-box}
 html{scroll-behavior:auto}
@@ -86,7 +86,7 @@ body.candle #veil{display:block}
 [data-theme=forest]{--bg:#08130e;--fg:#dbe8dc;--dim:#7f9886;--accent:#c9b36a;--panel:rgba(10,24,17,.9);--line:rgba(201,179,106,.22)}
 [data-theme=bordeaux]{--bg:#16080d;--fg:#ecd9d9;--dim:#9a7a7e;--accent:#d9a45f;--panel:rgba(32,12,18,.9);--line:rgba(217,164,95,.24)}
 [data-theme=dusk]{--bg:#120d1f;--fg:#e1dcf0;--dim:#8b84a6;--accent:#c5a3ff;--panel:rgba(24,17,42,.9);--line:rgba(197,163,255,.24)}
-[data-theme=ice]{--bg:#e3ecf3;--fg:#1d2a38;--dim:#6b7f92;--accent:#2d5f8b;--panel:rgba(232,240,247,.94);--line:rgba(45,95,139,.3)}
+[data-theme=ice]{--bg:#e3ecf3;--fg:#1d2a38;--dim:#566a7e;--accent:#2d5f8b;--panel:rgba(232,240,247,.94);--line:rgba(45,95,139,.3)}
 [data-theme=ice] #light{z-index:0;mix-blend-mode:normal;background:radial-gradient(circle,color-mix(in srgb,var(--lc,#fff) 85%,transparent),color-mix(in srgb,var(--lc,#fff) 30%,transparent) 40%,transparent 70%)}
 [data-theme=ice] #veil{background:radial-gradient(circle var(--lr,270px) at var(--lx,50%) var(--ly,35%),transparent 0,rgba(20,30,45,.3) 45%,rgba(20,30,45,.94) 100%)}
 [data-theme=ice] body::after{background:radial-gradient(ellipse at center,transparent 55%,rgba(40,70,110,.18))}
@@ -249,3 +249,5 @@ body.idle #panel.open,body.idle #npanel.open,body.idle #ppanel.open,body.idle #x
 
 
 @media(max-width:700px){}
+
+[data-theme=dark-sky]{--bg:#08182a;--fg:#dce8f5;--dim:#8fa8c2;--accent:#8ec5f0;--panel:rgba(10,28,46,.9);--line:rgba(142,197,240,.24)}
