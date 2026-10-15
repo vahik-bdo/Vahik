@@ -50,3 +50,30 @@ body.calm #sbl{display:none}
 .site-foot{position:relative;z-index:3;text-align:center;padding:1rem 1rem calc(11rem + env(safe-area-inset-bottom,0px))}
 .site-foot .ct-foot{margin:0}
 body.br-mode main{padding-bottom:6vh}
+
+/* ===== панель «Вид»: автосмена тем и ровные ряды кнопок ===== */
+#panel .row:has(>#autoTh){display:block;margin:.85rem 0 1.15rem}
+#panel #autoTh{display:flex;align-items:center;justify-content:space-between;gap:.7rem;width:100%;min-height:48px;margin:0;padding:.3rem .55rem .3rem 1rem;border-radius:99px;text-align:left;background:color-mix(in srgb,var(--panel) 70%,transparent)}
+#panel #autoTh.on{background:color-mix(in srgb,var(--accent) 11%,var(--panel));color:var(--fg);border-color:color-mix(in srgb,var(--accent) 55%,var(--line))}
+#autoTh .at-l{display:flex;align-items:center;gap:.6rem;min-width:0}
+#autoTh .at-t{min-width:0;white-space:normal;line-height:1.2;overflow-wrap:anywhere}
+#autoTh .at-ico{flex:none;width:34px;height:34px;color:var(--accent);transition:color .4s,opacity .4s;opacity:.55}
+#autoTh.on .at-ico{opacity:1}
+#autoTh .at-hand{transform-box:view-box;transform-origin:16px 16px;transform:rotate(var(--h,0deg));transition:transform 1.2s cubic-bezier(.22,1,.36,1)}
+#autoTh .at-sw{flex:none;position:relative;width:42px;height:24px;border-radius:99px;background:color-mix(in srgb,var(--dim) 35%,transparent);transition:background .35s}
+#autoTh .at-sw i{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--fg);opacity:.85;transition:transform .35s cubic-bezier(.22,1,.36,1),background .35s,opacity .35s}
+#autoTh.on .at-sw{background:var(--accent)}
+#autoTh.on .at-sw i{transform:translateX(18px);background:var(--bg);opacity:1}
+/* фон и шрифты: две ровные колонки вместо рваных строк */
+#panel #bgs,#panel #fonts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.45rem}
+#panel #bgs .btn,#panel #fonts .btn{min-width:0;min-height:42px;padding:.45em .6em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center}
+/* цвета: «Авто», шесть кружков и выбор своего цвета — всегда в одну строку */
+#panel #colors,#panel #heads,#panel #lcolors{display:grid;grid-template-columns:auto repeat(7,minmax(0,1fr));gap:.4rem;align-items:center;justify-items:center}
+#panel #colors .btn,#panel #heads .btn,#panel #lcolors .btn{min-height:34px;padding:.3em .8em;font-size:13px}
+#panel #colors .sw,#panel #heads .sw,#panel #lcolors .sw{width:100%;max-width:34px;height:auto;aspect-ratio:1}
+#panel #colors input[type=color],#panel #heads input[type=color],#panel #lcolors input[type=color]{width:100%;max-width:34px;height:auto;aspect-ratio:1;padding:0;border:2px solid var(--line);border-radius:50%;background:none;cursor:pointer;overflow:hidden}
+#panel input[type=color]::-webkit-color-swatch-wrapper{padding:0}
+#panel input[type=color]::-webkit-color-swatch{border:0;border-radius:50%}
+#panel input[type=color]::-moz-color-swatch{border:0;border-radius:50%}
+#panel #fonts .btn:last-child:nth-child(odd){grid-column:1/-1}
+#panel #pfAgain{width:100%}
