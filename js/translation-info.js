@@ -1,124 +1,206 @@
-/* «О переводе»: значок ⓘ рядом с названием перевода и модальное окно с пояснением.
-   Тексты — только здесь. Языки интерфейса: ru, en, hy, de.
-   Правила: ничего не выдумываем; сомнительные факты сформулированы осторожно и помечены TODO в комментариях
-   (в тексты для читателя пометки не попадают). */
+/* «О переводе»: кнопка рядом с названием перевода и модальное окно с рассказом о нём.
+   Для каждого перевода — свой текст на языке его локализации:
+     cass, rbo → русская версия; nasb → английская; arar → армянская; elb → немецкая.
+   Формат раздела: [заголовок, текст] — абзацы разделены пустой строкой, **жирный** допустим;
+   либо [заголовок, [[метка, текст], …]] — хронология.
+   Факты проверены по источникам (Православная энциклопедия, Predanie.ru, Bibelgesellschaft, Wikipedia,
+   Bible Society in Armenia, dewiki). Что осталось неподтверждённым — помечено TODO в комментариях
+   (в текст для читателя пометки не попадают). */
 (()=>{
 const UI={
- ru:{about:'О переводе',close:'Закрыть',general:'Как читать переводы'},
- en:{about:'About this translation',close:'Close',general:'How to read translations'},
- hy:{about:'Թարգմանության մասին',close:'Փակել',general:'Ինչպես կարդալ թարգմանությունները'},
- de:{about:'Über diese Übersetzung',close:'Schließen',general:'Wie man Übersetzungen liest'}
+ ru:{about:'О переводе',close:'Закрыть'},
+ en:{about:'About this translation',close:'Close'},
+ hy:{about:'Թարգմանության մասին',close:'Փակել'},
+ de:{about:'Über diese Übersetzung',close:'Schließen'}
 };
 const NAME={cass:'Кассиан',rbo:'РБО',arar:'Նոր Արարատ 2018',nasb:'NASB',elb:'Elberfelder 1905'};
 const NAME_L={cass:{en:'Cassian',hy:'Կասիան',de:'Kassian'},rbo:{en:'RBS (Modern Russian)',hy:'ՌԲՕ',de:'RBO (Modernes Russisch)'}};
 
-/* Заголовки блоков внутри окна */
-const H={
- ru:{who:'Кто и для кого',src:'С какого оригинала'},
- en:{who:'Who made it, and for whom',src:'Which original it comes from'},
- hy:{who:'Ով և ում համար',src:'Ո՞ր բնագրից'},
- de:{who:'Wer und für wen',src:'Aus welcher Vorlage'}
-};
-
-/* Тексты по переводам. Каждый перевод: who — кто/когда/для кого/подход, src — с какого оригинала. */
 const TR={
-cass:{
- ru:{who:'Перевод епископа Кассиана (Сергея Безобразова, 1892–1965), богослова и знатока Нового Завета, преподавателя Свято-Сергиевского института в Париже. Он трудился над ним много лет; книга вышла в 1970 году, уже после его смерти. Подход близкий к тексту: переводчик старался сохранить слова и мысль оригинала, а не пересказывать их свободно. Для читателя, которому важно понять, что именно сказано в греческом тексте.',
-     src:'Критический греческий текст — свод, составленный учёными по множеству рукописей (подробнее ниже).'},
- en:{who:'Translated by Bishop Cassian (Sergei Bezobrazov, 1892–1965), a theologian and New Testament scholar who taught at the St Sergius Institute in Paris. He worked on it for many years; the book was published in 1970, after his death. The approach stays close to the text: the translator tried to keep the words and thought of the original rather than retell them freely. Good for a reader who wants to see what the Greek actually says.',
-     src:'A critical edition of the Greek text — a text assembled by scholars from many manuscripts (more below).'},
- hy:{who:'Թարգմանել է Կասիան եպիսկոպոսը (Սերգեյ Բեզոբրազով, 1892–1965)՝ աստվածաբան և Նոր Կտակարանի գիտակ, Փարիզի Սուրբ Սերգիոսի ինստիտուտի դասախոս։ Նա երկար տարիներ աշխատել է դրա վրա, գիրքը լույս է տեսել 1970 թվականին՝ նրա մահից հետո։ Մոտեցումը բնագրին մոտ է. թարգմանիչը ձգտել է պահպանել բնագրի բառերն ու միտքը, ոչ թե ազատ վերապատմել։ Հարմար է նրան, ով ուզում է հասկանալ՝ հունարեն տեքստում ինչ է ասվում։',
-     src:'Հունարեն տեքստի քննական հրատարակություն՝ գիտնականների կազմած տեքստ՝ բազմաթիվ ձեռագրերի հիման վրա (ավելի մանրամասն՝ ներքևում)։'},
- de:{who:'Übersetzt von Bischof Kassian (Sergej Bezobrazov, 1892–1965), Theologe und Kenner des Neuen Testaments, Dozent am St.-Sergius-Institut in Paris. Er arbeitete viele Jahre daran; das Buch erschien 1970, nach seinem Tod. Der Ansatz ist textnah: Der Übersetzer wollte Worte und Gedanken des Urtextes bewahren, statt sie frei nachzuerzählen. Gut für Leser, die sehen möchten, was im Griechischen tatsächlich steht.',
-     src:'Eine kritische Ausgabe des griechischen Textes – von Fachleuten aus vielen Handschriften erarbeitet (mehr unten).'}
- /* TODO(автор): уточнить издание греческого текста, которым пользовался епископ Кассиан (Nestle?), и год/место первого издания. */
-},
-rbo:{
- ru:{who:'Современный русский перевод Российского Библейского Общества. Написан живым сегодняшним языком, чтобы Новый Завет был понятен без пояснений и без церковнославянских оборотов. Подход смысловой: переводчики стремятся передать мысль так, как это сказал бы современный человек, поэтому порой он звучит проще и свободнее, чем дословные переводы.',
-     src:'Критический греческий текст (подробнее ниже). Это современный перевод с греческого, а не пересказ с другого перевода.'},
- en:{who:'The Modern Russian translation by the Russian Bible Society. It uses everyday present-day Russian, so the New Testament can be understood without explanation or Church Slavonic turns of phrase. The approach is meaning-based: the translators aim to convey the thought the way a modern speaker would say it, so it often sounds simpler and freer than word-for-word translations.',
-     src:'A critical edition of the Greek text (more below). It is a modern translation from the Greek, not a retelling of another translation.'},
- hy:{who:'Ռուսաստանի Աստվածաշնչային ընկերության ժամանակակից ռուսերեն թարգմանությունը։ Գրված է այսօրվա կենդանի լեզվով, որպեսզի Նոր Կտակարանը հասկանալի լինի առանց բացատրությունների և եկեղեցասլավոնական դարձվածքների։ Մոտեցումը իմաստային է. թարգմանիչները ձգտում են միտքը փոխանցել այնպես, ինչպես կասեր ժամանակակից մարդը, ուստի այն երբեմն ավելի պարզ ու ազատ է հնչում, քան բառացի թարգմանությունները։',
-     src:'Հունարեն տեքստի քննական հրատարակություն (ավելի մանրամասն՝ ներքևում)։ Սա ժամանակակից թարգմանություն է հունարենից, ոչ թե այլ թարգմանության վերապատմում։'},
- de:{who:'Die moderne russische Übersetzung der Russischen Bibelgesellschaft. Sie nutzt die heutige Alltagssprache, damit das Neue Testament ohne Erklärungen und ohne kirchenslawische Wendungen verständlich ist. Der Ansatz ist sinngemäß: Die Übersetzer geben den Gedanken so wieder, wie ein heutiger Mensch ihn sagen würde; deshalb klingt sie oft einfacher und freier als wörtliche Übersetzungen.',
-     src:'Eine kritische Ausgabe des griechischen Textes (mehr unten). Es ist eine moderne Übersetzung aus dem Griechischen, keine Nacherzählung einer anderen Übersetzung.'}
- /* TODO(автор): проверить год выхода НЗ в РБО, название серии и точное греческое издание (UBS / Nestle-Aland), добавить при желании. */
-},
-arar:{
- ru:{who:'Современный восточноармянский перевод Нового Завета (издание 2018 года), в традиционной орфографии. Выбран на сайте как основной армянский текст из-за стремления оставаться близким к оригиналу при понятном для сегодняшнего читателя языке.',
-     src:'Перевод с греческого. Какое именно греческое издание лежит в основе, нужно уточнить; в целом современные переводы опираются на критический текст (подробнее ниже).'},
- en:{who:'A modern Eastern Armenian translation of the New Testament (2018 edition), in traditional spelling. It is the main Armenian text on this site because it aims to stay close to the original while using language a present-day reader understands.',
-     src:'Translated from the Greek. Which exact Greek edition lies behind it is still to be confirmed; modern translations in general rest on a critical text (more below).'},
- hy:{who:'Նոր Կտակարանի ժամանակակից արևելահայերեն թարգմանություն (2018 թ. հրատարակություն)՝ ավանդական ուղղագրությամբ։ Կայքում ընտրվել է որպես հիմնական հայերեն տեքստ՝ բնագրին մոտ մնալու ձգտման և այսօրվա ընթերցողին հասկանալի լեզվի շնորհիվ։',
-     src:'Թարգմանված է հունարենից։ Թե հունարենի որ հրատարակությունն է հիմք ծառայել, դեռ պետք է ճշտել. ընդհանուր առմամբ ժամանակակից թարգմանությունները հենվում են քննական տեքստի վրա (ավելի մանրամասն՝ ներքևում)։'},
- de:{who:'Eine moderne ostarmenische Übersetzung des Neuen Testaments (Ausgabe 2018) in traditioneller Rechtschreibung. Sie ist auf dieser Seite der armenische Haupttext, weil sie nah am Urtext bleiben will und trotzdem eine heutigen Lesern verständliche Sprache nutzt.',
-     src:'Aus dem Griechischen übersetzt. Welche griechische Ausgabe genau zugrunde liegt, ist noch zu klären; moderne Übersetzungen beruhen im Allgemeinen auf einem kritischen Text (mehr unten).'}
- /* TODO(автор): ОБЯЗАТЕЛЬНО заполнить: кто переводил/издавал «Նոր Արարատ 2018», на каком греческом издании основан. Пока формулировки намеренно общие. */
-},
-nasb:{
- ru:{who:'New American Standard Bible — английский перевод американского Фонда Локмана. Новый Завет вышел в 1963 году, вся Библия — в 1971-м; позднее текст не раз уточняли. Это один из самых буквальных английских переводов: он следует словам и порядку мыслей оригинала, даже если английская фраза от этого звучит чуть тяжелее. Для тех, кто хочет изучать текст, а не просто читать.',
-     src:'Критический греческий текст в изданиях Нестле-Аланда (подробнее ниже); издание менялось вместе с обновлениями перевода.'},
- en:{who:'The New American Standard Bible, published by the Lockman Foundation in the USA. The New Testament appeared in 1963 and the whole Bible in 1971; the text has been revised several times since. It is one of the most literal English translations: it follows the words and order of thought of the original, even if the English then reads a little heavier. Suited to those who want to study the text, not just read it.',
-     src:'The critical Greek text in the Nestle-Aland editions (more below); the edition used changed as the translation was updated.'},
- hy:{who:'New American Standard Bible՝ ամերիկյան Լոքմանի հիմնադրամի անգլերեն թարգմանությունը։ Նոր Կտակարանը լույս է տեսել 1963 թվականին, ամբողջ Աստվածաշունչը՝ 1971-ին. հետագայում տեքստը մի քանի անգամ ճշգրտվել է։ Սա անգլերեն ամենաբառացի թարգմանություններից մեկն է. այն հետևում է բնագրի բառերին ու մտքերի կարգին, թեկուզ անգլերեն նախադասությունն այդ պատճառով մի փոքր ծանր հնչի։ Հարմար է նրանց, ովքեր ուզում են ուսումնասիրել տեքստը, ոչ թե պարզապես կարդալ։',
-     src:'Հունարեն քննական տեքստը՝ Նեստլե-Ալանդի հրատարակություններով (ավելի մանրամասն՝ ներքևում). հրատարակությունը փոխվել է թարգմանության թարմացումների հետ։'},
- de:{who:'Die New American Standard Bible, herausgegeben von der Lockman Foundation in den USA. Das Neue Testament erschien 1963, die ganze Bibel 1971; der Text wurde seither mehrfach überarbeitet. Sie gehört zu den wörtlichsten englischen Übersetzungen: Sie folgt den Worten und dem Gedankengang des Urtextes, auch wenn das Englisch dadurch etwas schwerer klingt. Geeignet für alle, die den Text studieren und nicht nur lesen wollen.',
-     src:'Der kritische griechische Text in den Nestle-Aland-Ausgaben (mehr unten); die genutzte Ausgabe wechselte mit den Überarbeitungen der Übersetzung.'}
- /* TODO(автор): указать, какая именно редакция NASB (1971 / 1995 / 2020) загружена на сайте, и под неё — какое издание Нестле-Аланда. */
-},
-elb:{
- ru:{who:'Elberfelder Bibel в редакции 1905 года — немецкий перевод, возникший в среде протестантских христиан-«братьев» (Дарби и его круг); Новый Завет впервые вышел в 1855 году, вся Библия — в 1871-м. Это очень буквальный перевод: переводчики держались слов оригинала, порой в ущерб гладкости. Для тех, кому важна точность формулировок; язык заметно старомоден.',
-     src:'Греческий текст конца XIX века — задолго до современных критических изданий Нестле-Аланда и UBS (поэтому в отдельных местах он может отличаться от них; подробнее ниже).'},
- en:{who:'The Elberfelder Bible in its 1905 revision — a German translation that arose among Protestant Christians of the "Brethren" movement (Darby and his circle); the New Testament first appeared in 1855, the whole Bible in 1871. It is a very literal translation: the translators held to the words of the original, sometimes at the cost of smoothness. For readers who value precise wording; the language sounds noticeably old-fashioned.',
-     src:'A Greek text of the late 19th century — long before today’s critical editions (Nestle-Aland, UBS), so in some places it may differ from them (more below).'},
- hy:{who:'Elberfelder Bibel-ը 1905 թվականի խմբագրությամբ՝ գերմանական թարգմանություն, որ ծնվել է բողոքական «եղբայրների» քրիստոնյաների միջավայրում (Դարբին և նրա շրջանակը). Նոր Կտակարանը առաջին անգամ լույս է տեսել 1855-ին, ամբողջ Աստվածաշունչը՝ 1871-ին։ Սա շատ բառացի թարգմանություն է. թարգմանիչները հավատարիմ են մնացել բնագրի բառերին՝ երբեմն ի վնաս սահունության։ Հարմար է նրանց, ովքեր կարևորում են ձևակերպումների ճշգրտությունը. լեզուն նկատելիորեն հնաոճ է։',
-     src:'XIX դարի վերջի հունարեն տեքստ՝ ժամանակակից քննական հրատարակություններից (Նեստլե-Ալանդ, UBS) շատ առաջ, ուստի առանձին տեղերում կարող է դրանցից տարբերվել (ավելի մանրամասն՝ ներքևում)։'},
- de:{who:'Die Elberfelder Bibel in der Revision von 1905 – eine deutsche Übersetzung, die im Kreis der protestantischen „Brüder“ (Darby und sein Umfeld) entstand; das Neue Testament erschien erstmals 1855, die ganze Bibel 1871. Es ist eine sehr wörtliche Übersetzung: Die Übersetzer hielten sich an die Worte des Urtextes, manchmal auf Kosten der Glätte. Für Leser, denen genaue Formulierungen wichtig sind; die Sprache klingt deutlich altertümlich.',
-     src:'Ein griechischer Text des späten 19. Jahrhunderts – lange vor den heutigen kritischen Ausgaben (Nestle-Aland, UBS); an einzelnen Stellen kann er daher von ihnen abweichen (mehr unten).'}
- /* TODO(автор): проверить, на какой именно греческий текст опирается редакция 1905 (Textus Receptus / смешанный). Сейчас сказано осторожно. */
-}
-};
 
-/* Общий блок: одинаковый для всех переводов */
-const GEN={
- ru:[
-  ['Что такое «критический текст»','Оригиналы, написанные самими авторами, не сохранились. До нас дошли тысячи рукописей — копий, сделанных вручную в разные века. Они почти совпадают, но в мелочах расходятся. Учёные сопоставляют все эти рукописи и по строгим правилам выбирают наиболее вероятное чтение каждого места. Так получается критическое издание — например, Nestle-Aland (NA) или издание Объединённых библейских обществ (UBS). Это не «чья-то версия», а результат сравнения тысяч свидетельств, с примечаниями о том, где рукописи расходятся. Другое название традиции — Textus Receptus и византийский текст: старые издания, основанные на более поздних рукописях.'],
-  ['Что такое разночтения и почему переводы немного отличаются','Разночтение — место, где древние рукописи читаются по-разному (другое слово, порядок слов, иногда лишняя или недостающая фраза). Их немного, и они почти не меняют смысла. Кроме того, переводчики по-разному решают, как передать греческую фразу: ближе к словам (дословно) или ближе к мысли (по смыслу). Поэтому два хороших перевода одного стиха могут звучать по-разному. Это нормально.'],
-  ['Как пользоваться сравнением переводов','Включите сравнение в меню чтения и коснитесь номера стиха: под ним откроется второй перевод. Повторное касание скроет его. Если слова разные, посмотрите, о чём они говорят вместе: расхождение часто помогает увидеть оттенки греческого текста.'],
-  ['Как читать переводы','Читайте не спеша. Если место показалось непонятным, откройте другой перевод. Дословный перевод показывает, как построена фраза; смысловой помогает понять, что она значит. Хорошо читать оба.']
- ],
- en:[
-  ['What a “critical text” is','The originals written by the authors themselves have not survived. What we have are thousands of manuscripts — hand-made copies from different centuries. They agree almost everywhere, but differ in small details. Scholars compare all of these manuscripts and, by strict rules, choose the most likely reading of each place. The result is a critical edition — for example Nestle-Aland (NA) or the United Bible Societies edition (UBS). It is not “somebody’s version” but the outcome of comparing thousands of witnesses, with notes showing where manuscripts differ. The other tradition is called the Textus Receptus and the Byzantine text: older editions based on later manuscripts.'],
-  ['What variant readings are, and why translations differ a little','A variant reading is a place where ancient manuscripts read differently (another word, a different word order, sometimes an extra or missing phrase). There are few of them, and they rarely change the meaning. Besides that, translators decide differently how to render a Greek phrase: closer to the words (literal) or closer to the thought (meaning-based). So two good translations of one verse can sound different. That is normal.'],
-  ['How to use the comparison of translations','Switch on comparison in the reading menu and tap a verse number: a second translation opens below it. Tap again to hide it. If the wording differs, look at what the two say together: the difference often helps you notice shades of the Greek.'],
-  ['How to read translations','Read unhurriedly. If a passage seems unclear, open another translation. A literal translation shows how the sentence is built; a meaning-based one helps to see what it means. It is good to read both.']
- ],
- hy:[
-  ['Ի՞նչ է «քննական տեքստը»','Հեղինակների գրած բնագրերը չեն պահպանվել։ Մեզ են հասել հազարավոր ձեռագրեր՝ տարբեր դարերում ձեռքով արված օրինակներ։ Դրանք գրեթե ամենուր համընկնում են, բայց մանրուքներում տարբերվում են։ Գիտնականները համադրում են այդ բոլոր ձեռագրերը և խիստ կանոններով ընտրում են յուրաքանչյուր տեղի ամենահավանական ընթերցումը։ Այսպես ստացվում է քննական հրատարակությունը՝ օրինակ՝ Նեստլե-Ալանդ (NA) կամ Աստվածաշնչային ընկերությունների միացյալ հրատարակությունը (UBS)։ Սա «ինչ-որ մեկի տարբերակը» չէ, այլ հազարավոր վկայությունների համադրման արդյունք՝ ծանոթագրություններով, թե որտեղ են ձեռագրերը տարբերվում։ Մյուս ավանդույթը կոչվում է Textus Receptus և բյուզանդական տեքստ. սրանք հին հրատարակություններ են՝ հիմնված ավելի ուշ ձեռագրերի վրա։'],
-  ['Ի՞նչ են տարընթերցումները և ինչու են թարգմանություններն ինչ-որ չափով տարբերվում','Տարընթերցումը այն տեղն է, որտեղ հին ձեռագրերը տարբեր կերպ են ընթերցվում (այլ բառ, բառերի այլ դասավորություն, երբեմն ավելորդ կամ բացակայող նախադասություն)։ Դրանք քիչ են և հազվադեպ են փոխում իմաստը։ Բացի այդ, թարգմանիչները տարբեր կերպ են որոշում՝ ինչպես փոխանցել հունարեն արտահայտությունը՝ բառերին ավելի մոտ (բառացի) թե՞ մտքին ավելի մոտ (իմաստով)։ Այդ պատճառով միևնույն համարի երկու լավ թարգմանություններ կարող են տարբեր հնչել։ Սա նորմալ է։'],
-  ['Ինչպես օգտվել թարգմանությունների համեմատումից','Միացրեք համեմատումը ընթերցման ընտրացանկում և հպեք համարին. նրա տակ կբացվի երկրորդ թարգմանությունը։ Կրկին հպեք՝ թաքցնելու համար։ Եթե բառերը տարբեր են, նայեք, թե երկուսը միասին ինչ են ասում. տարբերությունը հաճախ օգնում է նկատել հունարենի երանգները։'],
-  ['Ինչպես կարդալ թարգմանությունները','Կարդացեք չշտապելով։ Եթե որևէ տեղ անհասկանալի թվա, բացեք մեկ այլ թարգմանություն։ Բառացի թարգմանությունը ցույց է տալիս, թե ինչպես է կառուցված նախադասությունը, իմաստայինը՝ օգնում է հասկանալ, թե ինչ է նշանակում։ Լավ է կարդալ երկուսն էլ։']
- ],
- de:[
-  ['Was ein „kritischer Text“ ist','Die Originale, die die Autoren selbst schrieben, sind nicht erhalten. Wir haben Tausende Handschriften – von Hand gefertigte Abschriften aus verschiedenen Jahrhunderten. Sie stimmen fast überall überein, unterscheiden sich aber in Kleinigkeiten. Fachleute vergleichen alle diese Handschriften und wählen nach strengen Regeln die wahrscheinlichste Lesart jeder Stelle. So entsteht eine kritische Ausgabe – zum Beispiel Nestle-Aland (NA) oder die Ausgabe der Vereinigten Bibelgesellschaften (UBS). Das ist nicht „die Version von irgendwem“, sondern das Ergebnis des Vergleichs Tausender Zeugen, mit Anmerkungen, wo die Handschriften abweichen. Die andere Tradition heißt Textus Receptus und byzantinischer Text: ältere Ausgaben, die auf späteren Handschriften beruhen.'],
-  ['Was Lesarten-Unterschiede sind und warum Übersetzungen leicht voneinander abweichen','Ein Lesartenunterschied ist eine Stelle, an der alte Handschriften verschieden lauten (ein anderes Wort, eine andere Wortstellung, manchmal ein zusätzlicher oder fehlender Satz). Es gibt nur wenige, und sie ändern selten den Sinn. Außerdem entscheiden Übersetzer verschieden, wie sie einen griechischen Satz wiedergeben: näher am Wort (wörtlich) oder näher am Gedanken (sinngemäß). Daher können zwei gute Übersetzungen desselben Verses unterschiedlich klingen. Das ist normal.'],
-  ['Wie man den Übersetzungsvergleich nutzt','Schalten Sie den Vergleich im Lesemenü ein und tippen Sie auf eine Verszahl: Darunter öffnet sich eine zweite Übersetzung. Nochmaliges Tippen blendet sie aus. Wenn die Wortwahl abweicht, achten Sie darauf, was beide zusammen sagen: Der Unterschied hilft oft, Nuancen des Griechischen zu erkennen.'],
-  ['Wie man Übersetzungen liest','Lesen Sie ohne Eile. Wirkt eine Stelle unklar, öffnen Sie eine andere Übersetzung. Eine wörtliche Übersetzung zeigt, wie der Satz gebaut ist; eine sinngemäße hilft zu sehen, was er bedeutet. Es ist gut, beide zu lesen.']
- ]
+/* ───────────── РУССКИЙ: перевод епископа Кассиана ───────────── */
+cass:{ru:[
+['Человек, который переводил',
+`Сергей Сергеевич Безобразов родился в Петербурге 29 февраля 1892 года — в високосный день, так что настоящий день рождения у него случался раз в четыре года. Он вырос в семье сенатора, окончил гимназию с золотой медалью, затем историко-филологический факультет университета, а с 1917 года преподавал церковную историю. В 1922 году он уехал из России: Латвия, Белград, а с 1925 года — Париж. В 1932-м принял монашество с именем Кассиан, в 1947-м стал епископом Катанским, викарием митрополита Западноевропейских русских приходов. Умер в Париже 4 февраля 1965 года.
+
+Новый Завет был делом всей его жизни. Докторская диссертация 1947 года называется «Водою и Кровию и Духом» — по словам из первого послания Иоанна (1 Ин 5:6), и в ней уже слышен будущий переводчик: внимание к каждому слову греческого текста.`],
+
+['Парижский институт',
+`В 1925 году в Париже открылся Свято-Сергиевский православный богословский институт. Его создала русская эмиграция: после революции учить богословию на родине стало почти невозможно, а в изгнании оказалось много учёных, которые не хотели, чтобы русская церковная наука прервалась. Институт возник при митрополите Евлогии.
+
+Здесь преподавали отец Сергий Булгаков, Георгий Флоровский, Антон Карташёв, Василий Зеньковский, позднее — Александр Шмеман и Иоанн Мейендорф. Безобразов был среди основателей, возглавил кафедру Нового Завета, а потом и сам институт. Для переводчика место редкое: под одной крышей греческий язык, молитвенная память Православной Церкви и книги всей европейской библейской науки. Именно при институте собралась комиссия, о которой рассказывает следующий раздел.`],
+
+['Одиннадцать лет работы и семнадцать лет ожидания',
+[
+ ['Май 1951','Первое заседание комиссии по русскому тексту Нового Завета. Задумывали пересмотр Синодального перевода, но скоро решили сделать новый.'],
+ ['1953','Выходит первое напечатанное: Евангелие от Матфея, предварительное издание Библейского общества. Отсюда и отсчёт «одиннадцати лет».'],
+ ['1955','Готов черновик всего Нового Завета.'],
+ ['Январь 1957','Комиссия утверждает текст.'],
+ ['1958 и 1960','Выходят Четвероевангелие и Деяния апостолов.'],
+ ['1964','Работа завершена (последний протокол комиссии — осень 1963 года).'],
+ ['1965','Умирает епископ Кассиан.'],
+ ['1970','Весь Новый Завет выходит единой книгой.']
+]],
+
+['Что стоит за этими цифрами',
+`От первых напечатанных страниц (1953) до завершения (1964) прошло одиннадцать лет. Ещё шесть лет законченная книга ждала выхода: от первой публикации до полного издания — семнадцать лет, и пять из них уже без переводчика. Если считать от самого первого заседания комиссии, путь был ещё длиннее: тринадцать лет работы и девятнадцать — до книги.
+
+Это была работа не одиночки, а комиссии, но главным переводчиком оставался Кассиан. Комиссия собиралась еженедельно, текст читали вслух и спорили над каждой фразой; писатель Борис Зайцев помогал с литературной правкой. Около полутора лет Кассиан провёл в Испании, где в тишине писал черновик. Полностью книга вышла в 1970 году, а в России её издали лишь на рубеже 1990-х и 2000-х.`],
+
+['Откуда берётся греческий текст',
+`Не сохранилось ни одного текста, написанного рукой апостола или евангелиста. У нас есть копии. Греческих рукописей Нового Завета — более пяти тысяч: от обрывков папируса II века до больших пергаментных книг IV века (Синайский и Ватиканский кодексы) и тысяч средневековых списков. К ним добавляются древние переводы — латинский, сирийский, коптский, армянский — и цитаты из Писания у церковных писателей: по ним тоже видно, какой текст читали в их времена и в их городах.
+
+Две рукописи никогда не совпадают слово в слово. Переписчик мог пропустить строку, потому что глаз перескочил на похожее слово; перепутать созвучные слова; «выровнять» одно Евангелие по другому; вставить на полях пояснение, которое следующий переписчик принял за часть текста. Подавляющее большинство разночтений — порядок слов, написание имён, мелкие частицы — на смысл не влияет. Но есть места, где в одних рукописях стоит целая фраза или отрывок, а в других её нет.`],
+
+['Как из тысяч списков получается один текст',
+`Учёные не голосуют и не берут просто «самую старую» рукопись. Каждое место взвешивают по двум группам доводов. Внешние: насколько древние свидетели, из каких областей, насколько тщательно переписаны. Внутренние: какое чтение лучше объясняет появление остальных. Переписчики чаще сглаживали трудное, чем усложняли гладкое, и чаще добавляли, чем сокращали, — поэтому более трудное и более краткое чтение нередко оказывается первоначальным.
+
+Так, окончание Евангелия от Марка (16:9–20) и рассказ о женщине, взятой в прелюбодеянии (Ин 7:53–8:11), отсутствуют в древнейших рукописях; в поздних они есть, а рассказ о женщине даже кочует с места на место. Издатели берут такие отрывки в двойные скобки: текст читается, но, скорее всего, не из первоначального.`],
+
+['«Нестле — Аланд»: история одной книги',
+`Первое печатное греческое издание Нового Завета подготовил Эразм Роттердамский в 1516 году — быстро, по нескольким поздним средневековым рукописям. Этот печатный текст на века стал «принятым» (Textus Receptus), и по нему переводили многие, в том числе Синодальный перевод. Потом начали находить более древние рукописи, и в XIX веке Лахман, Тишендорф, Весткотт и Хорт стали издавать текст по их свидетельству.
+
+В 1898 году вюртембергский богослов Эберхард Нестле сделал простую и смелую вещь: взял три лучших научных издания (Тишендорфа, Весткотта–Хорта и Уэймута; с 1901 года вместо Уэймута — Бернхарда Вейса) и там, где два совпадали против третьего, принимал чтение двух. Книга получилась дешёвой, удобной и быстро вытеснила Textus Receptus из университетов и церквей. Его сын Эрвин в 1927 году (13-е издание) добавил собственный аппарат — примечания внизу страницы, где указано, какие рукописи читают иначе.
+
+С 1952 года к работе подключился Курт Аланд: он стал сверять чтения с самими рукописями, а не с чужими изданиями. В 1959 году он основал в Мюнстере Институт новозаветных текстологических исследований, где собраны описания и снимки рукописей со всего мира. С 25-го издания (1963) книга называется «Нестле — Аланд». Затем вышли 26-е (1979; его основной текст совпал с изданием для переводчиков от Объединённых библейских обществ, UBS), 27-е (1993) и 28-е (2012).
+
+Это не «чья-то версия», а текст, который можно проверить: наверху страницы — выбранное чтение, внизу — перечень рукописей, которые за него и против.`],
+
+['Что это изменило у Кассиана',
+`Комиссия работала по тексту Нестле: сначала по 17-му изданию (1941), потом по 19-му (1949) — тогда имя Аланда на обложке ещё не стояло. Кассиан сознательно отказался от Textus Receptus: русский слог Синодального перевода он ценил и сохранил, но греческую основу взял другую.
+
+Заметить это легко. В Мф 9:13 у Кассиана нет слов «к покаянию», в 1 Ин 5:7–8 нет «трёх свидетельствующих на небе — Отца, Слова и Святого Духа»: остались только три свидетеля — Дух, вода и кровь. Окончание Марка и рассказ из Ин 7:53–8:11 он не выбросил, а сохранил с пометой, что в древнейших рукописях их нет: откройте Мк 16:9, и примечание стоит прямо перед стихом.`],
+
+['Как звучит этот перевод',
+`Кассиан держится слов и порядка греческой фразы ближе, чем его предшественники, и при этом бережёт ритм привычного русского Евангелия: устаревшее «сей» чаще заменено на «этот», но, например, «мир сей» остался. Читать его — как смотреть на греческий текст сквозь прозрачное стекло: местами тяжеловато, зато видно, как построена фраза. Начало Евангелия от Иоанна — «В начале было Слово…» — звучит знакомо и при этом точно следует греческому порядку слов.
+
+Перевод принимали не сразу и не все: одним он казался тяжеловесным, другим — слишком смелым в выборе греческого текста. Но и сегодня на нём учатся читать Новый Завет те, кому важно понять, что именно написано по-гречески.`]
+]},
+
+/* ───────────── РУССКИЙ: РБО ───────────── */
+rbo:{ru:[
+['Кто и когда его сделал',
+`«Современный русский перевод» — перевод Российского Библейского Общества. Новый Завет в нём впервые вышел полностью в 2001 году под названием «Радостная Весть» (автор новозаветной части — В. Н. Кузнецова), а вся Библия — в 2011-м. Издатели прямо говорят, для кого он предназначен: для миссионерских, учебных и духовно-просветительских целей, то есть для тех, кто открывает Писание впервые или читает его без церковной подготовки.`],
+
+['Принцип: передать смысл',
+`Кассиан старается сохранить форму греческой фразы. РБО ставит другую задачу: сказать то же самое так, как сказал бы сегодняшний человек. Сравните начало Евангелия от Иоанна. У Кассиана: «В начале было Слово, и Слово было с Богом». В РБО: «Изначально был Тот, кто является Словом. Он был с Богом».
+
+Греческое слово «логос», которое по-русски давно звучит как «Слово», здесь не оставлено загадкой: переводчик сразу объясняет, что речь о Личности. Выигрыш — текст понятен без подготовки. Цена — часть толкования уже встроена в сам текст, и читатель не видит привычного слова «Слово». То же в Ин 1:14: у Кассиана «Слово стало плотью и обитало среди нас», в РБО «Тот, кто является Словом, стал человеком и жил среди нас».`],
+
+['На слух и на глаз',
+`Фразы здесь короче, церковнославянские обороты заменены обычной речью, а в некоторых местах пунктуация подсказывает интонацию — например, Мф 5:3: «Блаженны нищие духом! Царство Небес – для них». У Кассиана то же место: «Блаженны нищие духом, ибо их есть Царство Небесное». Смысл тот же; различие — в голосе.`],
+
+['Зачем он на сайте',
+`Это единственный на сайте перевод, где есть и Ветхий Завет — все 39 книг. Он стоит рядом с переводом Кассиана как второй русский голос: тот, кто хочет понять, как устроена греческая фраза, останется с Кассианом; тот, кому нужен простой язык, найдёт его здесь.`]
+]},
+
+/* ───────────── ENGLISH: NASB ───────────── */
+nasb:{en:[
+['A line that runs back to 1611',
+`The NASB belongs to one long family tree. The King James Version of 1611 was revised in Britain in 1881–85 as the Revised Version, and American scholars answered with their own edition in 1901: the American Standard Version. It was valued for faithfulness to the original, but its English was already dated.
+
+The Lockman Foundation, a non-profit based in California, took up the task: keep what made the ASV valuable, bring its language up to date, and take account of the texts found after 1901. The translators were scholars from Christian colleges and mainly conservative evangelical churches.`],
+
+['How it was published',
+[
+ ['1960','The Gospel of John.'],
+ ['1962','The four Gospels.'],
+ ['1963','The whole New Testament.'],
+ ['1968','The Psalms.'],
+ ['1971','The complete Bible.'],
+ ['1977','A major revision of the text.'],
+ ['1995','The NASB Updated Edition: more current English, a newer Greek text.'],
+ ['2020','A further revision, using the 28th edition of the Greek text.']
+]],
+
+['What “literal” means here',
+`The NASB aims at what translators call formal equivalence: keep the structure of the Greek sentence and the same word for the same Greek word wherever English allows. If a sentence is long in Greek, it stays long. Only where a literal rendering would be impossible or misleading does the NASB turn to an English idiom.
+
+You can hear it in John 1:14: “the Word became flesh, and dwelt among us” and “the only begotten from the Father.” Pronouns that refer to God are capitalized (He, His, Your), and old family words like “brethren” remain. The result is not smooth English, but it lets you see the shape of the Greek behind it.`],
+
+['Brackets: where the manuscripts disagree',
+`The NASB does not silently decide when ancient manuscripts disagree; it marks the passage with square brackets. You will see them around Mark 16:9–20, John 7:53–8:11, Acts 8:37, and the closing words of the Lord’s Prayer in Matthew 6:13 (“For Yours is the kingdom and the power and the glory forever”). The brackets mean: this passage is old and has been read in churches for a long time, but it is not in the earliest manuscripts.`],
+
+['The Greek text behind it: Nestle-Aland',
+`Every edition of the NASB is tied to a particular edition of the Greek New Testament by Nestle and Aland. The 1971 Bible was built on the 23rd edition, the 1995 update on the 26th, and the 2020 edition on the 28th (2012).
+
+That chain of numbers is the story of how a text is kept honest. Eberhard Nestle, a theologian from Württemberg, published the first edition in 1898 by comparing the best scholarly editions of his day. From the 1950s Kurt Aland checked its readings against the manuscripts themselves, and in 1959 founded the Institute for New Testament Textual Research in Münster, where the work continues. A new edition appears when something changes: newly published papyri, better descriptions of old manuscripts, more careful study of the variants. The 28th edition took in papyri numbered 117–127 and altered a handful of readings in the light of the Institute’s large multi-volume Editio Critica Maior. So the text of the New Testament is not frozen: it is refined, and a translation that wants to remain faithful has to be revised along with it.`],
+
+['Who it is for',
+`The NASB is a study Bible by temperament. It is best for readers who want to check a word, follow an argument of Paul through a long sentence, or compare the wording of one Gospel with another. If you want ease, other English translations will serve you better; if you want to see what the Greek says, this one is built for that.`]
+]},
+
+/* ───────────── ՀԱՅԵՐԵՆ: Նոր Արարատ ───────────── */
+arar:{hy:[
+['Ի՞նչ է «Նոր Արարատը»',
+`«Նոր Արարատ» թարգմանությունը (լրիվ անվանումը՝ «Նոր վերանայված Արարատ Աստվածաշունչ») Հայաստանի Աստվածաշնչային ընկերության 2018 թվականի հրատարակությունն է։ Սա արևելահայերեն ամբողջական Աստվածաշունչ է. Հին Կտակարանը թարգմանված է եբրայերենից՝ 39 գիրք, Նոր Կտակարանը՝ հունարենից։ Տեքստը գրված է ավանդական ուղղագրությամբ։ Այս կայքում ցուցադրվում է Նոր Կտակարանը։`],
+
+['Արարատյան թարգմանության պատմությունը',
+`XIX դարում հայերենը երկու գրական լեզվի՝ արևելահայերենի և արևմտահայերենի բաժանվեց, իսկ հինգերորդ դարում թարգմանված գրաբար Աստվածաշունչն արդեն դժվար էր հասկանալի ժողովրդին։ Նոր Կտակարանն առաջին անգամ արևելահայերեն խոսակցական լեզվով լույս տեսավ 1835 թվականին, իսկ 1896-ին արդեն հրատարակված էր ամբողջ Աստվածաշունչը։ Այն կոչվեց «Արարատյան թարգմանություն»՝ Արարատյան բարբառի անունով, և կոչվում է նաև «Շուշիի թարգմանություն»։ Երկար տարիներ արևելահայերն Աստվածաշունչն ընթերցել են հենց այս թարգմանությամբ։`],
+
+['Վերանայումը՝ 2000-ից 2017',
+`Լեզուն փոխվում է, իսկ տասնամյակներ շարունակ տպագրվող տեքստում կուտակվում են ճշգրտման կարիք ունեցող տեղեր։ 2000-ից 2017 թվականն ընկած 17 տարիների ընթացքում Աստվածաշնչային ընկերությունը ուշադիր խմբագրեց Արարատյան թարգմանությունը, և 2018-ին այն լույս տեսավ «Նոր Արարատ» անունով՝ թարգմանված անմիջապես բնագրային լեզուներից։
+
+Արևելահայերենի մյուս ժամանակակից թարգմանությունը՝ Էջմիածնինը, պատրաստվել է Մայր Աթոռում 1985–1991 թվականներին՝ Վազգեն Ա Կաթողիկոսի պատվերով, և առաջին անգամ հրատարակվել է 1994-ին։`],
+
+['Հունարեն բնագիրը և Նեստլե-Ալանդը',
+`Նոր Կտակարանի հեղինակների ձեռագրերը չեն պահպանվել. մեզ են հասել հազարավոր օրինակներ, որոնք մանրուքներում տարբերվում են իրարից։ Գիտնականները դրանք համադրում և յուրաքանչյուր տեղի համար ընտրում են ամենահավանական ընթերցումը։ Այդպես ստացվում է քննական հրատարակությունը, որի ամենահայտնին Նեստլե-Ալանդն է. 1898-ին այն առաջին անգամ հրատարակել է վյուրտեմբերգցի աստվածաբան Էբերհարդ Նեստլեն, 1952-ից աշխատել է Կուրտ Ալանդը, 1959-ին Մյունսթերում հիմնվել է Նոր Կտակարանի տեքստագիտական ուսումնասիրությունների ինստիտուտը, իսկ վերջին՝ 28-րդ հրատարակությունը լույս է տեսել 2012-ին։ Էջի ներքևում գտնվող ծանոթագրություններում նշվում է, թե որ ձեռագիրը ինչպես է կարդում տվյալ տեղը։
+
+Հայերենն այս պատմության մեջ ոչ միայն ընթերցող է, այլև վկա։ Հայերեն հին թարգմանությունը (V դար) Նոր Կտակարանի ամենահին թարգմանություններից է, և քննական հրատարակությունների ծանոթագրություններում հին թարգմանությունների շարքում վկա է կանչվում նաև հայերենը։ Հայերեն ձեռագրերից հայտնի է 989 թվականի Էջմիածնի Ավետարանը, որն այժմ պահվում է Մատենադարանում. Մարկոսի Ավետարանի 16:9–20 համարների առջև նրա մեջ նշված է «Արիստոն երեց» անունը. գիտնականները այս հետքի մասին խոսում են XIX դարի վերջից։
+
+Եթե բացեք Մարկոս 16:9–20, Հովհաննես 7:53–8:11 կամ Գործք 8:37, հայերեն տեքստում դրանք կգտնեք. քննական հրատարակություններում այս հատվածները կա՛մ փակագծերում են, կա՛մ տեղափոխված են ծանոթագրություն։ Իսկ «Հայր մեր»-ի վերջում Աստծու փառաբանությունը (Մատթ. 6:13) այս թարգմանության մեջ չկա։ Նոր Արարատի Նոր Կտակարանի հունարեն բնագիրը Աստվածաշնչային ընկերությունների միացյալ (UBS) և Գերմանական աստվածաշնչային ընկերության քննական հրատարակությունն է։ UBS-ի հինգերորդ հրատարակության տեքստը համընկնում է Նեստլե-Ալանդի 28-րդ հրատարակության հետ. տարբերությունները միայն բաժանումների, մեծատառերի և կետադրության մեջ են։`]
+]},
+
+/* ───────────── DEUTSCH: Elberfelder 1905 ───────────── */
+elb:{de:[
+['Ein Werk von Laien aus dem Wuppertal',
+`Die Elberfelder Bibel trägt den Namen der Stadt, in der der größte Teil der Arbeit geschah: Elberfeld, heute ein Stadtteil von Wuppertal. Hinter ihr stehen Männer aus der Brüderbewegung: John Nelson Darby, ein aus Irland stammender ehemaliger anglikanischer Geistlicher, der Elberfelder Carl Brockhaus und Julius Anton von Poseck. Sie waren keine Universitätstheologen, sondern wollten, dass Gemeinden auch ohne Griechischkenntnisse genau lesen können, was dasteht. Darum ihre Leitlinie: Treue zum Grundtext geht vor sprachlicher Eleganz.`],
+
+['Wie die Ausgabe entstand',
+[
+ ['1855','Das Neue Testament erscheint im Selbstverlag der Herausgeber.'],
+ ['1859','Die Psalmen erscheinen als eigene Ausgabe.'],
+ ['1871','Das Alte Testament folgt, zusammen mit einer dritten, durchgesehenen Ausgabe des Neuen. Erstmals liegt die ganze Bibel vor.'],
+ ['1905','Die erste Ausgabe in lateinischer Schrift (die sogenannte Perlbibel); danach wird der Text von Auflage zu Auflage weiter korrigiert, bis zum Tod Rudolf Brockhaus’ 1932.'],
+ ['ab 1960','Eine neue Kommission beginnt eine gründliche Revision; die revidierte Bibel erscheint 1985, eine weitere Durchsicht 2006.']
+]],
+
+['Wörtlich bis in die Fußnoten',
+`Was Sie hier lesen, ist die ältere, unrevidierte Fassung. Man merkt es am Klang: „ward Fleisch“, „dieweil“, „auf daß“. Die Übersetzer wollten nichts glätten, was im Griechischen hart steht, und was sich nicht eins zu eins sagen ließ, steht in geschweiften Klammern am Rand. In Johannes 1,14 etwa heißt es „wohnte“, und die Anmerkung ergänzt: „eigentlich zeltete“. Namen erscheinen in griechischer Gestalt: Phares, Zara, Thamar. Bei Apostelgeschichte 8,37 steht statt des Verses der Hinweis, dass er nicht zum ursprünglichen Text gehört, und Markus 16,9–20 sowie Johannes 7,53–8,11 stehen in eckigen Klammern.`],
+
+['Ein früher Bruch mit dem Textus receptus',
+`Als 1855 das Neue Testament der Elberfelder erschien, galt in Kirchen und Schulen noch der Textus receptus, jener gedruckte Text, den Erasmus 1516 aus wenigen späten Handschriften zusammengestellt hatte. Die Elberfelder lösten sich früh davon: Im Lauf der Revisionen flossen die großen alten Handschriften wie Sinaiticus und Vaticanus ein. Dieser Bruch liegt 43 Jahre vor Nestles erster Ausgabe.
+
+Eberhard Nestle, Theologe in Württemberg, veröffentlichte 1898 bei der Württembergischen Bibelanstalt in Stuttgart eine billige, handliche Ausgabe des griechischen Textes. Sein Verfahren war einfach: Er verglich drei führende Ausgaben (Tischendorf, Westcott–Hort und Weymouth, ab 1901 Bernhard Weiss statt Weymouth), und wo zwei gegen die dritte standen, folgte er den beiden. Sein Sohn Erwin gab 1927 der 13. Auflage einen eigenen Apparat; seit 1952 arbeitete Kurt Aland mit, der die Lesarten an den Handschriften selbst prüfte, und 1959 gründete er in Münster das Institut für neutestamentliche Textforschung. Die 28. Auflage erschien 2012.
+
+Die heutigen Fassungen der Elberfelder Bibel beruhen auf dem Nestle-Aland-Text. Der Weg dorthin begann also schon in Elberfeld, lange bevor es das Wort „kritische Ausgabe“ im heutigen Sinn gab.`],
+
+['Für wen sie gedacht ist',
+`Die Elberfelder 1905 ist eine Bibel für genaue Leser: wer ein Wort nachschlagen, eine Formulierung prüfen oder den Satzbau des Griechischen im Deutschen wiedererkennen will. Wer mühelos und im heutigen Deutsch lesen möchte, ist mit einer modernen Übersetzung besser bedient.`]
+]}
+
 };
 
 const lang=()=>{const l=document.documentElement.lang;return UI[l]?l:'ru'};
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const rich=s=>esc(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');
+const paras=t=>String(t).split(/\n\n+/).map(p=>`<p>${rich(p)}</p>`).join('');
 const nm=(k,l)=>(NAME_L[k]&&NAME_L[k][l])||NAME[k]||k;
+function body(sections){
+ return sections.map(([h,c])=>`<h4>${esc(h)}</h4>`+(Array.isArray(c)
+  ?`<dl class="tri-tl">${c.map(([a,b])=>`<dt>${esc(a)}</dt><dd>${rich(b)}</dd>`).join('')}</dl>`
+  :paras(c))).join('');
+}
 
 let ov=null,lastFocus=null;
 function close(){if(!ov)return;ov.remove();ov=null;document.documentElement.classList.remove('tri-lock');document.removeEventListener('keydown',onKey,true);if(lastFocus&&lastFocus.focus)try{lastFocus.focus()}catch(e){}}
 function onKey(e){if(e.key==='Escape'){e.stopPropagation();close()}}
 function open(k){
- const l=lang(),d=(TR[k]||{})[l];if(!d)return;close();lastFocus=document.activeElement;
- const g=GEN[l].map(([t,p])=>`<h4>${esc(t)}</h4><p>${esc(p)}</p>`).join('');
+ const l=lang(),t=TR[k];if(!t)return;
+ const sec=t[l]||t[Object.keys(t)[0]];if(!sec)return;
+ close();lastFocus=document.activeElement;
  ov=document.createElement('div');ov.className='tri-ov';
- ov.innerHTML=`<div class="tri-box" role="dialog" aria-modal="true" aria-label="${esc(UI[l].about)}"><button class="tri-x" type="button" aria-label="${esc(UI[l].close)}">×</button><div class="tri-kicker">${esc(UI[l].about)}</div><h3>${esc(nm(k,l))}</h3><h4>${esc(H[l].who)}</h4><p>${esc(d.who)}</p><h4>${esc(H[l].src)}</h4><p>${esc(d.src)}</p><div class="tri-gen"><h3 class="tri-gh">${esc(UI[l].general)}</h3>${g}</div></div>`;
+ ov.innerHTML=`<div class="tri-box" role="dialog" aria-modal="true" aria-label="${esc(UI[l].about)}"><button class="tri-x" type="button" aria-label="${esc(UI[l].close)}">×</button><div class="tri-kicker">${esc(UI[l].about)}</div><h3>${esc(nm(k,l))}</h3>${body(sec)}</div>`;
  ov.addEventListener('click',e=>{if(e.target===ov||e.target.closest('.tri-x'))close()});
  document.body.appendChild(ov);document.documentElement.classList.add('tri-lock');document.addEventListener('keydown',onKey,true);
  const x=ov.querySelector('.tri-x');if(x)x.focus({preventScroll:true});
@@ -129,4 +211,7 @@ document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest
 const lab=()=>{const b=document.getElementById('brInfo');if(b){b.setAttribute('aria-label',UI[lang()].about);b.title=UI[lang()].about}};
 new MutationObserver(lab).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});document.addEventListener('DOMContentLoaded',lab);setInterval(lab,1500);
 window.TrInfo={open,close,label:()=>UI[lang()].about};
+/* TODO(автор): 1) греческая основа «Нового Арарата» (UBS / Немецкое библейское общество) указана со слов автора сайта — при желании сверить с изданием;
+   2) уточнить редакцию NASB на сайте (1995 или 2020) — в тексте указаны все редакции и привязка к изданиям Нестле-Аланда;
+   3) при желании добавить издателя первого издания Кассиана 1970 года. */
 })();

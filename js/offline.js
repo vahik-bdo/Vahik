@@ -26,7 +26,7 @@ const L={
   used:'Belegt auf diesem Gerät',persist:'Speicher ist vor automatischer Bereinigung geschützt',nopersist:'Der Browser kann den Speicher bei Platzmangel leeren',offpill:'Offline',mb:'MB',confirm:'Gespeicherte Texte, Klänge und Schriften löschen? Die Oberfläche bleibt.',nosw:'Offline-Modus ist noch nicht bereit: Seite neu laden.'}
 };
 const GROUPS=['cass','rbo','arar','nasb','elb','audio','fonts'];
-const URLS={cass:'data/bible-cass.js',rbo:'data/bible-rbo.js',arar:'data/bible-arar.js',nasb:'data/bible-nasb.js',elb:'data/bible-elb.js'};
+/*GEN:sizes*/const SIZES={"arar":1562292,"cass":1468401,"elb":1150810,"nasb":1015567,"rbo":6324341};/*GEN:end*/
 const lg=()=>L[R.lang]||L.en;
 let st=null,busy=0,sizes={},msg='',err='';
 
@@ -63,7 +63,7 @@ async function cmd(o){const a=await sw();if(a)a.postMessage(o);else{err=lg().nos
 function refresh(){cmd({cmd:'status'}).catch(()=>{})}
 async function loadSizes(){
  if(!navigator.onLine||Object.keys(sizes).length)return;
- for(const g of Object.keys(URLS)){try{const r=await fetch(URLS[g],{method:'HEAD'});const n=+r.headers.get('content-length');if(n)sizes[g]=n}catch(_){}}
+ sizes=Object.assign({},SIZES);
  render();
 }
 async function save(){
