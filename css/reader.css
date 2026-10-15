@@ -41,3 +41,4 @@ body.br-mode #end{display:none!important}
 
 .br-vnum.rng{font-size:.56rem;letter-spacing:-.02em;white-space:nowrap;left:.1rem;width:2.35rem}
 @media(max-width:560px){.br-vnum.rng{left:0;width:2.3rem}}
+.br-sect{padding:.5rem .9rem .2rem;font:700 .64rem Manrope,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
