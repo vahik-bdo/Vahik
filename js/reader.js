@@ -29,7 +29,8 @@ const T=k=>(BRX[lang()]&&BRX[lang()][k])||(lang()!=='ru'&&NR[k]&&NR[k][lang()])|
 function modeOptions(){if(lang()==='ru')return [['cass'],['rbo']];if(lang()==='hy')return [['arar']];if(lang()==='en')return [['nasb']];if(lang()==='de')return [['elb']];return [['cass']]}
 function sourceLabel(kind){return kind==='cass'?T('cass'):kind==='arar'?T('arar'):kind==='nasb'?T('nasb'):kind==='elb'?T('elb'):kind==='rbo'?T('rbo'):kind}
 const RBOML={ru:'Современный перевод · РБО',en:'Modern Russian · RBO',hy:'Ժամանակակից ռուսերեն · ՌԲՕ',de:'Modernes Russisch · RBO'};
-function modeLabel(m){return m==='rbo'?(RBOML[lang()]||RBOML.ru):G().exact+' · '+sourceLabel(m)}
+function modeLabelLong(m){return m==='rbo'?(RBOML[lang()]||RBOML.ru):G().exact+' · '+sourceLabel(m)}
+function modeLabel(m){return modeOptions().length>1?(m==='cass'?'Kas':m==='rbo'?'SRP':modeLabelLong(m)):modeLabelLong(m)}
 function normalizeMode(){const a=modeOptions().map(x=>x[0]);if(!a.includes(br.mode))br.mode=a[0]}
 
 function bookOk(b){return !b.ot||br.mode==='rbo'}
@@ -60,7 +61,7 @@ return `<details class="br-guide"><summary>${esc(g.title)}</summary><div class="
 function preface(){const blocks=String(T('prefaceBody')).split(/\n\n+/).map(b=>b.startsWith('# ')?`<h3 class="br-preface-h">${esc(b.slice(2))}</h3>`:`<p>${esc(b)}</p>`).join('');return `<section class="br-preface"><div class="br-preface-cross">☦</div><h2>${esc(T('prefaceTitle'))}</h2>${blocks}<p class="br-blessing">${esc(T('blessing'))}</p></section>`}
 function shell(){const only=modeOptions()[0][0];return `<div id="brRoot">
  ${preface()}${translationGuide()}
- <div class="br-toolbar ui"><select class="br-select" id="brBook" aria-label="${esc(T('book'))}"></select><select class="br-select" id="brChapter" aria-label="${esc(T('chapter'))}"></select><div class="br-modes${modeOptions().length>1?'':' br-single'}" id="brModes">${modeOptions().map(([m])=>`<button data-mode="${m}"${modeOptions().length>1?'':' disabled'}>${esc(modeLabel(m))}</button>`).join('')}</div><span class="br-spacer"></span><button class="br-icon" id="brSearchBtn" title="${esc(T('search'))}" aria-label="${esc(T('search'))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/></svg></button><button class="br-icon" id="brChrysBtn" title="${esc(T('commentary'))}" aria-label="${esc(T('commentary'))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 5h14v10h-8l-4 4v-4H5z"/></svg></button></div>
+ <div class="br-toolbar ui"><select class="br-select" id="brBook" aria-label="${esc(T('book'))}"></select><select class="br-select" id="brChapter" aria-label="${esc(T('chapter'))}"></select><div class="br-modes${modeOptions().length>1?'':' br-single'}" id="brModes">${modeOptions().map(([m])=>`<button data-mode="${m}" title="${esc(modeLabelLong(m))}"${modeOptions().length>1?'':' disabled'}>${esc(modeLabel(m))}</button>`).join('')}</div><span class="br-spacer"></span><button class="br-icon" id="brSearchBtn" title="${esc(T('search'))}" aria-label="${esc(T('search'))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/></svg></button><button class="br-icon" id="brChrysBtn" title="${esc(T('commentary'))}" aria-label="${esc(T('commentary'))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 5h14v10h-8l-4 4v-4H5z"/></svg></button></div>
  <header class="br-head"><h2 id="brChapterTitle"></h2><div class="br-meta" id="brMeta"></div></header><div class="br-reader" id="brReader"></div><div class="br-nav ui"><button id="brPrev"></button><button id="brNext"></button></div><div class="br-sources"><strong>${esc(T('sources'))}</strong><br>${esc(T('sourcesText'))}<br><span>${esc(T('modeHelp'))}</span></div></div>`}
 function buildBooks(){let h='';for(const g of GROUPS){const arr=BOOKS.filter(b=>b.group===g&&bookOk(b));if(!arr.length)continue;h+=`<optgroup label="${esc(T(g))}">`+arr.map(b=>`<option value="${b.k}">${esc((BRBN[lang()]||BRBN.ru)[b.k]||BRBN.ru[b.k])}</option>`).join('')+'</optgroup>'}q('#brBook').innerHTML=h;q('#brBook').value=br.book}
 function buildChapters(){const n=B().chapters;br.chapter=Math.max(1,Math.min(n,+br.chapter||1));q('#brChapter').innerHTML=Array.from({length:n},(_,i)=>`<option value="${i+1}">${esc(T('chapter'))} ${i+1}</option>`).join('');q('#brChapter').value=br.chapter}
@@ -81,7 +82,7 @@ function render(){normalizeMode();if(B().ot&&br.mode!=='rbo'){br.book='mt';br.ch
 q('#brBook').value=br.book;q('#brChapter').value=br.chapter;
 q('#brChapterTitle').textContent=nm+' '+br.chapter;q('#brMeta').textContent=sourceLabel(m);
 q('#brReader').innerHTML=body;applyCmp();
-qa('#brModes [data-mode]').forEach(b=>{b.classList.toggle('on',b.dataset.mode===m);b.textContent=modeLabel(b.dataset.mode)});
+qa('#brModes [data-mode]').forEach(b=>{b.classList.toggle('on',b.dataset.mode===m);b.textContent=modeLabel(b.dataset.mode);b.title=modeLabelLong(b.dataset.mode)});
 q('#brPrev').textContent='‹ '+T('prev');q('#brNext').textContent=T('next')+' ›';
 qa('#brReader .br-vnum').forEach(b=>b.onclick=()=>openCommentary(+b.dataset.v));
 save();railSync();markLikes();
