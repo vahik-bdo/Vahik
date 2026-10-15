@@ -3,15 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#000000"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<title>Новый Завет</title><style id="no-flash">html:not(.rdy) body{opacity:0}html body{transition:background .8s,color .8s,opacity .6s ease}</style><script>setTimeout(function(){document.documentElement.classList.add('rdy')},2200)</script><script>try{var pn=+localStorage.getItem('pfVisits')||0;if(!sessionStorage.getItem('pfSeen')){pn++;localStorage.setItem('pfVisits',pn);sessionStorage.setItem('pfSeen','1')}document.documentElement.setAttribute('data-pf',pn<=3?'1':'0')}catch(e){document.documentElement.setAttribute('data-pf','1')}</script><script>try{if(!localStorage.getItem('fontMig2')){var k='theo-reader-v1',d=JSON.parse(localStorage.getItem(k)||'null');if(d){d.font='Literata';localStorage.setItem(k,JSON.stringify(d))}localStorage.setItem('fontMig2','1')}}catch(e){}</script><script>try{var k2='theo-reader-v1',raw=localStorage.getItem(k2),d2=JSON.parse(raw||'null')||{},R2=document.documentElement,S2=R2.style;if(!localStorage.getItem('lightMig1')){if(raw){d2.light=false;d2.candle=false;localStorage.setItem(k2,JSON.stringify(d2))}localStorage.setItem('lightMig1','1')}if(d2.theme)R2.setAttribute('data-theme',d2.theme);if(d2.bg)R2.setAttribute('data-bg',d2.bg);if(d2.head===undefined||d2.head)S2.setProperty('--head',d2.head||'#8fd3c8');if(d2.color)S2.setProperty('--fg',d2.color);if(d2.lcolor)S2.setProperty('--lc',d2.lcolor);if(d2.lsize)S2.setProperty('--ls',d2.lsize+'px');if(d2.size)S2.setProperty('--base-font-size',d2.size+'px')}catch(e){document.documentElement.style.setProperty('--head','#8fd3c8')}</script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23f4f1ea'/%3E%3Cg fill='%23000'%3E%3Crect x='29' y='7' width='6' height='50' rx='1'/%3E%3Crect x='23' y='12' width='18' height='4' rx='1'/%3E%3Crect x='15' y='22' width='34' height='5' rx='1'/%3E%3Cpath d='M23 44l18 6-1.4 4.2L21.6 48.2z'/%3E%3C/g%3E%3C/svg%3E"><link rel="icon" type="image/png" sizes="48x48" href="icons/favicon-48.png">
+<title>Новый Завет</title><style id="no-flash">html:not(.rdy) body{opacity:0}html body{transition:background .8s,color .8s,opacity .6s ease}</style><script>setTimeout(function(){document.documentElement.classList.add('rdy')},2200)</script><script>/* «Перед чтением»: подтверждение хранится постоянно (localStorage + cookie). Поменяете V — текст покажется всем снова. */
+(function(){var R=document.documentElement,K='pfAck',V='1';
+function ck(){try{var m=document.cookie.match(/(?:^|; )pfAck=([^;]*)/);return m?decodeURIComponent(m[1]):null}catch(e){return null}}
+var P=window.__pf={v:V,get:function(){try{var x=localStorage.getItem(K);if(x!==null)return x}catch(e){}return ck()},
+ set:function(){try{localStorage.setItem(K,V)}catch(e){}try{document.cookie=K+'='+V+';max-age=63072000;path=/;SameSite=Lax'}catch(e){}}};
+try{if((+localStorage.getItem('pfVisits')||0)>3&&P.get()===null)P.set()}catch(e){} /* кто уже видел текст 3 раза по старой схеме, тому больше не показываем */
+R.setAttribute('data-pf',P.get()===V?'0':'1')})()</script><script>try{if(!localStorage.getItem('fontMig2')){var k='theo-reader-v1',d=JSON.parse(localStorage.getItem(k)||'null');if(d){d.font='Literata';localStorage.setItem(k,JSON.stringify(d))}localStorage.setItem('fontMig2','1')}}catch(e){}</script><script>try{var k2='theo-reader-v1',raw=localStorage.getItem(k2),d2=JSON.parse(raw||'null')||{},R2=document.documentElement,S2=R2.style;if(!localStorage.getItem('lightMig1')){if(raw){d2.light=false;d2.candle=false;localStorage.setItem(k2,JSON.stringify(d2))}localStorage.setItem('lightMig1','1')}if(d2.theme)R2.setAttribute('data-theme',d2.theme);if(d2.bg)R2.setAttribute('data-bg',d2.bg);if(d2.head===undefined||d2.head)S2.setProperty('--head',d2.head||'#8fd3c8');if(d2.color)S2.setProperty('--fg',d2.color);if(d2.lcolor)S2.setProperty('--lc',d2.lcolor);if(d2.lsize)S2.setProperty('--ls',d2.lsize+'px');if(d2.size)S2.setProperty('--base-font-size',d2.size+'px')}catch(e){document.documentElement.style.setProperty('--head','#8fd3c8')}</script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23f4f1ea'/%3E%3Cg fill='%23000'%3E%3Crect x='29' y='7' width='6' height='50' rx='1'/%3E%3Crect x='23' y='12' width='18' height='4' rx='1'/%3E%3Crect x='15' y='22' width='34' height='5' rx='1'/%3E%3Cpath d='M23 44l18 6-1.4 4.2L21.6 48.2z'/%3E%3C/g%3E%3C/svg%3E"><link rel="icon" type="image/png" sizes="48x48" href="icons/favicon-48.png">
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Manrope:wght@400;500;600&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Spectral:ital,wght@0,400;0,600;1,400&family=Alegreya:ital,wght@0,400;0,600;1,400&family=Philosopher:ital,wght@0,400;0,700;1,400&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Marck+Script&family=Inter:wght@400;500&family=Noto+Serif+Armenian:wght@400;600&family=Noto+Sans+Armenian:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="css/cross.css"><link rel="stylesheet" href="css/base.css">
-<link rel="stylesheet" href="css/reader.css">
-<link rel="stylesheet" href="css/fixes.css">
-<link rel="stylesheet" href="css/armenian.css">
-<link rel="stylesheet" href="css/translation-guide.css">
-<link rel="stylesheet" href="css/likes.css"><link rel="stylesheet" href="css/compare.css">
-<link rel="stylesheet" href="css/torch.css"><link rel="stylesheet" href="css/effects.css"><link rel="stylesheet" href="css/layout.css"><link rel="stylesheet" href="css/preface-modal.css"><link rel="stylesheet" href="css/tour.css"><link rel="stylesheet" href="css/contact.css"><link rel="stylesheet" href="css/hy-latin.css"><link rel="stylesheet" href="css/perf.css">
+<link rel="stylesheet" href="css/cross.css?v=ab9d0ff3d0"><link rel="stylesheet" href="css/base.css?v=ab9d0ff3d0">
+<link rel="stylesheet" href="css/reader.css?v=ab9d0ff3d0">
+<link rel="stylesheet" href="css/fixes.css?v=ab9d0ff3d0">
+<link rel="stylesheet" href="css/armenian.css?v=ab9d0ff3d0">
+<link rel="stylesheet" href="css/translation-guide.css?v=ab9d0ff3d0">
+<link rel="stylesheet" href="css/likes.css?v=ab9d0ff3d0"><link rel="stylesheet" href="css/compare.css?v=ab9d0ff3d0">
+<link rel="stylesheet" href="css/torch.css?v=ab9d0ff3d0"><link rel="stylesheet" href="css/effects.css?v=ab9d0ff3d0"><link rel="stylesheet" href="css/layout.css?v=ab9d0ff3d0"><link rel="stylesheet" href="css/preface-modal.css?v=ab9d0ff3d0"><link rel="stylesheet" href="css/tour.css?v=ab9d0ff3d0"><link rel="stylesheet" href="css/contact.css?v=ab9d0ff3d0"><link rel="stylesheet" href="css/hy-latin.css?v=ab9d0ff3d0"><link rel="stylesheet" href="css/perf.css?v=ab9d0ff3d0">
+<link rel="stylesheet" href="css/offline.css?v=ab9d0ff3d0">
 </head>
 <body>
 <div id="bg"></div><canvas id="fx"></canvas><canvas id="fx2"></canvas>
@@ -48,25 +55,51 @@
 <button class="btn" id="sel" data-t="addn">Добавить размышление</button>
 <div id="modal"><div><q id="mq"></q><textarea id="mt" placeholder="Ваше размышление…"></textarea><div class="row" style="margin-top:.8rem;justify-content:flex-end"><button class="btn" id="mc" data-t="cancel">Отмена</button><button class="btn on" id="ms" data-t="save">Сохранить</button></div></div></div>
 <div id="prayer"><div class="crossw sm"><div class="cross"></div></div><p id="pt">Господи Иисусе Христе, помилуй меня, грешного.</p><button class="btn" id="pb" data-t="amen">Аминь</button></div>
-<script src="js/hy-latin.js"></script>
-<script src="js/app.js"></script>
-<script src="js/perf.js"></script>
-<script src="js/soundscape.js"></script>
+<script src="js/hy-latin.js?v=ab9d0ff3d0"></script>
+<script src="js/app.js?v=ab9d0ff3d0"></script>
+<script src="js/perf.js?v=ab9d0ff3d0"></script>
+<script src="js/soundscape.js?v=ab9d0ff3d0"></script>
 <!-- TORCH MODE (candle) -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="tHeat" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".012 .035" numOctaves="2" seed="3" result="n"><animate attributeName="baseFrequency" dur="7s" values=".012 .035;.02 .05;.012 .035" repeatCount="indefinite"/></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n" scale="14" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
-<script src="js/torch.js"></script>
+<script src="js/torch.js?v=ab9d0ff3d0"></script>
 <!-- /TORCH MODE -->
-<script src="js/reader.js"></script>
-<script src="js/scroll-reveal.js"></script>
-<script src="js/scroll-blur.js"></script>
-<script src="js/preface-gate.js"></script>
-<script src="js/tour.js"></script>
+<script src="js/reader.js?v=ab9d0ff3d0"></script>
+<script src="js/scroll-reveal.js?v=ab9d0ff3d0"></script>
+<script src="js/scroll-blur.js?v=ab9d0ff3d0"></script>
+<script src="js/preface-gate.js?v=ab9d0ff3d0"></script>
+<script src="js/tour.js?v=ab9d0ff3d0"></script>
 <!-- SMOOTH INNER SCROLL + KEYS + iPhone fullscreen hint -->
-<script src="js/smooth-scroll.js"></script>
-<script src="js/contact.js"></script>
+<script src="js/smooth-scroll.js?v=ab9d0ff3d0"></script>
+<script src="js/contact.js?v=ab9d0ff3d0"></script>
 
-<script src="js/install.js"></script>
-<script src="js/ready.js"></script>
-<script>if("serviceWorker" in navigator&&location.protocol!=="file:")addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})</script>
+<script src="js/install.js?v=ab9d0ff3d0"></script>
+<script src="js/offline.js?v=ab9d0ff3d0"></script>
+<script src="js/ready.js?v=ab9d0ff3d0"></script>
+<script>
+/* Обновления сайта: проверка при открытии и при возвращении в приложение; тост «Обновить» после смены версии */
+(function(){
+if(!("serviceWorker" in navigator)||location.protocol==="file:")return;
+var T={ru:["Доступно обновление","Обновить"],en:["Update available","Refresh"],hy:["Թարմացում կա","Թարմացնել"],de:["Update verfügbar","Neu laden"]};
+var hadCtl=!!navigator.serviceWorker.controller,shown=0,reloading=0;
+function toast(){
+ if(shown)return;shown=1;
+ var l=T[document.documentElement.lang]||T.en,d=document.createElement("div");
+ d.id="upd-toast";d.setAttribute("role","status");
+ d.innerHTML='<span></span><button type="button"></button>';
+ d.firstChild.textContent=l[0];d.lastChild.textContent=l[1];
+ d.lastChild.onclick=function(){if(reloading)return;reloading=1;location.reload()};
+ document.body.appendChild(d);
+}
+navigator.serviceWorker.addEventListener("controllerchange",function(){if(hadCtl)toast()});
+addEventListener("load",function(){
+ navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).then(function(reg){
+  var last=0,chk=function(){var n=Date.now();if(n-last<30000)return;last=n;reg.update().catch(function(){})};
+  chk();
+  document.addEventListener("visibilitychange",function(){if(!document.hidden)chk()});
+  addEventListener("online",chk);
+ }).catch(function(){});
+});
+})();
+</script>
 </body>
 </html>

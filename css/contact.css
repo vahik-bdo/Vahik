@@ -19,14 +19,14 @@
  color:var(--fg);text-decoration:none;cursor:pointer;background:transparent;transition:transform .25s,border-color .25s,background .25s}
 #ctm .ct-go{border-color:var(--head);background:color-mix(in srgb,var(--head) 16%,transparent);margin-bottom:.6rem}
 #ctm .ct-go svg{width:18px;height:18px}
-#ctm .ct-go:hover,#ctm .ct-cp:hover{transform:translateY(-1px);border-color:var(--head)}
+@media (hover:hover){#ctm .ct-go:hover,#ctm .ct-cp:hover{transform:translateY(-1px);border-color:var(--head)}}
 #ctm .ct-cp.done{border-color:var(--head);color:var(--head)}
 #ctm .ct-x{position:absolute;top:.6rem;right:.7rem;width:34px;height:34px;border:0;border-radius:50%;background:transparent;
  color:var(--dim);font-size:22px;line-height:1;cursor:pointer}
-#ctm .ct-x:hover{color:var(--fg)}
+@media (hover:hover){#ctm .ct-x:hover{color:var(--fg)}}
 .ct-foot{margin:1.1rem 0 0;text-align:center;font:500 13px Manrope,'Noto Sans Armenian',system-ui,sans-serif}
 .ct-foot a{display:inline-flex;align-items:center;gap:.45rem;color:var(--dim);text-decoration:none;
  padding:.45rem .9rem;border:1px solid var(--line);border-radius:99px;transition:color .3s,border-color .3s}
-.ct-foot a:hover{color:var(--head);border-color:var(--head)}
+@media (hover:hover){.ct-foot a:hover{color:var(--head);border-color:var(--head)}}
 .ct-foot svg{width:15px;height:15px}
 @media(prefers-reduced-motion:reduce){#ctm,#ctm .ctc{transition:none}}

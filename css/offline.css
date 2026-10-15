@@ -1,0 +1,14 @@
+/* Офлайн-чтение. DESIGN-TODO: оформить вкладку «Офлайн» и плашку «Офлайн» под общий стиль (сейчас минимально) */
+#offSec .off-note{font-size:.85em;opacity:.75;margin:.4rem 0 .8rem;line-height:1.4}
+#offSec .off-list{display:flex;flex-direction:column;gap:2px;margin-bottom:.8rem}
+#offSec .off-row{display:flex;align-items:center;gap:.6rem;padding:.55rem .2rem;border-bottom:1px solid var(--line,rgba(255,255,255,.12));touch-action:manipulation}
+#offSec .off-row input{width:20px;height:20px;flex:none}
+#offSec .off-n{flex:1}#offSec .off-n small{opacity:.6;margin-left:.3em}
+#offSec .off-s{font-size:.8em;opacity:.8;text-align:right}
+#offSec .off-bar{height:6px;border-radius:3px;background:var(--line,rgba(255,255,255,.15));overflow:hidden;margin:.4rem 0 .8rem}
+#offSec .off-bar[hidden]{display:none}
+#offSec .off-bar i{display:block;height:100%;width:0;background:var(--head,#8fd3c8);transition:width .25s}
+#offSec .off-msg{font-size:.9em;margin:.7rem 0 .3rem;min-height:1.2em}
+#off-pill{position:fixed;top:max(8px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:99999;padding:3px 12px;border-radius:999px;font:600 12px/1.4 system-ui,sans-serif;background:var(--bg,#111);color:var(--fg,#eee);border:1px solid var(--line,rgba(255,255,255,.25));pointer-events:none}
+#off-pill[hidden]{display:none}
+body[data-mode=min] #offSec{display:none!important}

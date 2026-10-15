@@ -20,9 +20,9 @@ body.idle #panel.open,body.idle #npanel.open,body.idle #ppanel.open,body.idle #x
 .br-rb{display:flex;flex-direction:column;align-items:center;gap:2px;width:100%;padding:7px 0 5px;border:0;border-radius:16px;background:none;color:var(--fg);cursor:pointer;transition:background .4s,color .4s,transform .4s cubic-bezier(.22,1,.36,1)}
 .br-rb svg{width:20px;height:20px}.br-rb i{font:700 15px/20px Georgia,serif;font-style:normal;height:20px}
 .br-rb span{font:600 9.5px Manrope,'Noto Sans Armenian',sans-serif;color:var(--dim);max-width:100%;overflow:hidden;text-overflow:ellipsis}
-.br-rb:hover{background:var(--line);color:var(--head)}.br-rb:active{transform:scale(.94)}
+@media (hover:hover){.br-rb:hover{background:var(--line);color:var(--head)}}.br-rb:active{transform:scale(.94)}
 .br-rpn{display:flex;gap:2px;margin-top:4px;padding-top:6px;border-top:1px solid var(--line);width:100%;justify-content:center}
-.br-rpn button{width:24px;height:30px;border:0;background:none;color:var(--head);font:700 20px/1 Georgia,serif;cursor:pointer;border-radius:10px;transition:background .3s}.br-rpn button:hover{background:var(--line)}
+.br-rpn button{width:24px;height:30px;border:0;background:none;color:var(--head);font:700 20px/1 Georgia,serif;cursor:pointer;border-radius:10px;transition:background .3s}@media (hover:hover){.br-rpn button:hover{background:var(--line)}}
 #brRt{display:none;width:26px;height:64px;border:1px solid var(--line);border-left:0;border-radius:0 16px 16px 0;background:var(--panel);color:var(--head);backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));cursor:pointer;place-items:center;align-self:flex-start;margin-left:-8px;padding:0 0 0 4px;transition:transform .5s cubic-bezier(.22,1,.36,1)}
 #brRt svg{width:16px;height:16px;transition:transform .5s cubic-bezier(.22,1,.36,1)}#brRail.open #brRt svg{transform:scaleX(-1)}
 #brPop{position:fixed;left:calc(max(8px,env(safe-area-inset-left)) + 68px);top:50%;z-index:47;width:min(300px,calc(100vw - 96px));max-height:72dvh;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:.9rem;backdrop-filter:blur(var(--blur)) saturate(1.15);-webkit-backdrop-filter:blur(var(--blur)) saturate(1.15);box-shadow:0 18px 50px rgba(0,0,0,.25);opacity:0;pointer-events:none;transform:translate(-14px,-50%) scale(.97);transition:opacity .5s cubic-bezier(.22,1,.36,1),transform .65s cubic-bezier(.22,1,.36,1);font-family:Manrope,'Noto Sans Armenian',sans-serif}
@@ -30,9 +30,9 @@ body.idle #panel.open,body.idle #npanel.open,body.idle #ppanel.open,body.idle #x
 #brPop h5{margin:.7rem 0 .35rem;font:700 11px Manrope,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--head)}#brPop h5:first-child{margin-top:0}
 .bp-list{display:flex;flex-direction:column;gap:2px}
 .bp-i{text-align:left;border:0;background:none;color:var(--fg);font:500 14px Manrope,'Noto Sans Armenian',sans-serif;padding:.55em .75em;border-radius:12px;cursor:pointer;transition:background .3s}
-.bp-i:hover,.bp-i.on{background:var(--line);color:var(--head)}
+.bp-i.on{background:var(--line);color:var(--head)}@media (hover:hover){.bp-i:hover{background:var(--line);color:var(--head)}}
 .bp-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
-.bp-n{height:40px;border:0;border-radius:12px;background:none;color:var(--fg);font:600 14px Manrope,sans-serif;cursor:pointer;transition:background .3s}.bp-n:hover,.bp-n.on{background:var(--line);color:var(--head)}.bp-n.on{outline:1px solid var(--head)}
+.bp-n{height:40px;border:0;border-radius:12px;background:none;color:var(--fg);font:600 14px Manrope,sans-serif;cursor:pointer;transition:background .3s}.bp-n.on{background:var(--line);color:var(--head)}@media (hover:hover){.bp-n:hover{background:var(--line);color:var(--head)}}.bp-n.on{outline:1px solid var(--head)}
 .bp-h{margin:.7rem .2rem 0;font-size:11.5px;line-height:1.5;color:var(--dim)}
 body:has(#fold.open) #brRail,body:has(#fold.open) #brPop{opacity:0!important;pointer-events:none!important;translate:-24px -50%}
 body.idle #brRail.open,body.idle #brPop.open{opacity:1!important;pointer-events:auto!important}
@@ -80,6 +80,17 @@ body.idle #brRail.open,body.idle #brPop.open{opacity:1!important;pointer-events:
 #bulb::after{content:"";position:absolute;left:50%;top:46%;width:50px;height:50px;margin:-25px 0 0 -25px;border-radius:50%;background:conic-gradient(var(--accent) var(--prog,0deg),color-mix(in srgb,var(--line) 70%,transparent) 0);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 2.5px),#000 0);mask:radial-gradient(farthest-side,transparent calc(100% - 2.5px),#000 0);opacity:0;pointer-events:none;transition:opacity .7s ease;filter:drop-shadow(0 0 4px color-mix(in srgb,var(--accent) 40%,transparent))}
 #fold.atmo-active:not(.open)~#lamp #bulb::after{opacity:1}
 .br-share{position:absolute;right:.55rem;top:.55rem;width:30px;height:30px;padding:0;display:grid;place-items:center;border:0;border-radius:50%;background:transparent;color:var(--dim);cursor:pointer;opacity:0;transition:opacity .4s,background .3s,color .3s}
-.br-share svg{width:16px;height:16px}.br-verse:hover .br-share,.br-cassv:hover .br-share,.br-share:focus-visible{opacity:.85}.br-share:hover{background:var(--line);color:var(--head)}
+.br-share svg{width:16px;height:16px}.br-share:focus-visible{opacity:.85}@media (hover:hover){.br-verse:hover .br-share,.br-cassv:hover .br-share{opacity:.85}}@media (hover:hover){.br-share:hover{background:var(--line);color:var(--head)}}
 .br-cassv{position:relative;padding-right:2.2rem}
 @media(pointer:coarse){.br-share{opacity:.4}}
+
+/* Тост «Доступно обновление». DESIGN-TODO: оформить под общий стиль сайта (сейчас минимальный нейтральный) */
+#upd-toast{position:fixed;left:50%;bottom:max(16px,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:100000;display:flex;align-items:center;gap:12px;max-width:calc(100vw - 32px);padding:10px 14px;border:1px solid var(--line,rgba(255,255,255,.2));border-radius:14px;background:var(--bg,#111);color:var(--fg,#eee);font:500 14px/1.3 system-ui,sans-serif;box-shadow:0 6px 24px rgba(0,0,0,.45)}
+#upd-toast button{touch-action:manipulation;cursor:pointer;border:0;border-radius:10px;padding:8px 14px;font:inherit;font-weight:600;background:var(--head,#8fd3c8);color:#000}
+
+/* Касания: первое нажатие должно срабатывать сразу (задача 4) */
+button,.btn,[role=button],a,select,label,summary,input[type=range],input[type=checkbox],.sw{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+/* в режиме «покоя» на телефоне читалка только притухает, но остаётся нажимаемой (раньше первое касание «проглатывалось») */
+@media (hover:none) and (pointer:coarse){
+  body.idle :is(.br-toolbar,.br-nav,#brRail){opacity:.45!important;pointer-events:auto!important}
+}

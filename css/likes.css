@@ -5,7 +5,7 @@
 .br-like{position:absolute;right:.55rem;bottom:.55rem;width:30px;height:30px;padding:0;display:grid;place-items:center;border:0;border-radius:50%;background:transparent;color:var(--dim);cursor:pointer;opacity:0;transition:opacity .4s,background .3s,color .3s;-webkit-tap-highlight-color:transparent}
 .br-like svg{width:16px;height:15px;display:block;fill:none;stroke:currentColor;stroke-width:1.8;overflow:visible;transition:fill .25s,stroke .25s}
 .br-like svg path{vector-effect:non-scaling-stroke}
-.br-verse:hover .br-like,.br-like:focus-visible{opacity:.85}.br-like:hover{background:var(--line);color:#ff4d6d}
+.br-like:focus-visible{opacity:.85}@media (hover:hover){.br-verse:hover .br-like{opacity:.85}}@media (hover:hover){.br-like:hover{background:var(--line);color:#ff4d6d}}
 @media(pointer:coarse){.br-like{opacity:.4}}
 .br-verse.liked .br-like{opacity:1;color:#ff4d6d}.br-verse.liked .br-like svg{fill:#ff4d6d;stroke:#ff4d6d;filter:drop-shadow(0 0 4px rgba(255,77,109,.5))}
 .br-like.pop svg{animation:hpop .5s cubic-bezier(.2,1.4,.4,1)}
