@@ -1,8 +1,8 @@
 /* Service worker: офлайн + надёжные обновления.
    BUILD подставляется автоматически (tools/bump.js, GitHub Action) — вручную ничего поднимать не нужно. */
-const BUILD = 'b02f7537e5';
+const BUILD = '1fd3faee1e';
 const CORE = 'nz-core-' + BUILD, DATA = 'nz-data-v1', FONTS = 'nz-fonts-v1';
-const CORE_FILES = ["index.html", "css/armenian.css", "css/base.css", "css/compare.css", "css/contact.css", "css/hy-latin.css", "css/cross.css", "css/effects.css", "css/fixes.css", "css/layout.css", "css/likes.css", "css/offline.css", "css/perf.css", "css/preface-modal.css", "css/reader.css", "css/torch.css", "css/tour.css", "css/translation-guide.css", "js/app.js", "js/contact.js", "js/hy-latin.js", "js/install.js", "js/offline.js", "js/perf.js", "js/preface-gate.js", "js/reader.js", "js/translation-info.js", "js/ready.js", "js/scroll-blur.js", "js/scroll-reveal.js", "js/smooth-scroll.js", "js/soundscape.js", "js/torch.js", "js/tour.js", "manifest.webmanifest", "icons/apple-touch-icon.png", "icons/favicon-48.png", "icons/icon-192.png", "icons/icon-512.png", "icons/maskable-512.png"];
+const CORE_FILES = ["index.html", "css/armenian.css", "css/base.css", "css/compare.css", "css/contact.css", "css/hy-latin.css", "css/cross.css", "css/effects.css", "css/fixes.css", "css/layout.css", "css/likes.css", "css/perf.css", "css/preface-modal.css", "css/reader.css", "css/torch.css", "css/tour.css", "css/translation-guide.css", "js/app.js", "js/contact.js", "js/hy-latin.js", "js/install.js", "js/perf.js", "js/preface-gate.js", "js/reader.js", "js/translation-info.js", "js/ready.js", "js/scroll-blur.js", "js/scroll-reveal.js", "js/smooth-scroll.js", "js/soundscape.js", "js/torch.js", "js/tour.js", "manifest.webmanifest", "icons/apple-touch-icon.png", "icons/favicon-48.png", "icons/icon-192.png", "icons/icon-512.png", "icons/maskable-512.png"];
 /* тяжёлое (тексты Библии, звуки) лежит в отдельном кэше: не перекачивается при каждом обновлении сайта */
 const DATA_FILES = ["data/bible-arar.js", "data/bible-cass.js", "data/bible-elb.js", "data/bible-nasb.js", "data/bible-rbo.js", "assets/audio/birds.js", "assets/audio/bolt.js", "assets/audio/wind.js"];
 const FONT_CSS = ["https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap", "https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Manrope:wght@400;500;600&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Spectral:ital,wght@0,400;0,600;1,400&family=Alegreya:ital,wght@0,400;0,600;1,400&family=Philosopher:ital,wght@0,400;0,700;1,400&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Marck+Script&family=Inter:wght@400;500&family=Noto+Serif+Armenian:wght@400;600&family=Noto+Sans+Armenian:wght@400;500&display=swap"];
@@ -31,7 +31,12 @@ self.addEventListener('install', e => {
         }
       }
     } catch (_) {}
-    /* тексты Библии, звуки и шрифты теперь скачиваются отдельно: по кнопке «Офлайн-чтение» или по мере чтения */
+    /* тексты Библии, звуки и шрифты кладём в кэш сразу: офлайн всегда открывается последняя загруженная версия */
+    try {
+      const dc2 = await caches.open(DATA);
+      await Promise.all(DATA_FILES.map(u => dc2.match(u).then(h => h || dc2.add(new Request(u, {cache: 'reload'}))).catch(() => {})));
+    } catch (_) {}
+    try { const fc2 = await caches.open(FONTS); await Promise.all(FONT_CSS.map(u => saveFontCss(fc2, u).catch(() => {}))); } catch (_) {}
     await self.skipWaiting(); /* новая версия включается сразу, а не «когда закроют все вкладки» */
   })());
 });
@@ -133,6 +138,11 @@ self.addEventListener('fetch', e => {
     const isData = /\/(data|assets)\//.test(url.pathname);
     const c = await caches.open(isData ? DATA : CORE);
     const hit = await c.match(req);               /* точное совпадение (с ?v=) */
+    if (isData && /\/data\//.test(url.pathname)) {   /* тексты: онлайн — свежие сразу, офлайн/медленно — из кэша */
+      const net = fetch(req, {cache: 'no-cache'}).then(r => { if (r.ok) c.put(req, r.clone()); return r; });
+      try { return await Promise.race([net, new Promise((_, rej) => setTimeout(rej, 3000))]); }
+      catch (_) { if (hit) { e.waitUntil(net.catch(() => {})); return hit; } return net.catch(() => new Response('', {status: 504})); }
+    }
     if (hit) {
       if (isData) e.waitUntil(fetch(req).then(r => { if (r.ok) c.put(req, r); }).catch(() => {}));
       return hit;

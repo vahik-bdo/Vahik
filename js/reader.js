@@ -30,7 +30,7 @@ function modeOptions(){if(lang()==='ru')return [['cass'],['rbo']];if(lang()==='h
 function sourceLabel(kind){return kind==='cass'?T('cass'):kind==='arar'?T('arar'):kind==='nasb'?T('nasb'):kind==='elb'?T('elb'):kind==='rbo'?T('rbo'):kind}
 const RBOML={ru:'Современный перевод · РБО',en:'Modern Russian · RBO',hy:'Ժամանակակից ռուսերեն · ՌԲՕ',de:'Modernes Russisch · RBO'};
 function modeLabelLong(m){return m==='rbo'?(RBOML[lang()]||RBOML.ru):G().exact+' · '+sourceLabel(m)}
-function modeLabel(m){return modeOptions().length>1?(m==='cass'?'Kas':m==='rbo'?'SRP':modeLabelLong(m)):modeLabelLong(m)}
+function modeLabel(m){return modeOptions().length>1?(m==='cass'?'Кассиан':m==='rbo'?'СРП':modeLabelLong(m)):modeLabelLong(m)}
 function normalizeMode(){const a=modeOptions().map(x=>x[0]);if(!a.includes(br.mode))br.mode=a[0]}
 
 function bookOk(b){return !b.ot||br.mode==='rbo'}
