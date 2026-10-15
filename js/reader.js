@@ -120,7 +120,79 @@ function smartMatch(text,qs,phrase){
  const flat=words.map(x=>x.n).join(' '),ph=qs.map(x=>x.w).join(' ');if(flat.includes(ph))score+=20;if(swNorm(text).includes(swNorm(phrase)))score+=30;
  return {score,pos:Math.max(0,pos)}}
 function hlHtml(sn,qs){let out='',last=0,m;SW_RE.lastIndex=0;while((m=SW_RE.exec(sn))){const n=swNorm(m[0]);out+=esc(sn.slice(last,m.index));out+=qs.some(q=>n.startsWith(q.s))?'<mark>'+esc(m[0])+'</mark>':esc(m[0]);last=m.index+m[0].length}return out+esc(sn.slice(last))}
-function doSearch(){const inp=q('#brSearchInput'),out=q('#brSearchResults');if(!inp||!out)return;const term0=inp.value.trim().toLocaleLowerCase(lang()),HL=window.HyLatin&&HyLatin.on(),term=HL?HyLatin.conv(term0).toLocaleLowerCase():term0;if(term.length<2){out.innerHTML='';return}const qs=queryStems(term);const need=lang()==='hy'?'arar':lang()==='en'?'nasb':lang()==='de'?'elb':(lang()==='ru'&&br.mode==='rbo')?'rbo':'cass';if(!NTLOADED[need]){out.innerHTML='<div class="br-empty">'+esc(NTWAIT[lang()]||NTWAIT.ru)+'</div>';loadBible(need).then(doSearch);return}const res=[];function add(kind,bk,ch,ref,text){if(HL)text=String(HyLatin.conv(String(text)));text=String(text);const m=smartMatch(text,qs,term);if(!m)return;const a0=Math.max(0,m.pos-58),z=Math.min(text.length,m.pos+95);res.push({kind,bk,ch,ref,score:m.score,sn:(a0?'…':'')+text.slice(a0,z)+(z<text.length?'…':'')})}function mapData(kind,data){for(const b of BOOKS){for(const [ch,vv] of Object.entries(data[b.k]||{})){for(const [v,t] of Object.entries(vv)){add(kind,b.k,ch,v,t);if(res.length>=900)return}}}}if(lang()==='hy')mapData('arar',ARARAT);else if(lang()==='ru'){if(br.mode==='rbo')mapData('rbo',RBO);else mapData('cass',CASSIAN)}else if(lang()==='en')mapData('nasb',NASB);else if(lang()==='de')mapData('elb',ELB1905);else mapData('cass',CASSIAN);res.sort((x,y)=>y.score-x.score);const names=BRBN[lang()]||BRBN.ru;out.innerHTML=res.length?res.slice(0,120).map((x,i)=>`<button class="br-result" data-ri="${i}"><b>${esc(names[x.bk]||BRBN.ru[x.bk])} ${x.ch}:${esc(x.ref)} · ${esc(sourceLabel(x.kind))}</b><span>${hlHtml(x.sn,qs)}</span></button>`).join(''):`<div class="br-empty" style="padding:1rem">${esc(T('nothing'))}</div>`;qa('#brSearchResults [data-ri]').forEach(btn=>btn.onclick=()=>{const x=res[+btn.dataset.ri];br.book=x.bk;br.chapter=+x.ch;br.mode=x.kind;br.verse=+String(x.ref).match(/\d+/)?.[0]||1;mount(false);closeSearch();setTimeout(()=>focusVerse(br.verse),100)})}
+/* ===== Умный поиск (v2): ссылки «Ин 3:16», морфология, опечатки, фразы в кавычках, ранжирование ===== */
+const TOK=/[\p{L}\p{N}]+(?:['’ʼ՚][\p{L}]+)*/gu;
+const nz=s=>String(s).toLocaleLowerCase().replace(/ё/g,'е').replace(/ß/g,'ss').replace(/եւ/g,'և').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/['’ʼ՚]/g,'');
+const toks=s=>(String(s).match(TOK)||[]).map(nz);
+const STOP={ru:'и в во на с со к по о об от до за из у не но а же ли бы то что как это он она они его её их был была были есть я ты мы вы мне тебе нам вам',en:'the a an and of to in on at for by with from is was are were be he she it they his her their i you we that this as but not or',de:'der die das und den dem des ein eine einer eines in im zu zum zur von mit auf an für ist war sind waren er sie es ich du wir ihr nicht auch aber als wie so da dass daß',hy:'և եւ է էր են էին ու որ թե այս այն նա նրա իր մի ի է՝ չէ'};
+const STOPSET={};for(const k in STOP)STOPSET[k]=new Set(STOP[k].split(' ').map(nz));
+const SUF={
+ru:/(?:ировать|ывать|ивать|ость|ение|ания|ание|ения|ами|ями|ого|его|ому|ему|ыми|ими|ией|ой|ей|ий|ый|ая|яя|ое|ее|ые|ие|ых|их|ым|им|ом|ем|ую|юю|ов|ев|ам|ям|ах|ях|ою|ею|ешь|ишь|ете|ите|ет|ут|ют|ит|ат|ят|ла|ли|ло|ся|сь|ть|а|я|о|е|и|ы|у|ю|ь|й|л)$/,
+en:/(?:ingly|edly|ness|ing|ed|es|ly|s)$/,
+de:/(?:ungen|ung|heit|keit|lich|en|er|em|es|st|te|e|n|s|t)$/,
+hy:/(?:ներից|ներին|ներով|ների|ներ|երի|ից|ին|ում|ով|ը|ի|ն|ս|դ)$/};
+function stemW(w,L,latin){if(w.length<4)return w;if(latin&&L==='hy')return w;const re=SUF[L]||SUF.en;let s=w;for(let i=0;i<2;i++){const t=s.replace(re,'');if(t.length>=3&&t!==s)s=t;else break}return s}
+function lev(a,b,mx){if(Math.abs(a.length-b.length)>mx)return mx+1;const m=a.length,n=b.length,d=[];for(let i=0;i<=m;i++){d[i]=[i];for(let j=1;j<=n;j++)d[i][j]=i?0:j}for(let i=1;i<=m;i++)for(let j=1;j<=n;j++){let v=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));if(i>1&&j>1&&a[i-1]===b[j-2]&&a[i-2]===b[j-1])v=Math.min(v,d[i-2][j-2]+1);d[i][j]=v}return d[m][n]}
+const SIDX={};
+function buildIndex(kind,data,L,HL){const key=kind+(HL?'/L':''),old=SIDX[key];if(old)return old;const verses=[],df=new Map(),stems=new Map();
+ for(const b of BOOKS){const bd=data[b.k];if(!bd)continue;for(const ch of Object.keys(bd)){const vv=bd[ch];for(const v of Object.keys(vv)){let t=String(vv[v]).replace(/<[^>]*>/g,'');if(HL)t=String(HyLatin.conv(t));const w=toks(t);verses.push({bk:b.k,ch,v,t,w});const seen=new Set(w);seen.forEach(x=>{df.set(x,(df.get(x)||0)+1)})}}}
+ df.forEach((_,w)=>{stems.set(w,stemW(w,L,HL))});
+ return SIDX[key]={verses,df,stems,N:verses.length,L,HL,vocab:[...df.keys()]}}
+/* расширение слова запроса до слов словаря с весами */
+function expand(tok,ix){const m=new Map(),st=stemW(tok,ix.L,ix.HL);let strong=false;
+ for(const w of ix.vocab){let wt=0;if(w===tok)wt=3;else{const s2=ix.stems.get(w);if(st.length>=3&&s2===st)wt=2.3;else if(tok.length>=3&&w.length>tok.length&&w.startsWith(tok))wt=1.9;else if(st.length>=4&&s2.length>=4&&(s2.startsWith(st)||st.startsWith(s2)))wt=1.5}if(wt){m.set(w,wt);strong=true}}
+ if(!m.has(tok)&&tok.length>=5){const mx=tok.length>=9?2:1;for(const w of ix.vocab){if(Math.abs(w.length-tok.length)>mx)continue;if(!m.has(w)&&lev(tok,w,mx)<=mx)m.set(w,1.1)}}
+ return m}
+/* ---------- ссылки на стихи ---------- */
+const ABBR={gen:'быт бытие gen genesis 1mo 1mose',ex:'исх исход ex exo exodus 2mo 2mose',lev:'лев левит lev leviticus 3mo 3mose',num:'чис числа num numbers 4mo 4mose',deut:'втор deut dt deuteronomy 5mo 5mose',josh:'нав иисусновин josh joshua jos',judg:'суд судей judg judges ri',ruth:'руф руфь ruth rut',
+'1sam':'1цар 1сам 1sam 1samuel','2sam':'2цар 2сам 2sam 2samuel','1kgs':'3цар 1kgs 1kings 1kon','2kgs':'4цар 2kgs 2kings 2kon','1chr':'1пар 1par 1chr 1chronicles 1chron','2chr':'2пар 2par 2chr 2chronicles',ezra:'езд ездра ezra esr',neh:'неем неемия neh nehemiah',esth:'есф есфирь esth esther est',job:'иов job hiob ijob',ps:'пс псалом псалтирь psalm psalms ps psa',prov:'притч притчи prov proverbs spr',eccl:'еккл екклесиаст eccl ecclesiastes pred',song:'песн песнь песнейпеснь song sos hld',isa:'ис исаия isa isaiah jes',jer:'иер иеремия jer jeremiah',lam:'плач плачиеремии lam klgl',ezek:'иез иезекииль ezek ezekiel hes',dan:'дан даниил dan daniel',hos:'ос осия hos hosea',joel:'иоил иоиль joel',amos:'ам амос amos',obad:'авд авдий obad obadiah ob',jonah:'ион иона jonah jon',mic:'мих михей mic micah mi',nah:'наум nah nahum na',hab:'авв аввакум hab habakkuk',zeph:'соф софония zeph zephaniah zef',hag:'агг аггей hag haggai',zech:'зах захария zech zechariah sach',mal:'мал малахия mal malachi',
+mt:'мф мат матф матфей mt matt matthew',mk:'мк мр мар марк mk mr mark',lk:'лк лук лука lk luke luk',jn:'ин иоан иоанн jn john joh',acts:'деян деяния acts apg ac',jas:'иак иаков jas james jak',
+'1pet':'1пет 1петр 1pet 1peter 1petr','2pet':'2пет 2петр 2pet 2peter 2petr','1jn':'1ин 1иоан 1jn 1john 1joh','2jn':'2ин 2иоан 2jn 2john 2joh','3jn':'3ин 3иоан 3jn 3john 3joh',jude:'иуд иуда jude jud',
+rom:'рим римлянам rom romans röm',  '1cor':'1кор 1коринфянам 1cor 1corinthians','2cor':'2кор 2коринфянам 2cor 2corinthians',gal:'гал галатам gal galatians',eph:'еф ефесянам eph ephesians',phil:'флп фил филиппийцам phil philippians',col:'кол колоссянам col colossians kol',
+'1th':'1фес 1фессалоникийцам 1th 1thess 1thessalonians','2th':'2фес 2фессалоникийцам 2th 2thess 2thessalonians','1tim':'1тим 1тимофею 1tim 1timothy','2tim':'2тим 2тимофею 2tim 2timothy',tit:'тит титу tit titus',phlm:'флм филимону phlm philemon phm',heb:'евр евреям heb hebrews hebr',rev:'откр откровение rev revelation offb apk'};
+let ALIAS=null;
+function aliasMap(){if(ALIAS)return ALIAS;ALIAS={};const norm=s=>nz(s).replace(/[\s.\-]/g,'');for(const k in ABBR)ABBR[k].split(' ').forEach(a=>{ALIAS[norm(a)]=k});BOOKS.forEach(b=>{ALIAS[norm(b.k)]=ALIAS[norm(b.k)]||b.k});ALIAS._names=[];BOOKS.forEach(b=>{for(const L of Object.keys(BRBN)){const n=(BRBN[L]||{})[b.k];if(n){const nn=norm(n);ALIAS[nn]=ALIAS[nn]||b.k;ALIAS._names.push([nn,b.k])}}});return ALIAS}
+function resolveBook(s){const A=aliasMap(),n=nz(s).replace(/[\s.\-]/g,'');if(!n)return null;if(A[n]&&n!=='_names')return A[n];if(n.length>=3){const hit=A._names.find(([nn])=>nn.startsWith(n));if(hit)return hit[1]}return null}
+function parseRef(raw){const m=raw.trim().match(/^((?:[1-3]\s*[.\s]?\s*)?[\p{L}][\p{L}.\s]*?)\s*[.,]?\s*(\d{1,3})(?:\s*[:.,\s]\s*(\d{1,3})(?:\s*[-–—]\s*(\d{1,3}))?)?\s*$/u);if(!m)return null;const bk=resolveBook(m[1]);if(!bk)return null;const bo=BOOKS.find(b=>b.k===bk);const ch=+m[2];if(!bo||ch<1||ch>bo.chapters)return null;return {bk,ch,v1:m[3]?+m[3]:null,v2:m[4]?+m[4]:(m[3]?+m[3]:null)}}
+function refVerses(data,r){const cd=(data[r.bk]||{})[r.ch]||{},out=[];for(const key of Object.keys(cd)){const mm=String(key).match(/\d+/g)||[];const a=+mm[0],z=+(mm[mm.length-1]);if(r.v1==null||(z>=r.v1&&a<=r.v2))out.push({v:key,a,t:String(cd[key]).replace(/<[^>]*>/g,'')})}out.sort((x,y)=>x.a-y.a);return out}
+/* ---------- поиск ---------- */
+const SRCH_I18N={ru:{found:'Найдено',partial:'Совпадают не все слова',ref:'Открыть главу',book:'Книга'},en:{found:'Found',partial:'Not all words match',ref:'Open chapter',book:'Book'},hy:{found:'Գտնվել է',partial:'Ոչ բոլոր բառերն են համընկնում',ref:'Բացել գլուխը',book:'Գիրք'},de:{found:'Gefunden',partial:'Nicht alle Wörter passen',ref:'Kapitel öffnen',book:'Buch'}};
+function runSearch(raw,ix){const phrases=[];let rest=raw.replace(/["«“„]([^"»”“]+)["»”]/g,(_,p)=>{phrases.push(toks(p));return' '});const L=ix.L,stop=STOPSET[L]||STOPSET.en;let tk=toks(rest);const nonStop=tk.filter(w=>!stop.has(w));const need=nonStop.length?nonStop:tk;const optional=tk.filter(w=>!need.includes(w));
+ const groups=need.map(w=>{const m=expand(w,ix);let idf=1;let best=0;m.forEach((wt,x)=>{if(wt>=3)best=ix.df.get(x)||0});const d=best||Math.min(...[...m.keys()].map(x=>ix.df.get(x)||1),1);return {w,m,idf:1+Math.log(1+ix.N/Math.max(1,d))/5}});
+ const pgs=phrases.map(p=>p.map(w=>({w,m:new Map([[w,3]])})));
+ const hl=new Set();groups.forEach(g=>g.m.forEach((_,x)=>hl.add(x)));phrases.forEach(p=>p.forEach(w=>hl.add(w)));optional.forEach(w=>hl.add(w));
+ if(!groups.length&&!phrases.length)return {full:[],part:[],hl};
+ const full=[],part=[],n=groups.length,miss=(n>=4?2:n>=2?1:0);
+ for(const vs of ix.verses){const w=vs.w;if(!w.length)continue;
+  let ok=true;let score=0,hitN=0;const pos=[];
+  for(const p of phrases){const L2=p.length;let f=false;for(let i=0;i+L2<=w.length&&!f;i++){f=true;for(let j=0;j<L2;j++)if(w[i+j]!==p[j]){f=false;break}}if(!f){ok=false;break}score+=25}
+  if(!ok)continue;
+  for(const g of groups){let bw=0,bp=-1;for(let i=0;i<w.length;i++){const x=g.m.get(w[i]);if(x&&x>bw){bw=x;bp=i}}if(bw){hitN++;score+=bw*g.idf;pos.push(bp)}else pos.push(-1)}
+  if(hitN<n&&!(n>=2&&hitN>=n-miss&&hitN>=1))continue;
+  const got=pos.filter(p=>p>=0);
+  if(got.length>1){let adj=0;for(let i=1;i<pos.length;i++)if(pos[i]>=0&&pos[i-1]>=0&&pos[i]===pos[i-1]+1)adj++;score+=adj*2.5;if(adj===n-1&&n>1)score+=8;const span=Math.max(...got)-Math.min(...got);score+=Math.max(0,4-Math.max(0,span-(got.length-1))*.4);let ord=1;for(let i=1;i<got.length;i++)if(got[i]<got[i-1])ord=0;score+=ord*1.2}
+  for(const o of optional)if(w.includes(o))score+=.4;
+  score-=w.length*.012;
+  (hitN===n?full:part).push({vs,score,pos:got.length?Math.min(...got):0});
+ }
+ return {full,part,hl,miss:n-0}}
+function snippetOf(vs,pos){const t=vs.t;let idx=0,c=0;TOK.lastIndex=0;let m,at=0;while((m=TOK.exec(t))){if(c===pos){at=m.index;break}c++}const a0=Math.max(0,at-55),z=Math.min(t.length,at+110);let a=a0;if(a>0){const sp=t.indexOf(' ',a);if(sp>=0&&sp<at)a=sp+1}return (a?'…':'')+t.slice(a,z)+(z<t.length?'…':'')}
+function hl2(sn,hl){let out='',last=0,m;TOK.lastIndex=0;while((m=TOK.exec(sn))){out+=esc(sn.slice(last,m.index));out+=hl.has(nz(m[0]))?'<mark>'+esc(m[0])+'</mark>':esc(m[0]);last=m.index+m[0].length}return out+esc(sn.slice(last))}
+
+function doSearch(){const inp=q('#brSearchInput'),out=q('#brSearchResults');if(!inp||!out)return;const raw0=inp.value.trim(),HL=window.HyLatin&&HyLatin.on(),raw=HL?String(HyLatin.conv(raw0)):raw0;if(raw.replace(/[^\p{L}\p{N}]/gu,'').length<2){out.innerHTML='';return}const Lg=lang(),SI=SRCH_I18N[Lg]||SRCH_I18N.ru;const need=Lg==='hy'?'arar':Lg==='en'?'nasb':Lg==='de'?'elb':(Lg==='ru'&&br.mode==='rbo')?'rbo':'cass';if(!NTLOADED[need]){out.innerHTML='<div class="br-empty">'+esc(NTWAIT[Lg]||NTWAIT.ru)+'</div>';loadBible(need).then(doSearch);return}
+ const kind=need,data=({arar:ARARAT,nasb:NASB,elb:ELB1905,rbo:RBO,cass:CASSIAN})[kind],names=BRBN[Lg]||BRBN.ru,SL=['ru','en','de','hy'].includes(Lg)?Lg:'en';
+ const ix=buildIndex(kind,data,SL,!!HL);const rows=[];const items=[];
+ const ref=parseRef(raw0);
+ if(ref){const vs=refVerses(data,ref);const nm=names[ref.bk]||BRBN.ru[ref.bk];if(vs.length){items.push({head:true,html:`<div class="br-sect">${esc(nm)} ${ref.ch}${ref.v1?':'+ref.v1+(ref.v2>ref.v1?'–'+ref.v2:''):''}</div>`});vs.slice(0,ref.v1?40:6).forEach(x=>{items.push({bk:ref.bk,ch:ref.ch,v:x.v,a:x.a,kind,html:`<b>${esc(nm)} ${ref.ch}:${esc(x.v)} · ${esc(sourceLabel(kind))}</b><span>${esc(x.t.length>240?x.t.slice(0,240)+'…':x.t)}</span>`})});if(!ref.v1&&vs.length>6)items.push({bk:ref.bk,ch:ref.ch,v:vs[0].v,a:1,kind,html:`<b>${esc(SI.ref)}: ${esc(nm)} ${ref.ch}</b><span>${vs.length} …</span>`})}}
+ else{const bk=resolveBook(raw0);if(bk&&nz(raw0).replace(/[\s.]/g,'').length>=3){const bo=BOOKS.find(b=>b.k===bk),nm=names[bk]||BRBN.ru[bk];if(bo&&data[bk])items.push({bk,ch:1,v:'1',a:1,kind,html:`<b>${esc(SI.book)}: ${esc(nm)}</b><span>${bo.chapters} · ${esc(SI.ref)} 1</span>`})}}
+ const R=runSearch(raw,ix);const cmp=(x,y)=>y.score-x.score;R.full.sort(cmp);R.part.sort(cmp);
+ const total=R.full.length;const mk=(x)=>{const sn=snippetOf(x.vs,x.pos),nm=names[x.vs.bk]||BRBN.ru[x.vs.bk];return {bk:x.vs.bk,ch:x.vs.ch,v:x.vs.v,a:+(String(x.vs.v).match(/\d+/)||[1])[0],kind,html:`<b>${esc(nm)} ${x.vs.ch}:${esc(x.vs.v)} · ${esc(sourceLabel(kind))}</b><span>${hl2(sn,R.hl)}</span>`}};
+ if(total||R.part.length)items.push({head:true,html:`<div class="br-sect">${esc(SI.found)}: ${total}</div>`});
+ R.full.slice(0,150).forEach(x=>items.push(mk(x)));
+ if(R.part.length&&total<12){items.push({head:true,html:`<div class="br-sect">${esc(SI.partial)}</div>`});R.part.slice(0,40).forEach(x=>items.push(mk(x)))}
+ const hits=items.filter(x=>!x.head);
+ out.innerHTML=hits.length?items.map(x=>x.head?x.html:`<button class="br-result" data-ri="${hits.indexOf(x)}">${x.html}</button>`).join(''):`<div class="br-empty" style="padding:1rem">${esc(T('nothing'))}</div>`;
+ qa('#brSearchResults [data-ri]').forEach(btn=>btn.onclick=()=>{const x=hits[+btn.dataset.ri];br.book=x.bk;br.chapter=+x.ch;br.mode=x.kind;br.verse=x.a||1;mount(false);closeSearch();setTimeout(()=>focusVerse(br.verse),100)})}
 function hookDockSearch(){const f=q('#bFind');if(f){f.onclick=e=>{e.stopPropagation();openSearch()};f.title=f.ariaLabel=T('search')}}
 function mount(scroll=false){ensureOverlays();updateHero();const body=q('#bookBody');if(!body)return;body.innerHTML=shell();buildBooks();buildChapters();wire();render();hookDockSearch();ensureRail();buildRail();if(scroll)q('#brRoot').scrollIntoView({block:'start'})}
 const HL={history:{ru:'История',en:'History',hy:'Պատմություն',de:'Geschichte'},hit:{ru:'Как Писание пришло на Русь',en:'How the Bible came to England',hy:'Ինչպես Աստվածաշունչը դարձավ հայերեն',de:'Wie die Bibel deutsch wurde'}};
@@ -138,7 +210,7 @@ q('#brRt').onclick=e=>{e.stopPropagation();const R=q('#brRail');R.classList.togg
 q('#brHx').onclick=closeHist;q('#brHist').onclick=e=>{if(e.target.id==='brHist')closeHist()};
 document.addEventListener('click',e=>{if(e.target.closest('#brRail,#brPop'))return;closePop();q('#brRail').classList.remove('open')})}
 function buildRail(){const b=q('#brRb');if(!b)return;{const t=q('#brRt');if(t)t.setAttribute('aria-label',tr('a_menu'))}const svg=d=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
-const it=[['book',svg(IC.book),T('book')],['chap',svg(IC.chap),T('chapter')],...(modeOptions().length>1?[['mode',svg(IC.tr),T('translation')]]:[]),['cmp',svg('<rect x="3" y="4" width="8" height="16" rx="1.6"/><rect x="13" y="4" width="8" height="16" rx="1.6"/>'),CL('btn')],['find',svg(IC.find),T('search')],['notes',svg('<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/>'),tr('notes')],['hist',svg(IC.hist),hl('history')]];
+const it=[['book',svg(IC.book),T('book')],['chap',svg(IC.chap),T('chapter')],...(modeOptions().length>1?[['mode',svg(IC.tr),T('translation')]]:[]),['cmp',svg('<rect x="3" y="4" width="8" height="16" rx="1.6"/><rect x="13" y="4" width="8" height="16" rx="1.6"/>'),CL('btn')],['find',svg(IC.find),T('search')],['hist',svg(IC.hist),hl('history')]];
 b.innerHTML='<div id="brRpos"></div>'+it.map(([a,i,l])=>`<button type="button" class="br-rb" data-a="${a}">${i}<span>${esc(l)}</span></button>`).join('')+`<div class="br-rpn"><button type="button" data-a="prev" aria-label="${esc(T('prev'))}">‹</button><button type="button" data-a="next" aria-label="${esc(T('next'))}">›</button></div>`;
 b.onclick=e=>{const x=e.target.closest('[data-a]');if(!x)return;e.stopPropagation();rail(x.dataset.a)};railSync();cmpRail()}
 function rail(a){const R=q('#brRail');
