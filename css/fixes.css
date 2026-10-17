@@ -129,3 +129,28 @@ html,body{touch-action:pan-x pan-y}
 #brRail{will-change:opacity,translate}
 #brPop{will-change:opacity,transform}
 @media(max-width:700px),(pointer:coarse){#brPop,#brRb{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:color-mix(in srgb,var(--panel) 94%,#000)}}
+
+/* --- v4: symmetric rail toggle, equal verse buttons, outlined pop items with hold animation --- */
+@media(max-width:880px){
+ #brRail.open #brRt{align-self:center;margin:0 0 6px 0;width:58px;height:32px;padding:0;border:1px solid var(--line);border-radius:16px;box-sizing:border-box}
+ #brRb{box-sizing:border-box}
+}
+#brRb{width:58px;overflow:hidden}
+.br-rb span{display:block;width:100%;text-align:center;white-space:nowrap}
+.br-verse{min-height:5.4rem}
+.br-share,.br-like{width:32px;height:32px;right:.35rem}
+.br-share{top:.45rem}
+.br-like{top:2.8rem}
+.br-share svg,.br-like svg{width:17px;height:17px}
+.bp-i,.bp-n{border:1px solid var(--line);background:color-mix(in srgb,var(--fg) 4%,transparent);border-radius:14px;
+ transition:transform .35s cubic-bezier(.22,1,.36,1),background .35s,border-color .35s,color .35s}
+.bp-list{gap:6px}
+.bp-i.on,.bp-n.on{border-color:var(--head);outline:none;background:color-mix(in srgb,var(--head) 12%,transparent)}
+.bp-i:active,.bp-n:active{transform:scale(.95);border-color:var(--head);color:var(--head);background:color-mix(in srgb,var(--head) 18%,transparent)}
+#brPop.open .bp-i,#brPop.open .bp-n{animation:bpIn .55s cubic-bezier(.22,1,.36,1) both}
+#brPop.open .bp-i:nth-child(2),#brPop.open .bp-n:nth-child(2){animation-delay:.04s}
+#brPop.open .bp-i:nth-child(3),#brPop.open .bp-n:nth-child(3){animation-delay:.08s}
+#brPop.open .bp-i:nth-child(4),#brPop.open .bp-n:nth-child(4){animation-delay:.12s}
+#brPop.open .bp-i:nth-child(5),#brPop.open .bp-n:nth-child(5){animation-delay:.16s}
+#brPop.open .bp-i:nth-child(n+6),#brPop.open .bp-n:nth-child(n+6){animation-delay:.2s}
+@keyframes bpIn{from{opacity:0;transform:translate3d(0,10px,0) scale(.97)}to{opacity:1;transform:none}}
