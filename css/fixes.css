@@ -189,3 +189,9 @@ html:has(#panel.open,#npanel.open,#ppanel.open,#hpanel.open,#xp.open,#brSearch.o
 }
 @keyframes rtDown{from{transform:translateY(226px)}to{transform:none}}
 @keyframes rtUp{from{transform:translateY(-226px)}to{transform:none}}
+
+/* v10: cursor light removed; candle (cursor torch) off on touch devices */
+#lt,#light{display:none!important}
+@media(pointer:coarse){#cd{display:none!important}
+ body.candle #torchDot,body.candle #torchH,body.candle #torchF{display:none!important}
+ body.candle,body.candle *{cursor:auto!important}body.candle #wick{display:block!important}}

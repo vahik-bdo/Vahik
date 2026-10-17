@@ -7,7 +7,7 @@
 #lpk .lpl button{padding:1rem;border:1px solid var(--line,rgba(255,255,255,.2));border-radius:16px;background:rgba(255,255,255,.06);color:var(--fg,#eee);font:600 1.15rem var(--ff,serif);opacity:0;transform:translate3d(0,12px,0);transition:opacity .6s ease,transform .7s cubic-bezier(.22,1,.36,1),background .3s,border-color .3s;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 #lpk.on .lpl button{opacity:1;transform:none}
 #lpk.on .lpl button:nth-child(2){transition-delay:.08s}#lpk.on .lpl button:nth-child(3){transition-delay:.16s}#lpk.on .lpl button:nth-child(4){transition-delay:.24s}
-#lpk .lpl button.cur{border-color:var(--head,#f0cf7a)}
+
 #lpk .lpl button:active{background:rgba(255,255,255,.14);transform:scale(.98)}
 /* выбор языка: свет при нажатии/удержании */
 #lpk .lpl button{position:relative;overflow:hidden;isolation:isolate;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;--mx:50%;--my:50%}
@@ -37,3 +37,5 @@ body.tour-on :is(#fold,#lamp,#dock,#lang,#brRail){opacity:1!important;visibility
 #tb .tbs{padding:.5rem .2rem;border:0;background:none;color:var(--dim,#aaa)}
 #tb .tbx{padding:.6rem 1.1rem;border:0;border-radius:999px;background:var(--head,#f0cf7a);color:#1b1c1f}
 #tb .tbx:active{transform:scale(.97)}
+
+#lpk .lpl button{touch-action:none}
