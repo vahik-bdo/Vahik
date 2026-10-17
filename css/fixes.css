@@ -95,28 +95,22 @@ button,.btn,[role=button],a,select,label,summary,input[type=range],input[type=ch
   body.idle :is(.br-toolbar,.br-nav,#brRail){opacity:.45!important;pointer-events:auto!important}
 }
 
-/* --- mobile: no pinch-zoom; verse buttons side by side; bigger reliable tap targets --- */
+/* --- mobile: no pinch-zoom; verse buttons stacked; bigger tap targets --- */
 html,body{touch-action:pan-x pan-y}
-.br-verse{padding-right:3.9rem}
-@media(max-width:560px){.br-verse{padding-right:3.6rem}}
-.br-share,.br-like{top:.5rem;bottom:auto;width:28px;height:28px}
-.br-like{right:.4rem}
-.br-share{right:2.45rem}
+.br-verse{padding-right:3rem;min-height:4.6rem}
+@media(max-width:560px){.br-verse{padding-right:2.9rem}}
+.br-share,.br-like{right:.4rem;bottom:auto;width:28px;height:28px;touch-action:manipulation}
+.br-share{top:.4rem}
+.br-like{top:2.5rem}
 .br-share svg{width:15px;height:15px}.br-like svg{width:15px;height:14px}
-.br-share,.br-like{touch-action:manipulation}
-.br-share::after,.br-like::after{content:"";position:absolute;inset:-6px}
 @media(pointer:coarse){.br-share,.br-like{opacity:.45}}
 .br-cassv{padding-right:2.6rem}
-#brRail button,#brPop button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-.br-rb{min-height:50px;padding:9px 0 7px;transition:background .2s,color .2s}
-.br-rb:active{transform:none;background:var(--line)}
-.br-rpn{gap:4px}
+#brRail button,#brPop button{touch-action:manipulation}
+.br-rb{min-height:50px;padding:9px 0 7px}
+.br-rb:active{transform:scale(.96)}
 .br-rpn button{width:36px;height:44px}
-.bp-i{min-height:46px;padding:.7em .85em;transition:none}
+.bp-i{min-height:46px;padding:.7em .85em}
 .bp-grid{gap:6px}
-.bp-n{height:46px;transition:none}
-.bp-i:active,.bp-n:active{background:var(--line)}
-#brPop{transition-duration:.25s}
-#brPop h5{pointer-events:none}
+.bp-n{height:46px}
 .br-select{min-height:44px}
 .br-icon,.br-nav button{min-height:44px}
