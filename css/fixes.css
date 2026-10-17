@@ -203,3 +203,12 @@ section[data-s="atm"] h4[data-t="light"],section[data-s="atm"] #lt,section[data-
 .bp-i,.bp-n{border:1px solid transparent;transition:transform .4s cubic-bezier(.22,1,.36,1),background .35s,color .35s,border-color .35s,box-shadow .45s}
 .bp-i.hold,.bp-n.hold{border-color:var(--head);background:color-mix(in srgb,var(--head) 10%,transparent);color:var(--head);transform:scale(1.04);box-shadow:0 0 18px -6px var(--head),inset 0 0 12px -8px var(--head)}
 .bp-i.hold::before,.bp-n.hold::before{opacity:1}
+
+/* v12: search is pinned to the top, never floats or drags the page when the keyboard is open */
+#brSearch{top:8px!important;max-height:calc(100vh - 16px);max-height:calc(100dvh - 16px);transform:translateX(-50%)!important;transition:opacity .22s ease!important;display:flex;flex-direction:column}
+#brSearch.open{transform:translateX(-50%)!important}
+#brSearch .br-search-head{touch-action:none;flex:none}
+#brSearch .br-search-results{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;-webkit-overflow-scrolling:touch}
+#brSearchInput{font-size:16px}
+#brScrim{touch-action:none}
+html:has(#brSearch.open),html:has(#brSearch.open) body{position:fixed;inset:0;width:100%;overflow:hidden!important;overscroll-behavior:none}
