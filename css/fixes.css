@@ -212,3 +212,9 @@ section[data-s="atm"] h4[data-t="light"],section[data-s="atm"] #lt,section[data-
 #brSearchInput{font-size:16px}
 #brScrim{touch-action:none}
 html:has(#brSearch.open),html:has(#brSearch.open) body{position:fixed;inset:0;width:100%;overflow:hidden!important;overscroll-behavior:none}
+
+/* v13: slimmer edge tab, arrow starts right at the screen edge */
+@media(max-width:880px){
+ #brRt{width:19px;height:52px;padding:0;border-radius:0 14px 14px 0;justify-items:center}
+ #brRt svg{width:14px;height:14px;margin-left:-3px}
+}
