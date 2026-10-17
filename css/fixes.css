@@ -177,3 +177,12 @@ html:has(#panel.open,#npanel.open,#ppanel.open,#hpanel.open,#xp.open,#brSearch.o
  #brRb{display:flex!important;opacity:0;visibility:hidden;pointer-events:none;transform:translate3d(-10px,0,0) scale(.97);transform-origin:left center;transition:opacity .35s ease,transform .45s cubic-bezier(.22,1,.36,1),visibility 0s linear .45s}
  #brRail.open #brRb{opacity:1;visibility:visible;pointer-events:auto;transform:none;transition:opacity .4s ease,transform .5s cubic-bezier(.22,1,.36,1),visibility 0s}
 }
+
+/* v7: closed rail keeps the toggle exactly centered (hidden panel out of flow) */
+@media(max-width:880px){
+ #brRail:not(.open) #brRb{position:absolute;left:0;top:0}
+ #brRail.touched.open #brRt{animation:rtDown .6s cubic-bezier(.22,1,.36,1) both}
+ #brRail.touched:not(.open) #brRt{animation:rtUp .6s cubic-bezier(.22,1,.36,1) both}
+}
+@keyframes rtDown{from{transform:translateY(226px)}to{transform:none}}
+@keyframes rtUp{from{transform:translateY(-226px)}to{transform:none}}
