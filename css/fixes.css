@@ -195,3 +195,11 @@ html:has(#panel.open,#npanel.open,#ppanel.open,#hpanel.open,#xp.open,#brSearch.o
 @media(pointer:coarse){#cd{display:none!important}
  body.candle #torchDot,body.candle #torchH,body.candle #torchF{display:none!important}
  body.candle,body.candle *{cursor:auto!important}body.candle #wick{display:block!important}}
+
+/* v11: settings: no cursor-light section; book/chapter lists get the same flowing glow as the language chooser */
+section[data-s="atm"] h4[data-t="light"],section[data-s="atm"] #lt,section[data-s="atm"] .adv{display:none!important}
+.bp-i,.bp-n{position:relative;overflow:hidden;isolation:isolate;--mx:50%;--my:50%;-webkit-user-select:none;user-select:none}
+.bp-i::before,.bp-n::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:radial-gradient(circle 90px at var(--mx) var(--my),color-mix(in srgb,var(--head) 38%,transparent),transparent 72%);opacity:0;transition:opacity .35s ease}
+.bp-i,.bp-n{border:1px solid transparent;transition:transform .4s cubic-bezier(.22,1,.36,1),background .35s,color .35s,border-color .35s,box-shadow .45s}
+.bp-i.hold,.bp-n.hold{border-color:var(--head);background:color-mix(in srgb,var(--head) 10%,transparent);color:var(--head);transform:scale(1.04);box-shadow:0 0 18px -6px var(--head),inset 0 0 12px -8px var(--head)}
+.bp-i.hold::before,.bp-n.hold::before{opacity:1}
