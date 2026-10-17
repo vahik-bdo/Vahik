@@ -180,3 +180,12 @@ html:has(#panel.open,#npanel.open,#ppanel.open,#hpanel.open,#xp.open,#brSearch.o
 
 /* v8: stable vertical position (not tied to the browser bar) */
 @media(max-width:880px){#brRail{top:50vh;top:50svh}}
+
+/* v9: closed toggle stays at screen center; slides smoothly to the top of the panel when opened */
+@media(max-width:880px){
+ #brRail:not(.open) #brRb{position:absolute;left:0;top:0}
+ #brRail.touched.open #brRt{animation:rtDown .55s cubic-bezier(.22,1,.36,1) both}
+ #brRail.touched:not(.open) #brRt{animation:rtUp .55s cubic-bezier(.22,1,.36,1) both}
+}
+@keyframes rtDown{from{transform:translateY(226px)}to{transform:none}}
+@keyframes rtUp{from{transform:translateY(-226px)}to{transform:none}}
