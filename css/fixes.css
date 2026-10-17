@@ -114,3 +114,18 @@ html,body{touch-action:pan-x pan-y}
 .bp-n{height:46px}
 .br-select{min-height:44px}
 .br-icon,.br-nav button{min-height:44px}
+
+/* --- smoothness: no heavy backdrop blur on full-screen overlays, GPU-friendly fades --- */
+#lpk,#pfm{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+#lpk{background:rgba(8,9,12,.92)}
+#pfm{background:rgba(8,9,12,.82)}
+#pfm .pfc{filter:none!important;will-change:transform,opacity}
+#lpk .lpl button{will-change:transform,opacity}
+#prayer{will-change:opacity;transform:translateZ(0);transition:opacity 1.1s cubic-bezier(.4,0,.2,1),visibility 0s linear 1.1s}
+#prayer.off{transition:opacity 1.1s cubic-bezier(.4,0,.2,1),visibility 0s linear 1.1s}
+#prayer>*{transition:opacity .6s ease}
+#prayer.off>*{opacity:0}
+#brRt,#brRt svg{will-change:transform}
+#brRail{will-change:opacity,translate}
+#brPop{will-change:opacity,transform}
+@media(max-width:700px),(pointer:coarse){#brPop,#brRb{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:color-mix(in srgb,var(--panel) 94%,#000)}}
