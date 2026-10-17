@@ -140,17 +140,10 @@ html,body{touch-action:pan-x pan-y}
 .br-verse{min-height:5.4rem}
 .br-share,.br-like{width:32px;height:32px;right:.35rem}
 .br-share{top:.45rem}
-.br-like{top:2.8rem}
+.br-like{top:auto;bottom:.45rem}
 .br-share svg,.br-like svg{width:17px;height:17px}
-.bp-i,.bp-n{border:1px solid var(--line);background:color-mix(in srgb,var(--fg) 4%,transparent);border-radius:14px;
- transition:transform .35s cubic-bezier(.22,1,.36,1),background .35s,border-color .35s,color .35s}
-.bp-list{gap:6px}
-.bp-i.on,.bp-n.on{border-color:var(--head);outline:none;background:color-mix(in srgb,var(--head) 12%,transparent)}
-.bp-i:active,.bp-n:active{transform:scale(.95);border-color:var(--head);color:var(--head);background:color-mix(in srgb,var(--head) 18%,transparent)}
-#brPop.open .bp-i,#brPop.open .bp-n{animation:bpIn .55s cubic-bezier(.22,1,.36,1) both}
-#brPop.open .bp-i:nth-child(2),#brPop.open .bp-n:nth-child(2){animation-delay:.04s}
-#brPop.open .bp-i:nth-child(3),#brPop.open .bp-n:nth-child(3){animation-delay:.08s}
-#brPop.open .bp-i:nth-child(4),#brPop.open .bp-n:nth-child(4){animation-delay:.12s}
-#brPop.open .bp-i:nth-child(5),#brPop.open .bp-n:nth-child(5){animation-delay:.16s}
-#brPop.open .bp-i:nth-child(n+6),#brPop.open .bp-n:nth-child(n+6){animation-delay:.2s}
-@keyframes bpIn{from{opacity:0;transform:translate3d(0,10px,0) scale(.97)}to{opacity:1;transform:none}}
+.br-share svg{transform:translateX(-2px)}
+/* hold & slide selection in book/chapter lists */
+.bp-i,.bp-n{transition:transform .35s cubic-bezier(.22,1,.36,1),background .3s,color .3s}
+.bp-i.hold,.bp-n.hold{transform:scale(1.06);background:color-mix(in srgb,var(--head) 20%,transparent);color:var(--head);box-shadow:0 0 0 1px var(--head),0 6px 18px rgba(0,0,0,.35)}
+#brPop.drag{overflow:hidden}
