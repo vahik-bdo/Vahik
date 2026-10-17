@@ -7,7 +7,7 @@ function picker(){
  const m=document.createElement('div');m.id='lpk';m.setAttribute('role','dialog');m.setAttribute('aria-modal','true');
  m.innerHTML='<div class="lpc"><div class="lpt">Выберите язык<small>Choose your language · Ընտրեք լեզուն · Sprache wählen</small></div><div class="lpl"></div></div>';
  const box=m.querySelector('.lpl');
- Object.keys(NAMES).forEach(l=>{const b=document.createElement('button');b.type='button';b.textContent=NAMES[l];if(R.lang===l)b.className='cur';
+ Object.keys(NAMES).forEach(l=>{const b=document.createElement('button');b.type='button';b.textContent=NAMES[l];
   const lit=(e)=>{const r=b.getBoundingClientRect();b.style.setProperty('--mx',(e.clientX-r.left)+'px');b.style.setProperty('--my',(e.clientY-r.top)+'px');b.classList.add('lit')},unlit=()=>b.classList.remove('lit');
   b.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse')lit(e)});
   b.addEventListener('pointermove',e=>{if(b.classList.contains('lit'))lit(e)});
