@@ -171,3 +171,9 @@ html:has(#panel.open,#npanel.open,#ppanel.open,#hpanel.open,#xp.open,#brSearch.o
 @keyframes bpSoft{from{opacity:0;transform:translate3d(0,6px,0)}to{opacity:1;transform:none}}
 .bp-i.hold,.bp-n.hold{transform:scale(1.03);background:color-mix(in srgb,var(--head) 14%,transparent);color:var(--head);box-shadow:none}
 .bp-i,.bp-n{transition:transform .3s cubic-bezier(.22,1,.36,1),background .3s,color .3s}
+
+/* v6: animated close of the left rail */
+@media(max-width:880px){
+ #brRb{display:flex!important;opacity:0;visibility:hidden;pointer-events:none;transform:translate3d(-10px,0,0) scale(.97);transform-origin:left center;transition:opacity .35s ease,transform .45s cubic-bezier(.22,1,.36,1),visibility 0s linear .45s}
+ #brRail.open #brRb{opacity:1;visibility:visible;pointer-events:auto;transform:none;transition:opacity .4s ease,transform .5s cubic-bezier(.22,1,.36,1),visibility 0s}
+}
