@@ -178,20 +178,5 @@ html:has(#panel.open,#npanel.open,#ppanel.open,#hpanel.open,#xp.open,#brSearch.o
  #brRail.open #brRb{opacity:1;visibility:visible;pointer-events:auto;transform:none;transition:opacity .4s ease,transform .5s cubic-bezier(.22,1,.36,1),visibility 0s}
 }
 
-/* v7: closed rail keeps the toggle exactly centered (hidden panel out of flow) */
-@media(max-width:880px){
- #brRail:not(.open) #brRb{position:absolute;left:0;top:0}
- #brRail.touched.open #brRt{animation:rtDown .6s cubic-bezier(.22,1,.36,1) both}
- #brRail.touched:not(.open) #brRt{animation:rtUp .6s cubic-bezier(.22,1,.36,1) both}
-}
-@keyframes rtDown{from{transform:translateY(226px)}to{transform:none}}
-@keyframes rtUp{from{transform:translateY(-226px)}to{transform:none}}
-
-/* v8: toggle never moves; panel slides out horizontally beside it; stable vs. browser bar */
-@media(max-width:880px){
- #brRail{top:50vh;top:50svh;translate:none!important;display:block;width:0;height:0}
- #brRt,#brRail.open #brRt{position:absolute;left:0;top:-32px;margin:0;align-self:auto;width:26px;height:64px;padding:0 0 0 4px;border:1px solid var(--line);border-left:0;border-radius:0 16px 16px 0;box-sizing:border-box;animation:none!important}
- #brRail #brRb{position:absolute;left:34px;top:0;transform:none!important;animation:none!important;translate:-10px -50%;transform-origin:left center;transition:opacity .35s ease,translate .45s cubic-bezier(.22,1,.36,1),visibility 0s linear .45s}
- #brRail.open #brRb{translate:0 -50%;transition:opacity .4s ease,translate .5s cubic-bezier(.22,1,.36,1),visibility 0s}
- #brPop{left:100px;width:min(300px,calc(100vw - 116px))}
-}
+/* v8: stable vertical position (not tied to the browser bar) */
+@media(max-width:880px){#brRail{top:50vh;top:50svh}}
