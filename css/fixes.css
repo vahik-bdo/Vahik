@@ -147,3 +147,27 @@ html,body{touch-action:pan-x pan-y}
 .bp-i,.bp-n{transition:transform .35s cubic-bezier(.22,1,.36,1),background .3s,color .3s}
 .bp-i.hold,.bp-n.hold{transform:scale(1.06);background:color-mix(in srgb,var(--head) 20%,transparent);color:var(--head);box-shadow:0 0 0 1px var(--head),0 6px 18px rgba(0,0,0,.35)}
 #brPop.drag{overflow:hidden}
+
+/* --- v5: no scrollbar / pull-to-refresh, scroll lock under overlays, softer animations --- */
+html,body{scrollbar-width:none;-ms-overflow-style:none;overscroll-behavior-y:none}
+::-webkit-scrollbar{display:none;width:0;height:0}
+html:has(#panel.open,#npanel.open,#ppanel.open,#hpanel.open,#xp.open,#brSearch.open,#brHist.open,#brCommentary.open,#modal.open,#brPop.open,#pfm,#lpk),
+html:has(#panel.open,#npanel.open,#ppanel.open,#hpanel.open,#xp.open,#brSearch.open,#brHist.open,#brCommentary.open,#modal.open,#brPop.open,#pfm,#lpk) body{overflow:hidden!important;overscroll-behavior:none}
+#brPop,#panel,#npanel,#ppanel,#hpanel,#xp,#brSearch,#brHist,#brCommentary,#modal{overscroll-behavior:contain;touch-action:pan-y}
+#brPop{touch-action:pan-y}
+/* rail: gentle open + press */
+@keyframes rbIn{from{opacity:0;transform:translate3d(-10px,0,0) scale(.97)}to{opacity:1;transform:none}}
+@keyframes rbItem{from{opacity:0;transform:translate3d(-6px,0,0)}to{opacity:1;transform:none}}
+#brRail.open #brRb{animation:rbIn .5s cubic-bezier(.22,1,.36,1) both}
+#brRail.open #brRb>*{animation:rbItem .5s cubic-bezier(.22,1,.36,1) both}
+#brRail.open #brRb>*:nth-child(2){animation-delay:.03s}#brRail.open #brRb>*:nth-child(3){animation-delay:.06s}#brRail.open #brRb>*:nth-child(4){animation-delay:.09s}
+#brRail.open #brRb>*:nth-child(5){animation-delay:.12s}#brRail.open #brRb>*:nth-child(6){animation-delay:.15s}#brRail.open #brRb>*:nth-child(7){animation-delay:.18s}#brRail.open #brRb>*:nth-child(8){animation-delay:.21s}
+.br-rb,.br-rpn button,#brRt{transition:background .35s ease,color .35s ease,transform .4s cubic-bezier(.22,1,.36,1)}
+.br-rb:active,.br-rpn button:active{transform:scale(.93);background:color-mix(in srgb,var(--head) 14%,transparent);color:var(--head)}
+#brRt:active{transform:scale(.94)}
+#brRt svg{transition:transform .6s cubic-bezier(.22,1,.36,1)}
+/* lists: modest */
+#brPop.open .bp-i,#brPop.open .bp-n{animation:bpSoft .45s cubic-bezier(.22,1,.36,1) both}
+@keyframes bpSoft{from{opacity:0;transform:translate3d(0,6px,0)}to{opacity:1;transform:none}}
+.bp-i.hold,.bp-n.hold{transform:scale(1.03);background:color-mix(in srgb,var(--head) 14%,transparent);color:var(--head);box-shadow:none}
+.bp-i,.bp-n{transition:transform .3s cubic-bezier(.22,1,.36,1),background .3s,color .3s}
