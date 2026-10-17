@@ -26,13 +26,13 @@ var P=window.__pf={v:V,get:function(){try{var x=localStorage.getItem(K);if(x!==n
 try{if((+localStorage.getItem('pfVisits')||0)>3&&P.get()===null)P.set()}catch(e){} /* кто уже видел текст 3 раза по старой схеме, тому больше не показываем */
 R.setAttribute('data-pf',P.get()===V?'0':'1')})()</script><script>try{if(!localStorage.getItem('fontMig2')){var k='theo-reader-v1',d=JSON.parse(localStorage.getItem(k)||'null');if(d){d.font='Literata';localStorage.setItem(k,JSON.stringify(d))}localStorage.setItem('fontMig2','1')}}catch(e){}</script><script>try{var k2='theo-reader-v1',raw=localStorage.getItem(k2),d2=JSON.parse(raw||'null')||{},R2=document.documentElement,S2=R2.style;if(!localStorage.getItem('lightMig1')){if(raw){d2.light=false;d2.candle=false;localStorage.setItem(k2,JSON.stringify(d2))}localStorage.setItem('lightMig1','1')}if(d2.theme)R2.setAttribute('data-theme',d2.theme);if(d2.bg)R2.setAttribute('data-bg',d2.bg);if(d2.head===undefined||d2.head)S2.setProperty('--head',d2.head||'#8fd3c8');if(d2.color)S2.setProperty('--fg',d2.color);if(d2.lcolor)S2.setProperty('--lc',d2.lcolor);if(d2.lsize)S2.setProperty('--ls',d2.lsize+'px');if(d2.size)S2.setProperty('--base-font-size',d2.size+'px')}catch(e){document.documentElement.style.setProperty('--head','#8fd3c8')}</script><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23f4f1ea'/%3E%3Cg fill='%23000'%3E%3Crect x='29' y='7' width='6' height='50' rx='1'/%3E%3Crect x='23' y='12' width='18' height='4' rx='1'/%3E%3Crect x='15' y='22' width='34' height='5' rx='1'/%3E%3Cpath d='M23 44l18 6-1.4 4.2L21.6 48.2z'/%3E%3C/g%3E%3C/svg%3E"><link rel="icon" type="image/png" sizes="48x48" href="icons/favicon-48.png">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Armenian:wght@400;600&family=Manrope:wght@400;500;600&family=Noto+Sans+Armenian:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<link rel="preload" as="image" href="icons/cross.webp" crossorigin><script>(function(){var d=document.documentElement,f=function(){d.classList.add("xm")},i=new Image();i.crossOrigin="anonymous";i.onload=i.onerror=f;i.src="icons/cross.webp";setTimeout(f,3000)})()</script><link rel="stylesheet" href="css/cross.css?v=e5a8c2941f"><link rel="stylesheet" href="css/base.css?v=e5a8c2941f">
-<link rel="stylesheet" href="css/reader.css?v=e5a8c2941f">
-<link rel="stylesheet" href="css/fixes.css?v=e5a8c2941f">
-<link rel="stylesheet" href="css/armenian.css?v=e5a8c2941f">
-<link rel="stylesheet" href="css/translation-guide.css?v=e5a8c2941f">
-<link rel="stylesheet" href="css/likes.css?v=e5a8c2941f"><link rel="stylesheet" href="css/compare.css?v=e5a8c2941f">
-<link rel="stylesheet" href="css/torch.css?v=e5a8c2941f"><link rel="stylesheet" href="css/effects.css?v=e5a8c2941f"><link rel="stylesheet" href="css/layout.css?v=e5a8c2941f"><link rel="stylesheet" href="css/preface-modal.css?v=e5a8c2941f"><link rel="stylesheet" href="css/tour.css?v=e5a8c2941f"><link rel="stylesheet" href="css/contact.css?v=e5a8c2941f"><link rel="stylesheet" href="css/hy-latin.css?v=e5a8c2941f"><link rel="stylesheet" href="css/perf.css?v=e5a8c2941f">
+<link rel="preload" as="image" href="icons/cross.webp" crossorigin><script>(function(){var d=document.documentElement,f=function(){d.classList.add("xm")},i=new Image();i.crossOrigin="anonymous";i.onload=i.onerror=f;i.src="icons/cross.webp";setTimeout(f,3000)})()</script><link rel="stylesheet" href="css/cross.css?v=f6b9d3a52a"><link rel="stylesheet" href="css/base.css?v=f6b9d3a52a">
+<link rel="stylesheet" href="css/reader.css?v=f6b9d3a52a">
+<link rel="stylesheet" href="css/fixes.css?v=f6b9d3a52a">
+<link rel="stylesheet" href="css/armenian.css?v=f6b9d3a52a">
+<link rel="stylesheet" href="css/translation-guide.css?v=f6b9d3a52a">
+<link rel="stylesheet" href="css/likes.css?v=f6b9d3a52a"><link rel="stylesheet" href="css/compare.css?v=f6b9d3a52a">
+<link rel="stylesheet" href="css/torch.css?v=f6b9d3a52a"><link rel="stylesheet" href="css/effects.css?v=f6b9d3a52a"><link rel="stylesheet" href="css/layout.css?v=f6b9d3a52a"><link rel="stylesheet" href="css/preface-modal.css?v=f6b9d3a52a"><link rel="stylesheet" href="css/tour.css?v=f6b9d3a52a"><link rel="stylesheet" href="css/contact.css?v=f6b9d3a52a"><link rel="stylesheet" href="css/hy-latin.css?v=f6b9d3a52a"><link rel="stylesheet" href="css/perf.css?v=f6b9d3a52a">
 </head>
 <body>
 <div id="bg"></div><canvas id="fx"></canvas><canvas id="fx2"></canvas>
@@ -69,26 +69,26 @@ R.setAttribute('data-pf',P.get()===V?'0':'1')})()</script><script>try{if(!localS
 <button class="btn" id="sel" data-t="addn">Добавить размышление</button>
 <div id="modal"><div><q id="mq"></q><textarea id="mt" placeholder="Ваше размышление…"></textarea><div class="row" style="margin-top:.8rem;justify-content:flex-end"><button class="btn" id="mc" data-t="cancel">Отмена</button><button class="btn on" id="ms" data-t="save">Сохранить</button></div></div></div>
 <div id="prayer"><div class="crossw sm"><div class="cross"></div></div><p id="pt">Господи Иисусе Христе, помилуй меня, грешного.</p><button class="btn" id="pb" data-t="amen">Аминь</button></div>
-<script src="js/hy-latin.js?v=e5a8c2941f"></script>
-<script src="js/app.js?v=e5a8c2941f"></script>
-<script src="js/perf.js?v=e5a8c2941f"></script>
-<script src="js/soundscape.js?v=e5a8c2941f"></script>
+<script src="js/hy-latin.js?v=f6b9d3a52a"></script>
+<script src="js/app.js?v=f6b9d3a52a"></script>
+<script src="js/perf.js?v=f6b9d3a52a"></script>
+<script src="js/soundscape.js?v=f6b9d3a52a"></script>
 <!-- TORCH MODE (candle) -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="tHeat" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".012 .035" numOctaves="2" seed="3" result="n"><animate attributeName="baseFrequency" dur="7s" values=".012 .035;.02 .05;.012 .035" repeatCount="indefinite"/></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n" scale="14" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
-<script src="js/torch.js?v=e5a8c2941f"></script>
+<script src="js/torch.js?v=f6b9d3a52a"></script>
 <!-- /TORCH MODE -->
-<script src="js/translation-info.js?v=e5a8c2941f"></script>
-<script src="js/reader.js?v=e5a8c2941f"></script>
-<script src="js/scroll-reveal.js?v=e5a8c2941f"></script>
-<script src="js/scroll-blur.js?v=e5a8c2941f"></script>
-<script src="js/preface-gate.js?v=e5a8c2941f"></script>
-<script src="js/tour.js?v=e5a8c2941f"></script>
+<script src="js/translation-info.js?v=f6b9d3a52a"></script>
+<script src="js/reader.js?v=f6b9d3a52a"></script>
+<script src="js/scroll-reveal.js?v=f6b9d3a52a"></script>
+<script src="js/scroll-blur.js?v=f6b9d3a52a"></script>
+<script src="js/preface-gate.js?v=f6b9d3a52a"></script>
+<script src="js/tour.js?v=f6b9d3a52a"></script>
 <!-- SMOOTH INNER SCROLL + KEYS + iPhone fullscreen hint -->
-<script src="js/smooth-scroll.js?v=e5a8c2941f"></script>
-<script src="js/contact.js?v=e5a8c2941f"></script>
+<script src="js/smooth-scroll.js?v=f6b9d3a52a"></script>
+<script src="js/contact.js?v=f6b9d3a52a"></script>
 
-<script src="js/install.js?v=e5a8c2941f"></script>
-<script src="js/ready.js?v=e5a8c2941f"></script>
+<script src="js/install.js?v=f6b9d3a52a"></script>
+<script src="js/ready.js?v=f6b9d3a52a"></script>
 <script>
 /* Обновления сайта: проверка при открытии и при возвращении в приложение; тост «Обновить» после смены версии */
 (function(){
