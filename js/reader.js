@@ -236,7 +236,7 @@ qa('#brReader .br-cassv').forEach(p=>{const b=p.querySelector('b');if(b)addShare
 function addShare(el,ref,text,src,label){if(el.querySelector('.br-share'))return;const b=document.createElement('button');b.type='button';b.className='br-share';b.title=label;b.setAttribute('aria-label',label);
 b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4M8 8l4-4 4 4M5 13v6h14v-6"/></svg>';
 b.onclick=e=>{e.stopPropagation();shareVerse(ref,text.trim(),src?src.textContent.trim():T('cass'))};el.append(b)}
-async function shareVerse(ref,text,src){const cs=getComputedStyle(document.documentElement),g=k=>cs.getPropertyValue(k).trim(),bg=g('--bg')||'#4a4c50',fg=g('--fg')||'#eee',ac=g('--accent')||'#d8b45a',dim=g('--dim')||'#aaa';
+async function shareVerse(ref,text,src){const cs=getComputedStyle(document.documentElement),g=k=>cs.getPropertyValue(k).trim(),bg=g('--bg')||'#4a4c50',fg=g('--fg')||'#eee',ac=g('--head')||g('--accent')||'#d8b45a',dim=g('--dim')||'#aaa';
 const W=1080,H=1350,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');
 x.fillStyle=bg;x.fillRect(0,0,W,H);const gr=x.createRadialGradient(W/2,H*.38,40,W/2,H*.38,H*.75);gr.addColorStop(0,ac);gr.addColorStop(1,'rgba(0,0,0,0)');x.globalAlpha=.16;x.fillStyle=gr;x.fillRect(0,0,W,H);x.globalAlpha=1;
 x.fillStyle=ac;x.fillRect(W/2-4,70,8,110);x.fillRect(W/2-22,86,44,6);x.fillRect(W/2-34,112,68,8);x.save();x.translate(W/2,166);x.rotate(.2);x.fillRect(-22,-3,44,7);x.restore();
@@ -249,6 +249,7 @@ x.fillStyle=dim;x.font="500 28px Manrope,'Segoe UI',sans-serif";x.fillText(src,W
 const blob=await new Promise(r=>c.toBlob(r,'image/png'));if(!blob)return;const fn=`verse-${br.book}-${br.chapter}-${String(ref).replace(/\D+/g,'_')}.png`,file=new File([blob],fn,{type:'image/png'});
 if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],title:`${nm} ${br.chapter}:${ref}`});return}catch(e){if(e&&e.name==='AbortError')return}}
 const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=fn;document.body.append(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000)}
+window.__shareVerse=shareVerse;
 // Replace the original content after the original interface has initialized.
 const originalI18n=ui.i18n.bind(ui);ui.i18n=function(){originalI18n();mount(false)};
 // Keep the four-language interface (ru, en, hy, de), prayer, notes, themes, particles, light/candle, audio, nature dock, fullscreen and all original controls.
