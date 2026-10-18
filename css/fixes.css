@@ -225,3 +225,16 @@ html:has(#brSearch.open),html:has(#brSearch.open) body{position:fixed;inset:0;wi
  #brRt svg{width:16px;height:16px;margin-left:-4px}
  #brRt::after{content:"";position:absolute;top:-18px;bottom:-18px;left:0;right:-16px}
 }
+
+/* v15: symmetric edge tab, slightly smaller but easier tap zone */
+@media(max-width:880px){
+ #brRt{width:28px;height:64px;padding:0;display:grid;place-items:center}
+ #brRt svg{width:16px;height:16px;margin:0;display:block}
+ #brRt::after{top:-28px;bottom:-28px;left:0;right:-8px}
+}
+
+/* v16: tab height (top-to-bottom) fitted between the two marks; tap zone just under the drawn circle */
+@media(max-width:880px){
+ #brRt{width:28px;height:96px;border-radius:0 18px 18px 0}
+ #brRt::after{top:-20px;bottom:-20px;left:0;right:-8px}
+}
