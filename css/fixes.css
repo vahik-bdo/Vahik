@@ -322,3 +322,6 @@ body.zen .ui,body.zen .br-share,body.zen .br-like,body.zen #brRail,body.zen #brP
 .br-rpn{margin-top:2px;padding-top:2px}
 .br-rpn button{height:32px}
 #dock,#dm{gap:4px}
+
+/* button brightness slider */
+#dock,#brRail,#lang,#lamp,.br-share,.br-like{filter:brightness(var(--ubr,1))}
