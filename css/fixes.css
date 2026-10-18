@@ -306,11 +306,12 @@ body.msel-on .br-share,body.msel-on .br-like{opacity:0!important;pointer-events:
 html #panel .tabs{margin-top:-1.1rem;margin-bottom:.65rem}
 html #panel .tabs button{align-items:flex-end;min-height:44px;padding:0 .2em 9px}
 /* bottom controls: breathing room above the browser bar */
-html #dock{bottom:max(1.9rem,calc(env(safe-area-inset-bottom,0px) + .9rem))}
-html #panel,html #npanel,html #ppanel,html #hpanel{bottom:calc(5.3rem + env(safe-area-inset-bottom,0px))}
+html #dock{bottom:max(.5rem,env(safe-area-inset-bottom,0px))}
+html #panel,html #npanel,html #ppanel,html #hpanel{bottom:calc(3.6rem + env(safe-area-inset-bottom,0px))}
 /* books/chapters popup: solid (no text ghosting through), calmer spacing */
-html #brPop{background:color-mix(in srgb,var(--bg) 97%,var(--panel));padding:1rem 1rem 1.05rem;border-radius:26px;max-height:64dvh;box-shadow:0 20px 60px rgba(0,0,0,.4);left:calc(max(8px,env(safe-area-inset-left)) + 72px);width:min(290px,calc(100vw - 72px - 8px - 16px))}
-html #brPop h5{margin:1rem .4rem .45rem;letter-spacing:.1em}html #brPop h5:first-child{margin-top:.1rem}
-html #brPop .bp-list{gap:4px}html #brPop .bp-i{padding:.7em .9em;border-radius:14px}
+html #brPop{background:color-mix(in srgb,var(--bg) 97%,var(--panel));padding:.8rem .8rem .85rem;border-radius:24px;max-height:64dvh;box-shadow:0 20px 60px rgba(0,0,0,.4);left:calc(max(8px,env(safe-area-inset-left)) + 66px);width:min(290px,calc(100vw - 74px - 12px))}
+html #brPop h5{margin:.8rem .4rem .35rem;letter-spacing:.1em}html #brPop h5:first-child{margin-top:.1rem}
+html #brPop .bp-list{gap:2px}html #brPop .bp-i{min-height:38px;padding:.45em .85em;border-radius:12px}
+html #brPop .bp-grid{gap:4px}html #brPop .bp-n{height:40px}
 /* tap on empty area closes an open side panel; the page itself stays locked (no scrolling) */
 html:has(#panel.open,#npanel.open,#ppanel.open,#hpanel.open)::after{content:"";position:fixed;inset:0;z-index:39;touch-action:none;background:transparent}
