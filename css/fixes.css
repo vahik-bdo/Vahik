@@ -325,3 +325,18 @@ body.zen .ui,body.zen .br-share,body.zen .br-like,body.zen #brRail,body.zen #brP
 
 /* button brightness slider */
 #dock,#brRail,#lang,#lamp,.br-share,.br-like{filter:brightness(var(--ubr,1))}
+
+/* crisp cross: no CSS zoom (it rasterised the masked glow at low res and blurred it) */
+body.br-mode .hero .crossw{zoom:1;width:clamp(68px,13.6vw,93px)}
+.cross{-webkit-mask-size:100% 100%;mask-size:100% 100%;will-change:auto}
+
+/* settings panel: original look (as in the saved 1.html) — sans UI font, flowing pill rows, classic underline tabs */
+#panel,#panel .btn,#panel button,#panel input,#panel select,#panel h4,#panel .tabs button{font-family:'Manrope','Noto Sans Armenian',sans-serif}
+#panel #bgs,#panel #fonts,#panel #colors,#panel #heads,#panel #lcolors{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;justify-items:initial;grid-template-columns:none}
+#panel #bgs .btn,#panel #fonts .btn{min-height:0;padding:.55em 1em;overflow:visible;text-overflow:clip;white-space:normal;text-align:center}
+#panel #colors .btn,#panel #heads .btn,#panel #lcolors .btn{min-height:0;padding:.55em 1em;font-size:14px}
+#panel #colors .sw,#panel #heads .sw,#panel #lcolors .sw,#panel #colors input[type=color],#panel #heads input[type=color],#panel #lcolors input[type=color]{width:30px;max-width:none;height:30px;aspect-ratio:auto}
+#themes{display:flex;flex-wrap:wrap;gap:.4rem;justify-items:initial;grid-template-columns:none}
+#themes .sw{width:30px;max-width:none;height:30px;aspect-ratio:auto}
+html #panel .tabs{margin-top:0;margin-bottom:.9rem}
+html #panel .tabs button{align-items:center;min-height:0;padding:.6em .2em}

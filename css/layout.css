@@ -79,4 +79,4 @@ body.br-mode main{padding-bottom:6vh}
 #panel #pfAgain{width:100%}
 
 /* шрифт настроек — Literata */
-#panel,#panel .btn,#panel button,#panel input,#panel select,#panel h4,#panel .tabs button{font-family:'Literata','Noto Serif Armenian','PT Serif',Georgia,serif}
+#panel,#panel .btn,#panel button,#panel input,#panel select,#panel h4,#panel .tabs button{font-family:'Literata','Literata Local','Noto Serif Armenian','PT Serif',Georgia,serif}
