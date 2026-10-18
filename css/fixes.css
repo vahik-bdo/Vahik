@@ -314,3 +314,11 @@ html body.br-mode .br-meta .br-info{flex:none;margin-left:0}
 
 /* reader (zen) mode */
 body.zen .ui,body.zen .br-share,body.zen .br-like,body.zen #brRail,body.zen #brPrev,body.zen #brNext{opacity:0!important;pointer-events:none!important;transition:opacity .6s ease}
+
+/* v23 compact spacing: rail + bottom dock */
+#brRb{gap:0;padding:6px 5px}
+#brRb .br-rb{min-height:0;padding:6px 0 5px;gap:1px}
+#brRpos{padding:2px 0 4px;margin-bottom:2px}
+.br-rpn{margin-top:2px;padding-top:2px}
+.br-rpn button{height:32px}
+#dock,#dm{gap:4px}
