@@ -238,3 +238,10 @@ html:has(#brSearch.open),html:has(#brSearch.open) body{position:fixed;inset:0;wi
  #brRt{width:28px;height:96px;border-radius:0 18px 18px 0}
  #brRt::after{top:-20px;bottom:-20px;left:0;right:-8px}
 }
+
+/* v17: back to the original tab size, only slightly narrower so it stays out of the verse numbers */
+@media(max-width:880px){
+ #brRt{width:22px;height:64px;padding:0;border-radius:0 16px 16px 0}
+ #brRt svg{width:16px;height:16px;margin:0}
+ #brRt::after{top:-10px;bottom:-10px;left:0;right:0}
+}
