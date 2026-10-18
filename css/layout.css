@@ -65,18 +65,7 @@ body.br-mode main{padding-bottom:6vh}
 #autoTh.on .at-sw{background:var(--accent)}
 #autoTh.on .at-sw i{transform:translateX(18px);background:var(--bg);opacity:1}
 /* фон и шрифты: две ровные колонки вместо рваных строк */
-#panel #bgs,#panel #fonts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.45rem}
-#panel #bgs .btn,#panel #fonts .btn{min-width:0;min-height:42px;padding:.45em .6em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center}
 /* цвета: «Авто», шесть кружков и выбор своего цвета — всегда в одну строку */
-#panel #colors,#panel #heads,#panel #lcolors{display:grid;grid-template-columns:auto repeat(7,minmax(0,1fr));gap:.4rem;align-items:center;justify-items:center}
-#panel #colors .btn,#panel #heads .btn,#panel #lcolors .btn{min-height:34px;padding:.3em .8em;font-size:13px}
-#panel #colors .sw,#panel #heads .sw,#panel #lcolors .sw{width:100%;max-width:34px;height:auto;aspect-ratio:1}
-#panel #colors input[type=color],#panel #heads input[type=color],#panel #lcolors input[type=color]{width:100%;max-width:34px;height:auto;aspect-ratio:1;padding:0;border:2px solid var(--line);border-radius:50%;background:none;cursor:pointer;overflow:hidden}
-#panel input[type=color]::-webkit-color-swatch-wrapper{padding:0}
-#panel input[type=color]::-webkit-color-swatch{border:0;border-radius:50%}
-#panel input[type=color]::-moz-color-swatch{border:0;border-radius:50%}
-#panel #fonts .btn:last-child:nth-child(odd){grid-column:1/-1}
 #panel #pfAgain{width:100%}
 
 /* шрифт настроек — Literata */
-#panel,#panel .btn,#panel button,#panel input,#panel select,#panel h4,#panel .tabs button{font-family:'Literata','Literata Local','Noto Serif Armenian','PT Serif',Georgia,serif}
