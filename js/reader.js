@@ -214,11 +214,24 @@ document.body.insertAdjacentHTML('beforeend','<nav id="brRail" class="ui"><butto
 q('#brRt').onclick=e=>{e.stopPropagation();const R=q('#brRail');R.classList.toggle('open');if(!R.classList.contains('open'))closePop()};
 q('#brHx').onclick=closeHist;q('#brHist').onclick=e=>{if(e.target.id==='brHist')closeHist()};
 document.addEventListener('click',e=>{if(e.target.closest('#brRail,#brPop'))return;closePop();q('#brRail').classList.remove('open')})}
+let zenAt=0;
+function zenOn(){document.body.classList.add('zen');zenAt=Date.now();try{const s=getSelection();s&&s.removeAllRanges()}catch(e){}}
+function zenOff(){document.body.classList.remove('zen')}
+document.addEventListener('click',e=>{if(document.body.classList.contains('zen')&&Date.now()-zenAt>600){zenOff();e.stopPropagation();e.preventDefault()}},true);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.body.classList.contains('zen'))zenOff()});
+let railT=0;
+function railIdle(){clearTimeout(railT);const R=document.getElementById('brRail');if(!R||!R.classList.contains('open'))return;
+railT=setTimeout(()=>{railT=0;const R=document.getElementById('brRail'),P=document.getElementById('brPop');if(!R||!R.classList.contains('open'))return;
+if(R.matches(':hover')||(P&&P.matches(':hover')))return railIdle();
+if(P&&P.classList.contains('open'))closePop();R.classList.remove('open')},10000)}
+['pointerdown','pointermove','wheel','keydown','touchstart'].forEach(t=>document.addEventListener(t,e=>{if(e.target.closest&&e.target.closest('#brRail,#brPop'))railIdle()},{passive:true,capture:true}));
+new MutationObserver(()=>{const R=document.getElementById('brRail');if(R&&R.classList.contains('open')&&!railT)railIdle()}).observe(document.documentElement,{subtree:true,attributes:true,attributeFilter:['class']});
 function buildRail(){const b=q('#brRb');if(!b)return;{const t=q('#brRt');if(t)t.setAttribute('aria-label',tr('a_menu'))}const svg=d=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
-const it=[['book',svg(IC.book),T('book')],['chap',svg(IC.chap),T('chapter')],...(modeOptions().length>1?[['mode',svg(IC.tr),T('translation')]]:[]),['cmp',svg('<rect x="3" y="4" width="8" height="16" rx="1.6"/><rect x="13" y="4" width="8" height="16" rx="1.6"/>'),CL('btn')],['find',svg(IC.find),T('search')],['hist',svg(IC.hist),hl('history')]];
+const ZL={ru:'Чтение',en:'Reading',hy:'Ընթերցում',de:'Lesen'};const it=[['book',svg(IC.book),T('book')],['chap',svg(IC.chap),T('chapter')],...(modeOptions().length>1?[['mode',svg(IC.tr),T('translation')]]:[]),['cmp',svg('<rect x="3" y="4" width="8" height="16" rx="1.6"/><rect x="13" y="4" width="8" height="16" rx="1.6"/>'),CL('btn')],['find',svg(IC.find),T('search')],['hist',svg(IC.hist),hl('history')],['zen',svg('<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'),ZL[lang()]||ZL.en]];
 b.innerHTML='<div id="brRpos"></div>'+it.map(([a,i,l])=>`<button type="button" class="br-rb" data-a="${a}">${i}<span>${esc(l)}</span></button>`).join('')+`<div class="br-rpn"><button type="button" data-a="prev" aria-label="${esc(T('prev'))}">‹</button><button type="button" data-a="next" aria-label="${esc(T('next'))}">›</button></div>`;
 b.onclick=e=>{const x=e.target.closest('[data-a]');if(!x)return;e.stopPropagation();rail(x.dataset.a)};railSync();cmpRail()}
 function rail(a){const R=q('#brRail');
+if(a==='zen'){closePop();R.classList.remove('open');zenOn();return}
 if(a==='prev'){q('#brPrev').click();return}if(a==='next'){q('#brNext').click();return}
 if(a==='notes'){closePop();R.classList.remove('open');const d=document.getElementById('dock');if(d&&!d.classList.contains('open'))document.getElementById('dt').click();document.getElementById('bNotes').click();return}
 if(a==='find'||a==='hist'){closePop();R.classList.remove('open');a==='find'?q('#brSearchBtn').click():openHist();return}
