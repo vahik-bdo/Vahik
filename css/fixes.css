@@ -263,3 +263,6 @@ body.msel-on .br-share,body.msel-on .br-like{opacity:0!important;pointer-events:
 #msShare:disabled{opacity:.5}
 #msX{width:46px;font-size:22px;line-height:1;padding:0}
 #msBar button:active{transform:scale(.95)}
+
+/* v20: no swipe-back / swipe-forward page navigation from horizontal overscroll */
+html,body{overscroll-behavior-x:none;overscroll-behavior-y:none}
