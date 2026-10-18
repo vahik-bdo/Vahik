@@ -74,7 +74,7 @@ R.setAttribute('data-pf',P.get()===V?'0':'1')})()</script><script>try{if(!localS
 <div id="bar"><div id="bf"></div></div>
 <main id="text">
 <header class="hero"><div class="crossw"><div class="cross" role="img" data-ta="a_cross"></div></div>
-<h1 data-t="title">АНТРОПОЛОГИЯ ТРОИЧНОГО ОБРАЗА</h1><p data-t="sub">ТРОИЧНАЯ АРХИТЕКТОНИКА ЧЕЛОВЕКА</p></header>
+<h1 data-t="title"></h1><p data-t="sub"></p></header>
 <div id="bookBody"></div>
 <section class="end rv" id="end"><div class="crossw sm"><div class="cross"></div></div>
 <svg class="skull" viewBox="0 0 120 120" fill="none" stroke="var(--fg)" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true">
@@ -150,5 +150,16 @@ addEventListener("load",function(){
 });
 })();
 </script>
+<script>(function(){if(!matchMedia('(pointer:coarse)').matches)return;var s=null,TH=90,MAX=150;
+function vOf(t){return t&&t.closest?t.closest('#brReader .br-verse'):null}
+function reset(a){if(!a)return;a.style.transition='transform .38s cubic-bezier(.22,1,.36,1)';a.style.transform='';a.style.setProperty('--sp',0);a.classList.remove('armed');setTimeout(function(){a.classList.remove('swp');a.style.transition=''},400)}
+document.addEventListener('pointerdown',function(e){if(e.pointerType==='mouse'){s=null;return}var a=vOf(e.target);if(!a||(e.target.closest&&e.target.closest('button,a'))||e.clientX<28||document.body.classList.contains('msel-on')){s=null;return}s={a:a,x:e.clientX,y:e.clientY,on:false,armed:false,id:e.pointerId}},{passive:true,capture:true});
+document.addEventListener('pointermove',function(e){if(!s||e.pointerId!==s.id)return;var dx=e.clientX-s.x,dy=e.clientY-s.y;
+if(!s.on){if(Math.abs(dy)>14&&Math.abs(dy)>Math.abs(dx)){s=null;return}if(dx>14&&dx>Math.abs(dy)*1.4){s.on=true;s.a.classList.add('swp');s.a.style.transition='none'}else return}
+var m=Math.max(0,dx-14),t=m<TH?m:TH+(m-TH)*.3;if(t>MAX)t=MAX;s.a.style.transform='translate3d('+t.toFixed(1)+'px,0,0)';s.a.style.setProperty('--sp',Math.min(1,m/TH).toFixed(2));
+var arm=m>=TH;if(arm!==s.armed){s.armed=arm;s.a.classList.toggle('armed',arm);if(arm){try{navigator.vibrate&&navigator.vibrate(16)}catch(x){}}}},{passive:true,capture:true});
+function end(e){if(!s||(e&&e.pointerId!==s.id))return;var o=s;s=null;if(!o.on)return;var fire=o.armed&&e&&e.type==='pointerup';reset(o.a);
+if(fire){var b=o.a.querySelector('.br-share');if(b)setTimeout(function(){b.click()},180)}}
+document.addEventListener('pointerup',end,{capture:true,passive:true});document.addEventListener('pointercancel',end,{capture:true,passive:true})})()</script>
 </body>
 </html>
