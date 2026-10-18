@@ -1,6 +1,6 @@
 /* Service worker: офлайн + надёжные обновления.
    BUILD подставляется автоматически (tools/bump.js, GitHub Action) — вручную ничего поднимать не нужно. */
-const BUILD = '293e6466e8fd';
+const BUILD = '3a4f7577f90e';
 const CORE = 'nz-core-' + BUILD, DATA = 'nz-data-v1', FONTS = 'nz-fonts-v1';
 /* GEN:start (tools/bump.js пересобирает этот блок сам: списки файлов) */
 const CORE_FILES = ["index.html","css/armenian.css","css/base.css","css/compare.css","css/contact.css","css/cross.css","css/effects.css","css/fixes.css","css/hy-latin.css","css/layout.css","css/likes.css","css/offline.css","css/perf.css","css/preface-modal.css","css/reader.css","css/torch.css","css/tour.css","css/translation-guide.css","icons/apple-touch-icon.png","icons/cross.webp","icons/favicon-48.png","icons/icon-192.png","icons/icon-512.png","icons/maskable-512.png","js/app.js","js/contact.js","js/hy-latin.js","js/install.js","js/offline.js","js/perf.js","js/preface-gate.js","js/reader.js","js/ready.js","js/scroll-blur.js","js/scroll-reveal.js","js/smooth-scroll.js","js/soundscape.js","js/torch.js","js/tour.js","js/translation-info.js","manifest.webmanifest"];
