@@ -245,3 +245,10 @@ html:has(#brSearch.open),html:has(#brSearch.open) body{position:fixed;inset:0;wi
  #brRt svg{width:16px;height:16px;margin:0}
  #brRt::after{top:-10px;bottom:-10px;left:0;right:0}
 }
+
+/* v18: edge tab sits above the text; tap zone matches the drawn circle (~44 x 124px), button size unchanged */
+#brRail{z-index:1000}
+@media(max-width:880px){
+ #brRt{touch-action:none;z-index:2}
+ #brRt::after{top:-30px;bottom:-30px;left:0;right:-22px}
+}
