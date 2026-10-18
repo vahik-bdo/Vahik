@@ -330,3 +330,5 @@ new MutationObserver(st).observe(pr,{attributes:true,attributeFilter:['class']})
 const tt=(i,k)=>{const e=$$('#'+i);if(e)e.title=e.ariaLabel=xl(k)};tt('bNotes','notes');tt('bPr','prayers');tt('bSet','settings');tt('bNew','newnote');tt('bFs','fs');tt('bFind','find')}
 const state=new State(),fx=new ParticleEngine($('#fx')),audio=new AudioController(state),ui=new UIManager(state,fx,audio);
 const sh=new SelectionHandler(state,ui);$('#bNew').onclick=()=>sh.newNote();new Weather(audio);new Flame();LC=new LightController(state,fx);ui.i18n();xInit();xInit2();xInit3();
+
+;(function(){document.addEventListener('click',function(e){if(e.target!==document.documentElement)return;['panel','npanel','ppanel','hpanel'].forEach(function(id){var p=document.getElementById(id);if(p)p.classList.remove('open')})})})();

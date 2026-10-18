@@ -272,15 +272,10 @@ document.addEventListener('click',e=>{const box=e.target.closest&&e.target.close
  if(del){likes.splice(+del.dataset.i,1);saveL();renderLikes();markLikes();return}
  if(go){const x=likes[+go.dataset.i];if(!x)return;br.book=x.b;br.chapter=x.c;br.verse=x.v;buildBooks();buildChapters();render();const p=q('#hpanel');p&&p.classList.remove('open');setTimeout(()=>focusVerse(x.v,true),60)}});
 document.addEventListener('click',e=>{if(e.target.closest&&e.target.closest('#bHeart'))setTimeout(renderLikes,0)});
-function burst(x,y){const b=document.createElement('div');b.className='hburst';b.style.left=x+'px';b.style.top=y+'px';b.style.setProperty('--r',(Math.random()*30-15).toFixed(1)+'deg');
- b.innerHTML='<svg viewBox="0 0 32 29"><defs><linearGradient id="hgr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff8a9a"/><stop offset="1" stop-color="#ff2d55"/></linearGradient></defs><path fill="url(#hgr)" d="M23.6 0c-2.7 0-5.1 1.4-6.6 3.6C15.5 1.4 13.1 0 10.4 0 4.7 0 .5 4.4.5 9.9c0 7.6 8.4 12.4 14.2 18.5.4.4 1.1.4 1.5 0C22 22.3 31.5 17.5 31.5 9.9 31.5 4.4 27.3 0 23.6 0z"/></svg>';
- document.body.appendChild(b);b.addEventListener('animationend',()=>b.remove());
- for(let i=0;i<6;i++){const m=document.createElement('i');m.className='hmini';const a=(-90+(i-2.5)*32+Math.random()*14)*Math.PI/180,r=60+Math.random()*50;m.style.left=x+'px';m.style.top=y+'px';m.style.setProperty('--dx',(Math.cos(a)*r).toFixed(0)+'px');m.style.setProperty('--dy',(Math.sin(a)*r).toFixed(0)+'px');m.style.animationDelay=(i*.03)+'s';m.textContent='♥';document.body.appendChild(m);m.addEventListener('animationend',()=>m.remove())}
- try{navigator.vibrate&&navigator.vibrate(14)}catch(e){}}
 function likeAt(el,x,y){const a=el.closest&&el.closest('#brReader .br-verse');if(!a)return;toggleLike(a,x,y)}
 function toggleLike(a,x,y){const v=+a.id.slice(4),b=br.book,c=+br.chapter;
  if(isL(b,c,v)){const k=likes.findIndex(z=>z.b===b&&z.c===c&&z.v===v);if(k>-1)likes.splice(k,1);saveL();markLikes();const p=q('#hpanel');if(p&&p.classList.contains('open'))renderLikes();try{navigator.vibrate&&navigator.vibrate(8)}catch(e){}}
- else{burst(x,y);likes.unshift({b,c,v,t:Date.now()});saveL();markLikes();const p=q('#hpanel');if(p&&p.classList.contains('open'))renderLikes();
+ else{try{navigator.vibrate&&navigator.vibrate(14)}catch(e){}likes.unshift({b,c,v,t:Date.now()});saveL();markLikes();{const lb=a.querySelector('.br-like');if(lb){lb.classList.remove('pop');void lb.offsetWidth;lb.classList.add('pop')}}const p=q('#hpanel');if(p&&p.classList.contains('open'))renderLikes();
   const dt=document.getElementById('dt');if(dt&&!document.getElementById('dock').classList.contains('open')){dt.classList.remove('hpulse');void dt.offsetWidth;dt.classList.add('hpulse')}
   let seen=0;try{seen=localStorage.getItem('theo-likes-hint')}catch(e){}if(!seen){try{localStorage.setItem('theo-likes-hint','1')}catch(e){}const h=document.createElement('div');h.id='hts';h.textContent=lt().hint;document.body.appendChild(h);requestAnimationFrame(()=>h.classList.add('on'));setTimeout(()=>{h.classList.remove('on');setTimeout(()=>h.remove(),600)},3200)}}
  [0,60,160].forEach(d=>setTimeout(()=>{try{getSelection().removeAllRanges()}catch(e){}},d))}
