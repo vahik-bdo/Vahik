@@ -325,4 +325,9 @@ body.zen .ui,body.zen .br-share,body.zen .br-like,body.zen #brRail,body.zen #brP
 /* crisp cross: no CSS zoom (it rasterised the masked glow at low res and blurred it) */
 body.br-mode .hero .crossw{zoom:1;width:clamp(68px,13.6vw,93px)}
 .cross{-webkit-mask-size:100% 100%;mask-size:100% 100%;will-change:auto}
-#fonts[hidden]{display:none!important}
+
+/* compact colour pickers: one row each */
+#panel #colors,#panel #heads,#panel #lcolors{display:flex;flex-wrap:nowrap;gap:.3rem;align-items:center}
+#panel #colors .btn,#panel #heads .btn,#panel #lcolors .btn{min-height:0;padding:.3em .7em;font-size:12px}
+#panel #colors .sw,#panel #heads .sw,#panel #lcolors .sw,#panel #colors input[type=color],#panel #heads input[type=color],#panel #lcolors input[type=color]{width:24px;height:24px;flex:none;aspect-ratio:auto;max-width:none}
+#panel h4{margin:.8em 0 .4em}
