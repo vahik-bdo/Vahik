@@ -218,3 +218,10 @@ html:has(#brSearch.open),html:has(#brSearch.open) body{position:fixed;inset:0;wi
  #brRt{width:19px;height:52px;padding:0;border-radius:0 14px 14px 0;justify-items:center}
  #brRt svg{width:14px;height:14px;margin-left:-3px}
 }
+
+/* v14: wider edge tab with a much larger invisible tap area */
+@media(max-width:880px){
+ #brRt{width:29px;height:56px;position:relative}
+ #brRt svg{width:16px;height:16px;margin-left:-4px}
+ #brRt::after{content:"";position:absolute;top:-18px;bottom:-18px;left:0;right:-16px}
+}
