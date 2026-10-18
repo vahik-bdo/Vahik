@@ -144,7 +144,7 @@ html,body{touch-action:pan-x pan-y}
 .br-share{top:.45rem}
 .br-like{top:auto;bottom:.45rem}
 .br-share svg,.br-like svg{width:17px;height:17px}
-.br-share svg{transform:translateX(-2px)}
+.br-share svg{transform:none;display:block;margin:auto}
 /* hold & slide selection in book/chapter lists */
 #brPop.drag{overflow:hidden}
 /* --- v5: no scrollbar / pull-to-refresh, scroll lock under overlays, softer animations --- */
@@ -311,3 +311,6 @@ html body.br-mode .br-meta{display:flex;flex-wrap:wrap;align-items:center;justif
 html body.br-mode .br-meta::before{content:none;display:none}
 html body.br-mode .br-meta .br-src-l{min-width:0;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 html body.br-mode .br-meta .br-info{flex:none;margin-left:0}
+
+/* reader (zen) mode */
+body.zen .ui,body.zen .br-share,body.zen .br-like,body.zen #brRail,body.zen #brPrev,body.zen #brNext{opacity:0!important;pointer-events:none!important;transition:opacity .6s ease}
