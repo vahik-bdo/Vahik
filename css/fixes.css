@@ -304,3 +304,10 @@ html:has(#prayer:not(.off)) #brRail,html:has(#lpk) #brRail,html:has(#pfm) #brRai
 /* экран молитвы после закрытия: крест внутри него не должен оставаться «видимым» (html.xm .cross{visibility:visible} перебивал visibility:hidden родителя
    и невидимый крест перекрывал центр экрана и кнопки под ним) */
 #prayer.off,#prayer.off *,html.xm #prayer.off .cross{visibility:hidden!important;pointer-events:none!important}
+/* заголовок главы: название в одну строку (размер подгоняет fitTitle в reader.js), подпись перевода и «О переводе» всегда отдельным центрированным рядом снизу, без висящей точки */
+html body.br-mode .br-head{flex-direction:column;flex-wrap:nowrap;align-items:center;justify-content:flex-start;row-gap:.45rem;max-width:min(780px,100%)}
+html body.br-mode .br-head h2{max-width:100%;text-wrap:balance;overflow-wrap:anywhere;hyphens:auto}
+html body.br-mode .br-meta{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.35rem .6rem;max-width:100%;min-width:0;margin:0}
+html body.br-mode .br-meta::before{content:none;display:none}
+html body.br-mode .br-meta .br-src-l{min-width:0;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+html body.br-mode .br-meta .br-info{flex:none;margin-left:0}
