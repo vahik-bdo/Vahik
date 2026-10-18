@@ -264,5 +264,15 @@ body.msel-on .br-share,body.msel-on .br-like{opacity:0!important;pointer-events:
 #msX{width:46px;font-size:22px;line-height:1;padding:0}
 #msBar button:active{transform:scale(.95)}
 
-/* v20: no swipe-back / swipe-forward page navigation from horizontal overscroll */
-html,body{overscroll-behavior-x:none;overscroll-behavior-y:none}
+/* v21: calmer arrow turn, bigger symmetric favourites panel with square (not rounded) verse rows */
+#brRail.open #brRt svg{transform:rotate(180deg)!important}
+#brRt svg{transition:transform .7s cubic-bezier(.22,1,.36,1)!important}
+#brRt{transition:background .5s ease,border-color .5s ease,box-shadow .6s ease}
+#brRail.open #brRt{border-color:color-mix(in srgb,var(--head) 45%,var(--line));box-shadow:0 0 14px -6px var(--head)}
+#hpanel{left:0;right:0;margin:0 auto;width:min(25.2rem,calc(100vw - 1.2rem));padding:1.3rem 1.2rem;max-height:76dvh}
+#hpanel h4{margin:0 0 .9rem;padding-bottom:.7rem;text-align:center;border-bottom:1px solid var(--line)}
+#hpanel .note.hv{display:flex;align-items:stretch;gap:0;padding:0;border-top:0;border-bottom:1px solid var(--line);border-radius:0}
+#hpanel .note.hv:last-child{border-bottom:0}
+#hpanel .hv-go{border-radius:0;padding:.8em .9em;font-size:15px;background:none}
+#hpanel .hv-go:active{background:color-mix(in srgb,var(--head) 10%,transparent)}
+#hpanel .hv-del{width:48px;border-radius:0}
