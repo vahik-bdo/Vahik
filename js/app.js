@@ -332,3 +332,12 @@ const state=new State(),fx=new ParticleEngine($('#fx')),audio=new AudioControlle
 const sh=new SelectionHandler(state,ui);$('#bNew').onclick=()=>sh.newNote();new Weather(audio);new Flame();LC=new LightController(state,fx);ui.i18n();xInit();xInit2();xInit3();
 
 ;(function(){document.addEventListener('click',function(e){if(e.target!==document.documentElement)return;['panel','npanel','ppanel','hpanel'].forEach(function(id){var p=document.getElementById(id);if(p)p.classList.remove('open')})})})();
+/* меню «три точки» (#dock): если ничего не нажимали в нём 15 секунд — сворачивается само; пока открыта любая панель (настройки, заметки, поиск…), не трогаем */
+;(function(){var dock=document.getElementById('dock');if(!dock)return;var LIM=15000,last=Date.now(),
+BUSY=['panel','npanel','ppanel','hpanel','xp','brSearch','brHist','brCommentary','brPop','modal'],
+AREA='#dock,#panel,#npanel,#ppanel,#hpanel,#xp',
+touch=function(){last=Date.now()},
+inUse=function(){return BUSY.some(function(id){var e=document.getElementById(id);return e&&e.classList.contains('open')})};
+['pointerdown','touchstart','keydown','input','wheel','scroll'].forEach(function(ev){document.addEventListener(ev,function(e){var t=e.target;if(t&&t.closest&&t.closest(AREA))touch()},{passive:true,capture:true})});
+var mo=new MutationObserver(touch);[dock].concat(BUSY.map(function(id){return document.getElementById(id)})).forEach(function(e){if(e)mo.observe(e,{attributes:true,attributeFilter:['class']})});
+setInterval(function(){if(!dock.classList.contains('open')||inUse())return;if(Date.now()-last>=LIM)dock.classList.remove('open')},1000)})();
