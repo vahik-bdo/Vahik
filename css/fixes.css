@@ -272,3 +272,11 @@ body.msel-on .br-share,body.msel-on .br-like{opacity:0!important;pointer-events:
 /* favourites panel: original layout, verse rows with only a slight (~20% of before) rounding */
 #hpanel .hv-go{border-radius:3px}
 #hpanel .hv-del{border-radius:3px}
+
+/* favourites: less empty space on top, centred verse text, delete cross in the top-right corner of the row */
+#hpanel{padding-top:.85rem}
+#hpanel h4{margin:.1rem 0 .7rem}
+#hpanel .note.hv{position:relative;padding:0}
+#hpanel .hv-go{text-align:center;padding:.8em 2.4rem;width:100%}
+#hpanel .hv-go b,#hpanel .hv-go span{text-align:center}
+#hpanel .hv-del{position:absolute;top:.35rem;right:.4rem;width:30px;height:30px;display:grid;place-items:center;font-size:20px;line-height:1;padding:0;z-index:1}
