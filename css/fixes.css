@@ -280,3 +280,9 @@ body.msel-on .br-share,body.msel-on .br-like{opacity:0!important;pointer-events:
 #hpanel .hv-go{text-align:center;padding:.8em 2.4rem;width:100%}
 #hpanel .hv-go b,#hpanel .hv-go span{text-align:center}
 #hpanel .hv-del{position:absolute;top:.35rem;right:.4rem;width:30px;height:30px;display:grid;place-items:center;font-size:20px;line-height:1;padding:0;z-index:1}
+
+/* favourites rows: perfectly symmetric side gutters (same on both sides, cross sits in the right gutter corner) */
+#hpanel .note.hv{padding:0!important;gap:0!important;display:block!important}
+#hpanel .hv-go{display:block!important;box-sizing:border-box;width:100%;margin:0;padding:.85em 2.6rem!important;text-align:center!important}
+#hpanel .hv-go b{display:block;text-align:center}
+#hpanel .hv-go span{display:-webkit-box;text-align:center;margin:0 auto}
