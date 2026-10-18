@@ -279,8 +279,10 @@ body.msel-on .br-share,body.msel-on .br-like{opacity:0!important;pointer-events:
 .tabs button{display:flex;align-items:center;justify-content:center;min-height:46px;padding:0 .2em;touch-action:manipulation}
 .sw{position:relative;touch-action:manipulation}
 .sw::after{content:"";position:absolute;inset:-6px}
-#themes,#lcolors,#colors,#heads{position:relative;z-index:1;pointer-events:auto}
-#panel .sw{pointer-events:auto}
+#themes,#lcolors,#colors,#heads{position:relative;z-index:1}
+#panel.open #themes,#panel.open #lcolors,#panel.open #colors,#panel.open #heads,#panel.open .sw{pointer-events:auto}
+/* закрытая панель и всё внутри неё не должны ловить касания (раньше невидимые кружки тем меняли тему при тапе по пустому месту) */
+#panel:not(.open),#panel:not(.open) *,#npanel:not(.open),#npanel:not(.open) *,#ppanel:not(.open),#ppanel:not(.open) *,#hpanel:not(.open),#hpanel:not(.open) *{pointer-events:none!important}
 /* settings tabs: whole top strip is tappable (button reaches the panel's top edge), words sit just above the divider, ~30% less vertical space */
 html #panel .tabs{margin-top:-1.1rem;margin-bottom:.65rem}
 html #panel .tabs button{align-items:flex-end;min-height:44px;padding:0 .2em 9px}
@@ -299,3 +301,6 @@ html #brPop .bp-n{height:40px}
 html:has(#panel.open,#npanel.open,#ppanel.open,#hpanel.open)::after{content:"";position:fixed;inset:0;z-index:39;touch-action:none;background:transparent}
 /* while the prayer / language / preface screens are on, the side rail must not show above them */
 html:has(#prayer:not(.off)) #brRail,html:has(#lpk) #brRail,html:has(#pfm) #brRail{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
+/* экран молитвы после закрытия: крест внутри него не должен оставаться «видимым» (html.xm .cross{visibility:visible} перебивал visibility:hidden родителя
+   и невидимый крест перекрывал центр экрана и кнопки под ним) */
+#prayer.off,#prayer.off *,html.xm #prayer.off .cross{visibility:hidden!important;pointer-events:none!important}
