@@ -8,7 +8,7 @@ const TFILES = {"arar":["data/arar/1cor.js","data/arar/1jn.js","data/arar/1pet.j
 /* GEN:end */
 /* Тексты (data/<перевод>/<книга>.js) и звуки в установке НЕ скачиваются: читаются по мере открытия и оседают в отдельном кэше.
    Скачать всё заранее можно кнопкой «Офлайн» в настройках. */
-const DATA_FILES = ["assets/audio/birds.mp3", "assets/audio/bolt.mp3", "assets/audio/wind.mp3"];
+const DATA_FILES = ["assets/audio/bell.mp3", "assets/audio/birds.mp3", "assets/audio/bolt.mp3", "assets/audio/wind.mp3"];
 const FONT_CORE = "https://fonts.googleapis.com/css2?family=Noto+Serif+Armenian:wght@400;600&family=Manrope:wght@400;500;600&family=Noto+Sans+Armenian:wght@400;500&display=swap";
 /* для офлайн-сохранения: Literata, основной набор и шрифты из выбора в настройках */
 const FONT_CSS = ["https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap", FONT_CORE, "https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Spectral:ital,wght@0,400;0,600;1,400&family=Alegreya:ital,wght@0,400;0,600;1,400&family=Philosopher:ital,wght@0,400;0,700;1,400&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Marck+Script&family=Inter:wght@400;500&display=swap"];
