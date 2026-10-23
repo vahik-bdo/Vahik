@@ -211,7 +211,9 @@ function openHist(){q('#brHb').innerHTML='<div class="bh-orn">✦</div><h3>'+esc
 function closeHist(){const h=q('#brHist');h&&h.classList.remove('open')}
 function ensureRail(){if(q('#brRail'))return;
 document.body.insertAdjacentHTML('beforeend','<nav id="brRail" class="ui"><button id="brRt" type="button" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></button><div id="brRb"></div></nav><div id="brPop" class="ui"></div><div id="brHist"><div class="bh-card"><button class="br-search-close" id="brHx" type="button">×</button><div id="brHb"></div></div></div>');
-q('#brRt').onclick=e=>{e.stopPropagation();const R=q('#brRail');R.classList.toggle('open');if(!R.classList.contains('open'))closePop()};
+q('#brRt').onclick=e=>{e.stopPropagation();const R=q('#brRail'),T=q('#brRt');let a=null;try{const r=T.getBoundingClientRect(),c=getComputedStyle(T);a={r,br:c.borderRadius,bl:c.borderLeftWidth}}catch(x){}
+R.classList.toggle('open');if(!R.classList.contains('open'))closePop();
+if(a&&T.animate&&!matchMedia('(prefers-reduced-motion:reduce)').matches)try{const r=T.getBoundingClientRect(),c=getComputedStyle(T);if(!r.width||!r.height)return;T.getAnimations().forEach(x=>x.cancel());T.style.transformOrigin='0 0';T.animate([{transform:`translate(${a.r.left-r.left}px,${a.r.top-r.top}px) scale(${a.r.width/r.width},${a.r.height/r.height})`,borderLeftWidth:a.bl},{transform:'none',borderLeftWidth:c.borderLeftWidth}],{duration:420,easing:'cubic-bezier(.22,1,.36,1)'})}catch(x){}};
 q('#brHx').onclick=closeHist;q('#brHist').onclick=e=>{if(e.target.id==='brHist')closeHist()};
 document.addEventListener('click',e=>{if(e.target.closest('#brRail,#brPop'))return;closePop();q('#brRail').classList.remove('open')})}
 let zenAt=0;
