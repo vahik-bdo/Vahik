@@ -48,10 +48,8 @@ class AudioController{
   reverb(dest){const c=this.c,i=this.gain(1),d=c.createDelay(1),fb=this.gain(.42),lp=this.filt('lowpass',1800),w=this.gain(.5);d.delayTime.value=.37;i.connect(dest);i.connect(d);d.connect(lp);lp.connect(fb);fb.connect(d);lp.connect(w);w.connect(dest);return i}
   note(f,dur,v,dest,type='sine'){const c=this.c,t=c.currentTime,o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(dest);o.start(t);o.stop(t+dur+.1)}
   build(i){const c=this.c,o=this.out;
-    if(i===0){ // дождь
-      this.chain(this.noise(),[this.filt('highpass',900),this.filt('lowpass',7000),this.gain(.16)],o);
-      this.chain(this.noise(1),[this.filt('lowpass',300),this.gain(.35)],o);
-      this.every(()=>this.note(1400+Math.random()*1800,.12,.025,o),250,900)}
+    if(i===0){ // дождь (запись assets/audio/rain.mp3, по кругу)
+      const a=new Audio('assets/audio/rain.mp3'),g=this.gain(.9);a.loop=true;a.preload='auto';this.c.createMediaElementSource(a).connect(g);g.connect(o);a.play().catch(()=>{});this.src.push({stop(){a.pause();a.removeAttribute('src');a.load()}})}
     else if(i===1){ // камин
       this.chain(this.noise(1),[this.filt('lowpass',420),this.gain(.7)],o);
       this.every(()=>{const t=c.currentTime,b=this.noise(),g=this.gain(0),h=this.filt('bandpass',1500+Math.random()*2500,1.5);b.connect(h);h.connect(g);g.connect(o);g.gain.setValueAtTime(.2+Math.random()*.3,t);g.gain.exponentialRampToValueAtTime(.0001,t+.04+Math.random()*.05);setTimeout(()=>{try{b.stop();b.disconnect()}catch(e){}},300)},90,520)}

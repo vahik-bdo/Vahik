@@ -115,7 +115,7 @@ function(au,S,K){const {mix,hall}=S,c=S.c;
  S.loop(()=>S.burst(rr(4500,9000),1,rr(.008,.03),.003,rr(.01,.03),rr(-.9,.9),.2),60,240)}
 ];
 
-P.build=function(i){if(i>=SC.length)return orig.call(this,i);const au=this,S=scene(au,au.out,[1.3,1,1,1,1][i]);SC[i](au,S,S.K)};
+P.build=function(i){if(i===0||i>=SC.length)return orig.call(this,i);const au=this,S=scene(au,au.out,[1.3,1,1,1,1][i]);SC[i](au,S,S.K)};
 
 /* ---------- ремастеринг разовых звуков: ветер, птицы, гром ---------- */
 function outbus(au){const c=au.c,K=kit(au);if(!K.fin){const comp=c.createDynamicsCompressor();comp.threshold.value=-14;comp.knee.value=20;comp.ratio.value=4;comp.attack.value=.01;comp.release.value=.3;comp.connect(K.lim);
