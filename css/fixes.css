@@ -342,3 +342,7 @@ body.br-mode .hero .crossw{zoom:1;width:clamp(68px,13.6vw,93px)}
 .br-verse.swp::before{content:"";position:absolute;left:-46px;top:50%;width:26px;height:26px;margin-top:-13px;background:var(--dim);opacity:var(--sp,0);transform:scale(calc(.55 + var(--sp,0)*.45));transition:background .2s,transform .25s cubic-bezier(.34,1.56,.64,1);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 15V4M8 8l4-4 4 4M5 13v6h14v-6'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 15V4M8 8l4-4 4 4M5 13v6h14v-6'/%3E%3C/svg%3E") center/contain no-repeat}
 .br-verse.swp.armed::before{background:var(--head);transform:scale(1.2)}
 }
+
+/* плавное раскрытие кнопки меню: форма меняется анимацией (reader.js), без рывка рамки и размера */
+#brRt{transform-origin:0 0;backface-visibility:hidden}
+#brRt svg{transition-duration:.42s!important}
