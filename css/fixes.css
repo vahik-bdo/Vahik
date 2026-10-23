@@ -343,6 +343,6 @@ body.br-mode .hero .crossw{zoom:1;width:clamp(68px,13.6vw,93px)}
 .br-verse.swp.armed::before{background:var(--head);transform:scale(1.2)}
 }
 
-/* плавное раскрытие кнопки меню: форма меняется анимацией (reader.js), без рывка рамки и размера */
-#brRt{transform-origin:0 0;backface-visibility:hidden}
-#brRt svg{transition-duration:.42s!important}
+/* обводка и заливка кнопки меню меняются плавно (без рывка левой рамки) */
+#brRt{transition:background .55s cubic-bezier(.22,1,.36,1),border-color .55s cubic-bezier(.22,1,.36,1),border-left-width .55s cubic-bezier(.22,1,.36,1),border-radius .55s cubic-bezier(.22,1,.36,1),box-shadow .7s cubic-bezier(.22,1,.36,1),color .55s ease,transform .4s cubic-bezier(.22,1,.36,1)}
+#brRt svg{transition-duration:.55s!important}
