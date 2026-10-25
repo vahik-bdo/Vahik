@@ -311,7 +311,11 @@ html body.br-mode .br-meta .br-src-l{min-width:0;max-width:100%;overflow:hidden;
 html body.br-mode .br-meta .br-info{flex:none;margin-left:0}
 
 /* reader (zen) mode */
-body.zen .ui,body.zen .br-share,body.zen .br-like,body.zen #brRail,body.zen #brPrev,body.zen #brNext{opacity:0!important;pointer-events:none!important;transition:opacity .6s ease}
+body.zen .ui,body.zen .br-share,body.zen .br-like,body.zen #brRail{opacity:0!important;pointer-events:none!important;transition:opacity .6s ease}
+/* в режиме чтения кнопки смены глав остаются доступны (приглушённо) */
+body.zen .br-nav{opacity:.55!important;pointer-events:auto!important;transition:opacity .6s ease}
+body.zen .br-nav:hover,body.zen .br-nav:active{opacity:.95!important}
+body.zen .br-nav button{opacity:1!important;pointer-events:auto!important}
 
 /* v23 compact spacing: rail + bottom dock */
 #brRb{gap:0;padding:6px 5px}
