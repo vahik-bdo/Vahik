@@ -5,6 +5,17 @@
    (импульс помещения генерируется кодом) и мягкий компрессор на выходе.
    Верните старое звучание: удалите <script src="js/soundscape.js"> из index.html. */
 (()=>{
+/* ---------- таймеры в Worker ----------
+   Обычные setTimeout в свёрнутой вкладке браузер замедляет до раза в секунду, а то и замораживает: события (капли, ноты) копятся
+   и вываливаются разом, отсюда «лаги» и обрывы. Таймеры в Worker такому замедлению не подвержены. Если Worker недоступен — обычные таймеры. */
+const WT=(()=>{let w=null,seq=1e9;const cb=new Map(),N=window;
+ try{w=new Worker(URL.createObjectURL(new Blob(['const m=new Map();onmessage=e=>{const d=e.data;if(d.c){clearTimeout(m.get(d.c));clearInterval(m.get(d.c));m.delete(d.c);return}const f=()=>postMessage(d.i);m.set(d.i,d.r?setInterval(f,d.t):setTimeout(()=>{m.delete(d.i);f()},d.t))}'],{type:'text/javascript'})));
+  w.onmessage=e=>{const x=cb.get(e.data);if(!x)return;if(!x.r)cb.delete(e.data);try{x.f()}catch(err){console.error(err)}}}catch(e){w=null}
+ const set=(f,t,r)=>{if(!w)return r?N.setInterval(f,t):N.setTimeout(f,t);const i=++seq;cb.set(i,{f,r});w.postMessage({i,t:+t||0,r});return i};
+ const clr=i=>{if(i>1e9&&cb.has(i)){cb.delete(i);w.postMessage({c:i})}else{N.clearTimeout(i);N.clearInterval(i)}};
+ return {st:(f,t)=>set(f,t,0),si:(f,t)=>set(f,t,1),clr}})();
+window.NTWT=WT;
+const setTimeout=WT.st,setInterval=WT.si,clearTimeout=WT.clr,clearInterval=WT.clr;
 const P=AudioController.prototype,orig=P.build,R=Math.random,rr=(a,b)=>a+R()*(b-a),clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 const mtof=m=>440*Math.pow(2,(m-69)/12);
 
@@ -141,4 +152,65 @@ window.NTLive=(au,k,dur)=>{const c=au.c,K=kit(au),F=outbus(au),hall=F.hall,room=
   s.connect(b);b.connect(g);g.connect(pn);pn.connect(F.comp);const w=c.createGain();w.gain.value=.3;pn.connect(w);w.connect(hall);s.start(t,rr(0,10));s.stop(t+dur+.1)}
  else if(k==='bolt'){const t=c.currentTime+.5,s=c.createBufferSource(),lp=c.createBiquadFilter(),g=c.createGain();s.buffer=K.brown;s.loop=true;lp.type='lowpass';lp.frequency.value=95;
   g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.3,t+.6);g.gain.setTargetAtTime(0,t+1.4,Math.max(.8,dur*.28));s.connect(lp);lp.connect(g);g.connect(hall);g.connect(F.comp);s.start(t,rr(0,10));s.stop(t+dur+3)}};
+})();
+
+/* ---------- звук в фоне: переключатель во вкладке «Звук» ----------
+   ВКЛ  — звук продолжает играть при свёрнутом приложении и погашенном экране (тихий медиа-элемент + Media Session).
+   ВЫКЛ — когда вы уходите с сайта, звук аккуратно останавливается (без обрывов и «каши» из накопившихся событий) и сам включается, когда вы возвращаетесь.
+   Выбор запоминается. */
+(()=>{
+const WT=window.NTWT,P=AudioController.prototype,N=window;
+const LG=()=>['ru','en','hy','pl','de','hu'][typeof LANG==='number'?LANG:0]||'en';
+const TX={
+ ru:{t:'Играть в фоне',off:'Выкл: звук замолкает, когда вы уходите из приложения, и возвращается вместе с вами.',on:'Вкл: звук продолжит играть при свёрнутом приложении и погашенном экране.'},
+ en:{t:'Play in background',off:'Off: the sound pauses when you leave the app and resumes when you come back.',on:'On: the sound keeps playing when the app is minimized or the screen is off.'},
+ hy:{t:'Նվագել ֆոնին',off:'Անջ.՝ ծրագրից դուրս գալիս ձայնը դադարում է և վերադառնալիս շարունակվում է։',on:'Միաց.՝ ձայնը կշարունակվի նաև ծրագիրը փակելիս կամ էկրանը մարելիս։'},
+ de:{t:'Im Hintergrund spielen',off:'Aus: Der Ton pausiert, wenn Sie die App verlassen, und läuft bei Ihrer Rückkehr weiter.',on:'An: Der Ton läuft weiter, wenn Sie die App minimieren oder den Bildschirm sperren.'}};
+const tx=()=>TX[LG()]||TX.en;
+const st=()=>{try{return state}catch(e){return null}};
+const au=()=>{try{return audio}catch(e){return null}};
+const isOn=()=>{const s=st();return !!(s&&s.d.bgplay)};
+
+/* тихий зацикленный звук: браузер считает вкладку «медиа» и не усыпляет её в фоне */
+let ka=null;
+function silentWav(){const sr=8000,n=sr*6,b=new ArrayBuffer(44+n),v=new DataView(b),w=(o,t)=>{for(let i=0;i<t.length;i++)v.setUint8(o+i,t.charCodeAt(i))};
+ w(0,'RIFF');v.setUint32(4,36+n,true);w(8,'WAVE');w(12,'fmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,sr,true);v.setUint32(28,sr,true);v.setUint16(32,1,true);v.setUint16(34,8,true);w(36,'data');v.setUint32(40,n,true);
+ new Uint8Array(b,44).fill(128);return URL.createObjectURL(new Blob([b],{type:'audio/wav'}))}
+function keep(on){try{
+ if(on){if(!ka){ka=new Audio();ka.loop=true;ka.preload='auto';ka.setAttribute('playsinline','');ka.src=silentWav()}
+  try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}
+  const pr=ka.play();pr&&pr.catch&&pr.catch(()=>{});
+  if('mediaSession' in navigator){try{navigator.mediaSession.metadata=new MediaMetadata({title:document.title||'Новый Завет',artist:'Vahik',artwork:[{src:'icons/icon-512.png',sizes:'512x512',type:'image/png'}]});navigator.mediaSession.playbackState='playing';
+   navigator.mediaSession.setActionHandler('play',()=>{const a=au(),s=st();a&&s&&!a.playing&&a.start(s.d.track)});
+   navigator.mediaSession.setActionHandler('pause',()=>{const a=au();a&&a.stop()})}catch(e){}}}
+ else{if(ka)ka.pause();if('mediaSession' in navigator){try{navigator.mediaSession.playbackState='none';navigator.mediaSession.metadata=null}catch(e){}}}}catch(e){}}
+
+/* старт/стоп: подсаживаем сюда Worker-таймеры и тихий медиа-элемент */
+const _start=P.start,_stop=P.stop;
+P.stop=function(){(this.timers||[]).forEach(WT.clr);const r=_stop.apply(this,arguments);N.setTimeout(()=>{if(!this.playing)keep(false)},60);return r};
+P.start=function(){const r=_start.apply(this,arguments);if(isOn())keep(true);
+ const c=this.ctx;if(c&&!c._bgw){c._bgw=1;c.addEventListener('statechange',()=>{if(this.playing&&!document.hidden&&c.state!=='running'){try{c.resume()}catch(e){}}})}return r};
+
+/* уход со страницы / возвращение */
+let back=null;
+const sy=()=>{try{ui.sync();ui.mark()}catch(e){}};
+document.addEventListener('visibilitychange',()=>{const a=au(),s=st();if(!a||!s)return;
+ if(document.hidden){
+  if(isOn()){if(a.playing)keep(true);return}
+  if(a.playing){back=s.d.track;a.stop();sy()}
+ }else{
+  if(back!==null){const t=back;back=null;try{a.start(t)}catch(e){}sy()}
+  else if(isOn()&&a.playing&&a.ctx&&a.ctx.state!=='running'){try{a.ctx.resume()}catch(e){}}
+ }});
+
+/* кнопка */
+const ICO='<svg class="at-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5v5h3.6L12.5 19V5L7.6 9.5z"/><path d="M16 9a4.2 4.2 0 0 1 0 6"/><path d="M18.6 6.4a8 8 0 0 1 0 11.2"/></svg>';
+function refresh(){const b=document.getElementById('bgp');if(!b)return;const on=isOn(),T=tx(),t=b.querySelector('.at-t'),h=document.getElementById('bgh');
+ if(t.textContent!==T.t)t.textContent=T.t;const hs=on?T.on:T.off;if(h&&h.textContent!==hs)h.textContent=hs;
+ b.classList.toggle('on',on);b.setAttribute('aria-checked',on?'true':'false')}
+function mount(){const sec=document.querySelector('#panel [data-s="snd"]');if(!sec||document.getElementById('bgp'))return;
+ sec.insertAdjacentHTML('beforeend','<div class="row bgrow"><button class="btn" id="bgp" type="button" role="switch" aria-checked="false"><span class="at-l">'+ICO+'<span class="at-t"></span></span><span class="at-sw" aria-hidden="true"><i></i></span></button></div><p class="bg-h" id="bgh"></p>');
+ document.getElementById('bgp').onclick=()=>{const s=st(),a=au();if(!s)return;const v=!isOn();s.set('bgplay',v);if(a&&a.playing)keep(v);refresh()};
+ refresh();setInterval(refresh,800)}
+mount();
 })();
