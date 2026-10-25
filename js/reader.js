@@ -243,7 +243,7 @@ const on=p.querySelector('.on');if(on)setTimeout(()=>{p.scrollTop=Math.max(0,on.
 function railSync(){const p=q('#brRpos');if(!p)return;const n=(BRBN[lang()]||BRBN.ru)[br.book]||'';p.innerHTML=`<b>${br.chapter}</b><small>${esc(n)}</small>`;const r=q('#brReader');if(r){r.classList.remove('swap');void r.offsetWidth;r.classList.add('swap')}shareBtns()}
 function shareBtns(){const sl={ru:'Поделиться',en:'Share',hy:'Կիսվել',de:'Teilen'}[lang()]||'Share';
 qa('#brReader .br-verse').forEach(a=>{const n=a.querySelector('.br-vnum'),t=a.querySelector('.br-vtext');if(n&&t)addShare(a,n.textContent.trim(),t.textContent,a.querySelector('.br-src'),sl)});
-qa('#brReader .br-cassv').forEach(p=>{const b=p.querySelector('b');if(b)addShare(p,b.textContent.trim(),p.textContent.slice(b.textContent.length),null,sl)})}
+qa('#brReader .br-cassv').forEach(p=>{const b=p.querySelector('b');if(b)addShare(p,b.textContent.trim(),p.textContent.slice(b.textContent.length),null,sl)});try{window.__markNotes&&window.__markNotes()}catch(e){}}
 function addShare(el,ref,text,src,label){if(el.querySelector('.br-share'))return;const b=document.createElement('button');b.type='button';b.className='br-share';b.title=label;b.setAttribute('aria-label',label);
 b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4M8 8l4-4 4 4M5 13v6h14v-6"/></svg>';
 b.onclick=e=>{e.stopPropagation();shareVerse(ref,text.trim(),src?src.textContent.trim():T('cass'))};el.append(b)}
@@ -261,6 +261,8 @@ const blob=await new Promise(r=>c.toBlob(r,'image/png'));if(!blob)return;const f
 if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],title:`${nm} ${br.chapter}:${ref}`});return}catch(e){if(e&&e.name==='AbortError')return}}
 const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=fn;document.body.append(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000)}
 window.__shareVerse=shareVerse;
+window.__verseInfo=a=>{const v=a.id.slice(4),n=a.querySelector('.br-vnum'),t=a.querySelector('.br-vtext'),nm=(BRBN[lang()]||BRBN.ru)[br.book]||'';return{k:br.book+'.'+br.chapter+'.'+v,ref:`${nm} ${br.chapter}:${n?n.textContent.trim():v}`,text:(t||a).textContent.trim()}};
+window.__markNotes=()=>{let m={};try{m=window.__noteKeys?window.__noteKeys():{}}catch(e){}qa('#brReader .br-verse').forEach(a=>a.classList.toggle('has-note',!!m[br.book+'.'+br.chapter+'.'+a.id.slice(4)]))};
 // Replace the original content after the original interface has initialized.
 const originalI18n=ui.i18n.bind(ui);ui.i18n=function(){originalI18n();mount(false)};
 // Keep the four-language interface (ru, en, hy, de), prayer, notes, themes, particles, light/candle, audio, nature dock, fullscreen and all original controls.

@@ -100,7 +100,7 @@ class SelectionHandler{
     $('#text').addEventListener('mouseup',chk);$('#text').addEventListener('touchend',chk);
     document.addEventListener('selectionchange',()=>{if(getSelection().isCollapsed)this.btn.style.display='none'});
     this.btn.addEventListener('mousedown',e=>e.preventDefault());
-    this.btn.addEventListener('click',()=>{this.editId=null;this.open()});
+    this.btn.addEventListener('click',()=>{this.editId=null;this.ref='';this.vk='';this.open()});
     this.editId=null;const md=$('#modal'),mt=$('#mt'),cnt=()=>{const n=mt.value.length;$('#mcnt').textContent=n?n+' / '+mt.maxLength:'';$('#ms').disabled=!mt.value.trim()};
     mt.addEventListener('input',cnt);this.cnt=cnt;
     $('#mc').onclick=()=>this.close();$('#mx').onclick=()=>this.close();
@@ -112,12 +112,12 @@ class SelectionHandler{
     this.range=s.getRangeAt(0);this.text=s.toString().trim();
     const r=this.range.getBoundingClientRect();
     this.btn.style.display='block';this.btn.style.left=(r.left+r.width/2+scrollX)+'px';this.btn.style.top=(r.top+scrollY)+'px'}
-  newNote(){this.text='';this.editId=null;this.open()}
-  edit(id){const n=this.st.d.notes.find(x=>x.id==id);if(!n)return;this.text=n.q||'';this.editId=id;this.open(n.t)}
-  open(v=''){$('#mq').textContent=this.text?'«'+this.text+'»':'';$('#mh').textContent=tr(this.editId?'n_edit':'a_note');$('#mt').value=v;this.cnt();$('#modal').classList.remove('closing');$('#modal').classList.add('open');this.btn.style.display='none';setTimeout(()=>{const t=$('#mt');t.focus();t.setSelectionRange(t.value.length,t.value.length)},60)}
+  newNote(text='',ref='',k=''){this.text=text||'';this.ref=ref||'';this.vk=k||'';this.editId=null;this.open()}
+  edit(id){const n=this.st.d.notes.find(x=>x.id==id);if(!n)return;this.text=n.q||'';this.ref=n.r||'';this.vk=n.k||'';this.editId=id;this.open(n.t)}
+  open(v=''){const mq=$('#mq');mq.textContent=this.text?'«'+this.text+'»':'';mq.dataset.ref=this.text&&this.ref?this.ref:'';$('#mh').textContent=tr(this.editId?'n_edit':'a_note');$('#mt').value=v;this.cnt();$('#modal').classList.remove('closing');$('#modal').classList.add('open');this.btn.style.display='none';setTimeout(()=>{const t=$('#mt');t.focus();t.setSelectionRange(t.value.length,t.value.length)},60)}
   save(){const body=$('#mt').value.trim();if(!body)return;
     const ns=this.st.d.notes,ed=this.editId?ns.find(x=>x.id==this.editId):null;let nid=null;
-    if(ed){ed.t=body;ed.u=Date.now();nid=ed.id}else{nid=Date.now();ns.push({id:nid,q:this.text,t:body})}
+    if(ed){ed.t=body;ed.u=Date.now();nid=ed.id}else{nid=Date.now();const o={id:nid,q:this.text,t:body};if(this.ref)o.r=this.ref;if(this.vk)o.k=this.vk;ns.push(o)}
     this.st.save();this.close();this.editId=null;getSelection().removeAllRanges();this.ui.renderNotes(nid)}
 }
 
@@ -203,13 +203,13 @@ class UIManager{
     document.querySelectorAll('[data-p]').forEach(e=>e.classList.toggle('on',e.dataset.p===d.particles));
     document.querySelectorAll('[data-i]').forEach(e=>e.classList.toggle('on',+e.dataset.i===d.track));
     $('#clk').classList.toggle('on',d.click);$('#clk').textContent=tr('click')+': '+tr(d.click?'on':'off');document.querySelectorAll('[data-b]').forEach(e=>e.classList.toggle('on',e.dataset.b===d.bg))}
-  renderNotes(hot){const n=this.st.d.notes,nb=$('#bNew');$('#nc').textContent=n.length;
+  renderNotes(hot){const n=this.st.d.notes,nb=$('#bNew');$('#nc').textContent=n.length;try{window.__markNotes&&window.__markNotes()}catch(e){}
     if(nb){nb.dataset.l=tr('a_note');nb.setAttribute('aria-label',tr('a_note'))}
     const loc=['ru','en','hy','pl','de','hu'][LANG]||'en',fmt=id=>{try{return new Date(+id).toLocaleDateString(loc,{day:'numeric',month:'short',year:'numeric'})}catch(e){return ''}};
     const I=d=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+d+'</svg>';
     const ic={edit:I('<path d="M4 20l4-1 11-11a2.1 2.1 0 0 0-3-3L5 16z"/>'),copy:I('<rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15V6.5A2.5 2.5 0 0 1 7.5 4H15"/>'),del:I('<path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/>')};
     $('#notes').innerHTML='<div class="nn-head"><h4>'+tr('refl')+'</h4><span class="nn-count">'+n.length+'</span></div>'+
-     (n.length?n.slice().reverse().map((x,k)=>`<article class="note nn${x.id==hot?' fresh':''}" data-id="${x.id}" style="--i:${Math.min(k,8)}"><div class="nn-top"><time>${esc(fmt(x.id))}${x.u?' · ✎':''}</time><div class="nn-act"><button type="button" data-edit="${x.id}" title="${esc(tr('n_edit'))}" aria-label="${esc(tr('n_edit'))}">${ic.edit}</button><button type="button" data-copy="${x.id}" title="${esc(tr('n_copy'))}" aria-label="${esc(tr('n_copy'))}">${ic.copy}</button><button type="button" data-del="${x.id}" title="${esc(tr('del'))}" aria-label="${esc(tr('del'))}">${ic.del}</button></div></div>${x.q?`<q>«${esc(x.q.slice(0,160))}${x.q.length>160?'…':''}»</q>`:''}<p class="nn-t">${esc(x.t)}</p></article>`).join(''):
+     (n.length?n.slice().reverse().map((x,k)=>`<article class="note nn${x.id==hot?' fresh':''}" data-id="${x.id}" style="--i:${Math.min(k,8)}"><div class="nn-top"><time>${esc(fmt(x.id))}${x.u?' · ✎':''}</time><div class="nn-act"><button type="button" data-edit="${x.id}" title="${esc(tr('n_edit'))}" aria-label="${esc(tr('n_edit'))}">${ic.edit}</button><button type="button" data-copy="${x.id}" title="${esc(tr('n_copy'))}" aria-label="${esc(tr('n_copy'))}">${ic.copy}</button><button type="button" data-del="${x.id}" title="${esc(tr('del'))}" aria-label="${esc(tr('del'))}">${ic.del}</button></div></div>${x.r?`<b class="nn-ref">${esc(x.r)}</b>`:''}${x.q?`<q>«${esc(x.q.slice(0,160))}${x.q.length>160?'…':''}»</q>`:''}<p class="nn-t">${esc(x.t)}</p></article>`).join(''):
       `<div class="nn-empty"><span class="nn-eico">${I('<path d="M4 20l4-1 11-11a2.1 2.1 0 0 0-3-3L5 16z"/><path d="M14 6l4 4"/>')}</span><p>${esc(tr('empty'))}</p></div>`);
     const nt=$('#notes'),find=id=>this.st.d.notes.find(x=>x.id==id);
     nt.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>sh.edit(b.dataset.edit));
@@ -350,6 +350,6 @@ const pr=$$('#prayer'),lock=on=>{[...document.body.children].forEach(e=>{if(e.id
 new MutationObserver(st).observe(pr,{attributes:true,attributeFilter:['class']});st();
 const tt=(i,k)=>{const e=$$('#'+i);if(e)e.title=e.ariaLabel=xl(k)};tt('bNotes','notes');tt('bPr','prayers');tt('bSet','settings');tt('bNew','newnote');tt('bFs','fs');tt('bFind','find')}
 const state=new State(),fx=new ParticleEngine($('#fx')),audio=new AudioController(state),ui=new UIManager(state,fx,audio);
-const sh=new SelectionHandler(state,ui);$('#bNew').onclick=()=>sh.newNote();new Weather(audio);new Flame();LC=new LightController(state,fx);ui.i18n();xInit();xInit2();xInit3();
+const sh=new SelectionHandler(state,ui);$('#bNew').onclick=()=>sh.newNote();window.__noteVerse=(t,r,k)=>sh.newNote(t,r,k);window.__noteKeys=()=>{const m={};state.d.notes.forEach(x=>{if(x.k)m[x.k]=(m[x.k]||0)+1});return m};new Weather(audio);new Flame();LC=new LightController(state,fx);ui.i18n();xInit();xInit2();xInit3();
 
 ;(function(){document.addEventListener('click',function(e){if(e.target!==document.documentElement)return;['panel','npanel','ppanel','hpanel'].forEach(function(id){var p=document.getElementById(id);if(p)p.classList.remove('open')})})})();
