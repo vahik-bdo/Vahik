@@ -58,7 +58,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 #modal{position:fixed;inset:0;z-index:70;display:none;place-items:center;background:rgba(0,0,0,.5);backdrop-filter:blur(5px)}
 #modal.open{display:grid;animation:fade .4s}
 @keyframes fade{from{opacity:0}}
-#modal div{width:min(30rem,92vw);background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:1.4rem;font-family:'Manrope','Noto Sans Armenian',sans-serif;animation:rise .5s cubic-bezier(.2,.9,.3,1)}
+#modal>.nm-card{width:min(32rem,92vw);background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:1.4rem;font-family:'Manrope','Noto Sans Armenian',sans-serif;animation:rise .5s cubic-bezier(.2,.9,.3,1)}
 @keyframes rise{from{transform:translateY(30px) scale(.95);opacity:0}}
 #modal q{display:block;color:var(--dim);font:italic 15px var(--ff);margin-bottom:1rem;max-height:6em;overflow:auto}
 textarea{width:100%;min-height:7em;background:transparent;color:var(--fg);border:1px solid var(--line);border-radius:12px;padding:.8em;font:15px 'Manrope','Noto Sans Armenian',sans-serif;resize:vertical}
@@ -120,7 +120,7 @@ input[type=range]{-webkit-appearance:none;appearance:none;height:8px;border-radi
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--accent);border:0}
 input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--accent);border:0}
 input[type=color]{border-radius:50%;overflow:hidden}
-#panel,#npanel,#ppanel,#hpanel{border-radius:28px}#modal div{border-radius:30px}textarea{border-radius:20px}#mq:empty{display:none}
+#panel,#npanel,#ppanel,#hpanel{border-radius:28px}#modal>.nm-card{border-radius:30px}textarea{border-radius:20px}#mq:empty{display:none}
 .note{border-top:0;border-radius:18px;background:var(--line);padding:.7em .9em;margin-bottom:.4rem}
 .rnd{width:40px;height:40px;padding:0;display:grid;place-items:center}.rnd svg{width:18px;height:18px}
 .mode{display:flex;padding:3px;border-radius:99px;background:var(--line);margin-bottom:.9rem}

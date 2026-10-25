@@ -350,3 +350,104 @@ body.br-mode .hero .crossw{zoom:1;width:clamp(68px,13.6vw,93px)}
 /* обводка и заливка кнопки меню меняются плавно (без рывка левой рамки) */
 #brRt{transition:background .55s cubic-bezier(.22,1,.36,1),border-color .55s cubic-bezier(.22,1,.36,1),border-left-width .55s cubic-bezier(.22,1,.36,1),border-radius .55s cubic-bezier(.22,1,.36,1),box-shadow .7s cubic-bezier(.22,1,.36,1),color .55s ease,transform .4s cubic-bezier(.22,1,.36,1)}
 #brRt svg{transition-duration:.55s!important}
+
+/* ============ Поиск: «все слова» и «не все слова» ============ */
+.br-sect{display:flex;align-items:center;gap:.55rem;margin:.55rem .5rem .2rem;padding:.42rem .7rem;border-radius:99px;font:700 .64rem Manrope,'Noto Sans Armenian',sans-serif;letter-spacing:.07em;text-transform:uppercase;position:sticky;top:0;z-index:2;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.br-sect-i{flex:none;width:9px;height:9px;border-radius:50%}
+.br-sect-t{flex:1;min-width:0}
+.br-sect-n{flex:none;min-width:1.7em;padding:.12rem .5rem;border-radius:99px;text-align:center;font-size:.66rem;letter-spacing:0}
+.br-sect.full{color:var(--head);background:color-mix(in srgb,var(--head) 14%,var(--panel));border:1px solid color-mix(in srgb,var(--head) 38%,transparent)}
+.br-sect.full .br-sect-i{background:var(--head);box-shadow:0 0 8px color-mix(in srgb,var(--head) 70%,transparent)}
+.br-sect.full .br-sect-n{background:color-mix(in srgb,var(--head) 24%,transparent)}
+.br-sect.part{margin-top:1rem;color:var(--dim);background:color-mix(in srgb,var(--panel) 80%,transparent);border:1px dashed color-mix(in srgb,var(--dim) 55%,transparent)}
+.br-sect.part .br-sect-i{background:transparent;border:2px solid var(--dim)}
+.br-sect.part .br-sect-n{background:color-mix(in srgb,var(--dim) 22%,transparent)}
+.br-sect-sub{margin:.1rem 1.1rem .3rem;font:500 .7rem/1.4 Manrope,'Noto Sans Armenian',sans-serif;color:var(--dim)}
+.br-sect-more{text-align:center;margin:.5rem 1rem 1rem;opacity:.8}
+.br-result{position:relative;padding-left:.9rem!important;border-radius:0;transition:background .2s,transform .15s}
+.br-result::before{content:"";position:absolute;left:.15rem;top:.7rem;bottom:.7rem;width:3px;border-radius:3px}
+.br-result.full::before{background:var(--head)}
+.br-result.part::before{background:repeating-linear-gradient(to bottom,var(--dim) 0 4px,transparent 4px 8px);opacity:.7}
+.br-result.part span{color:color-mix(in srgb,var(--fg) 82%,var(--dim))}
+.br-result:hover{background:color-mix(in srgb,var(--accent) 7%,transparent)}
+.br-result:active{transform:scale(.988);background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.br-chip{display:inline-block;margin-left:.55rem;padding:.08rem .5rem;border-radius:99px;font-style:normal;font-weight:700;font-size:.6rem;letter-spacing:.03em;color:var(--dim);border:1px solid color-mix(in srgb,var(--dim) 50%,transparent);vertical-align:.05em;white-space:nowrap}
+
+/* ============ Вкладка «Звук»: кнопки по сетке и переключатель фона ============ */
+#panel [data-s="snd"] .row:has(>#play){display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+#panel [data-s="snd"] .row:has(>#play) .btn{width:100%;text-align:center;justify-content:center}
+#panel .row.bgrow{display:block;margin:1rem 0 .2rem}
+#panel #bgp{display:flex;align-items:center;justify-content:space-between;gap:.7rem;width:100%;min-height:46px;margin:0;padding:.25rem .55rem .25rem .9rem;border-radius:99px;text-align:left;background:color-mix(in srgb,var(--panel) 70%,transparent)}
+#panel #bgp.on{background:color-mix(in srgb,var(--accent) 11%,var(--panel));color:var(--fg);border-color:color-mix(in srgb,var(--accent) 55%,var(--line))}
+#bgp .at-l{display:flex;align-items:center;gap:.6rem;min-width:0}
+#bgp .at-t{min-width:0;white-space:normal;line-height:1.2;overflow-wrap:anywhere}
+#bgp .at-ico{flex:none;width:26px;height:26px;color:var(--accent);opacity:.55;transition:opacity .4s,transform .5s cubic-bezier(.34,1.45,.5,1)}
+#bgp.on .at-ico{opacity:1;transform:scale(1.1)}
+#bgp .at-sw{flex:none;position:relative;width:42px;height:24px;border-radius:99px;background:color-mix(in srgb,var(--dim) 35%,transparent);transition:background .35s}
+#bgp .at-sw i{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--fg);opacity:.85;transition:transform .35s cubic-bezier(.22,1,.36,1),background .35s,opacity .35s}
+#bgp.on .at-sw{background:var(--accent)}
+#bgp.on .at-sw i{transform:translateX(18px);background:var(--bg);opacity:1}
+#bgp:active{transform:scale(.985)}
+.bg-h{margin:.5rem .6rem 0;font:500 11.5px/1.45 Manrope,'Noto Sans Armenian',sans-serif;color:var(--dim)}
+
+/* ============ Заметки: окно ввода ============ */
+#modal{background:rgba(0,0,0,.55)}
+#modal.open{animation:fade .3s ease both}
+#modal.closing{animation:nmOut .18s ease forwards}
+#modal.closing>.nm-card{animation:nmCardOut .18s ease forwards}
+@keyframes nmOut{to{opacity:0}}
+@keyframes nmCardOut{to{transform:translateY(14px) scale(.97);opacity:0}}
+#modal>.nm-card{display:flex;flex-direction:column;gap:.85rem;padding:1.15rem 1.15rem 1.2rem;max-height:90dvh;overflow:auto;box-shadow:0 30px 80px rgba(0,0,0,.45),inset 0 1px 0 color-mix(in srgb,var(--accent) 14%,transparent);animation:nmIn .45s cubic-bezier(.2,.9,.3,1) both}
+@keyframes nmIn{from{transform:translateY(26px) scale(.95);opacity:0}}
+.nm-head{display:flex;align-items:center;gap:.7rem}
+.nm-ico{flex:none;width:38px;height:38px;display:grid;place-items:center;border-radius:50%;color:var(--accent);background:color-mix(in srgb,var(--accent) 13%,transparent);border:1px solid color-mix(in srgb,var(--accent) 30%,transparent)}
+.nm-ico svg{width:19px;height:19px}
+.nm-head h3{flex:1;min-width:0;margin:0;font:600 1.05rem/1.2 Manrope,'Noto Sans Armenian',sans-serif;color:var(--head)}
+.nm-x{flex:none;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--dim);font-size:22px;line-height:1;cursor:pointer;transition:transform .2s,color .2s,border-color .2s}
+.nm-x:hover{color:var(--fg);border-color:var(--accent)}.nm-x:active{transform:scale(.9)}
+#modal q{position:relative;margin:0;padding:.65rem .9rem .65rem 1.1rem;border-radius:14px;background:color-mix(in srgb,var(--accent) 7%,transparent);max-height:7em;font-size:14.5px;line-height:1.5}
+#modal q::before{content:"";position:absolute;left:0;top:.55rem;bottom:.55rem;width:3px;border-radius:3px;background:var(--accent)}
+#modal textarea{min-height:9rem;height:min(30dvh,15rem);max-height:50dvh;resize:none;padding:.9rem 1rem;border-radius:18px;line-height:1.55;background:color-mix(in srgb,var(--bg) 35%,transparent);transition:border-color .25s,box-shadow .25s}
+#modal textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 18%,transparent)}
+.nm-meta{margin:-.45rem .4rem 0;text-align:right;min-height:1em;font:500 11px Manrope,sans-serif;color:var(--dim)}
+.nm-btns{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.nm-btns .btn{width:100%;min-height:46px;padding:.5em 1em;text-align:center;font-weight:600}
+.nm-btns .btn:active{transform:scale(.96)}
+.nm-btns #ms{box-shadow:0 8px 22px color-mix(in srgb,var(--accent) 30%,transparent)}
+.nm-btns #ms:disabled{opacity:.45;box-shadow:none;cursor:default;transform:none}
+
+/* ============ Заметки: список ============ */
+#npanel{width:min(26rem,calc(100vw - 2rem));max-height:78dvh}
+#npanel>#bNew{display:flex;align-items:center;justify-content:center;gap:.6rem;width:100%;height:auto;min-height:46px;margin:0 0 .9rem;padding:.5em 1.1em;border-radius:99px;font-weight:600;color:var(--accent);background:color-mix(in srgb,var(--accent) 11%,var(--panel));border-color:color-mix(in srgb,var(--accent) 45%,var(--line))}
+#npanel>#bNew svg{flex:none;width:19px;height:19px}
+#npanel>#bNew::after{content:attr(data-l);font-size:14px}
+#npanel>#bNew:active{transform:scale(.97)}
+.nn-head{display:flex;align-items:center;justify-content:space-between;margin:.2rem .2rem .6rem}
+.nn-head h4{margin:0!important}
+.nn-count{min-width:1.9em;padding:.12rem .55rem;border-radius:99px;text-align:center;font:600 11px Manrope,sans-serif;color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,transparent)}
+.note.nn{position:relative;margin:0 0 .6rem;padding:.65rem .8rem .8rem 1rem;border-radius:18px;background:color-mix(in srgb,var(--accent) 7%,var(--panel));border:1px solid color-mix(in srgb,var(--accent) 16%,transparent);overflow:hidden;animation:nnIn .5s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(var(--i,0)*45ms);transition:transform .2s,border-color .25s,background .25s,opacity .26s,max-height .26s,margin .26s,padding .26s}
+.note.nn::before{content:"";position:absolute;left:0;top:.8rem;bottom:.8rem;width:3px;border-radius:0 3px 3px 0;background:var(--accent);opacity:.7}
+.note.nn:hover{border-color:color-mix(in srgb,var(--accent) 45%,transparent)}
+.note.nn.fresh{animation:nnIn .5s cubic-bezier(.22,1,.36,1) both,nnGlow 1.6s ease-out .3s both}
+.note.nn.gone{opacity:0;transform:translateX(24px) scale(.97);max-height:0!important;margin-bottom:0;padding-top:0;padding-bottom:0}
+@keyframes nnIn{from{opacity:0;transform:translateY(10px)}}
+@keyframes nnGlow{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 55%,transparent)}100%{box-shadow:0 0 0 14px transparent}}
+.nn-top{display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin-bottom:.3rem}
+.nn-top time{font:600 10.5px Manrope,sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--dim)}
+.nn-act{display:flex;gap:.3rem}
+.nn-act button{width:32px;height:32px;display:grid;place-items:center;padding:0;border:1px solid transparent;border-radius:50%;background:transparent;color:var(--dim);cursor:pointer;transition:transform .18s,color .2s,background .2s,border-color .2s}
+.nn-act svg{width:16px;height:16px}
+.nn-act button:hover{color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.nn-act button:active{transform:scale(.86)}
+.nn-act [data-del]:hover{color:#ff6b81;background:rgba(255,107,129,.12)}
+.nn-act button.ok{color:var(--head);border-color:color-mix(in srgb,var(--head) 50%,transparent);background:color-mix(in srgb,var(--head) 14%,transparent)}
+.note.nn q{display:block;margin:0 0 .4rem;padding:0;font:italic 13px/1.45 var(--ff);color:var(--dim);cursor:pointer}
+.nn-t{margin:0;font-size:14.5px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere;cursor:pointer}
+.nn-empty{display:grid;justify-items:center;gap:.7rem;padding:1.6rem .8rem 1.2rem;text-align:center;color:var(--dim)}
+.nn-empty p{margin:0;max-width:17em;font-size:13px;line-height:1.5}
+.nn-eico{width:54px;height:54px;display:grid;place-items:center;border-radius:50%;color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent);border:1px dashed color-mix(in srgb,var(--accent) 45%,transparent);animation:nnFloat 4s ease-in-out infinite}
+.nn-eico svg{width:24px;height:24px}
+@keyframes nnFloat{50%{transform:translateY(-4px)}}
+@media (prefers-reduced-motion:reduce){.note.nn,.nn-eico,#modal>.nm-card{animation:none!important}}
+
+#modal q,.note.nn q{quotes:none}
