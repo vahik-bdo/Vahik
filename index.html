@@ -150,16 +150,31 @@ addEventListener("load",function(){
 });
 })();
 </script>
-<script>(function(){if(!matchMedia('(pointer:coarse)').matches)return;var s=null,TH=90,MAX=150;
+<script>(function(){if(!matchMedia('(pointer:coarse)').matches)return;
+/* Смахивание стиха: вправо — «Поделиться», влево — «Заметка».
+   Стих уезжает, а в освободившемся месте проявляется слой с иконкой; за порогом срабатывает вибро-щелчок, по отпусканию — действие. */
+var s=null,TH=88,MAX=150,SW=14,EDGE=28,
+LB={ru:['Поделиться','Заметка'],en:['Share','Note'],hy:['Կիսվել','Նշում'],de:['Teilen','Notiz'],pl:['Udostępnij','Notatka'],hu:['Megosztás','Jegyzet']},
+IC=['<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4M8 8l4-4 4 4M5 13v6h14v-6"/></svg>',
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l4-1 11-11a2.1 2.1 0 0 0-3-3L5 16z"/><path d="M14 6l4 4"/></svg>'];
 function vOf(t){return t&&t.closest?t.closest('#brReader .br-verse'):null}
-function reset(a){if(!a)return;a.style.transition='transform .38s cubic-bezier(.22,1,.36,1)';a.style.transform='';a.style.setProperty('--sp',0);a.classList.remove('armed');setTimeout(function(){a.classList.remove('swp');a.style.transition=''},400)}
-document.addEventListener('pointerdown',function(e){if(e.pointerType==='mouse'){s=null;return}var a=vOf(e.target);if(!a||(e.target.closest&&e.target.closest('button,a'))||e.clientX<28||document.body.classList.contains('msel-on')){s=null;return}s={a:a,x:e.clientX,y:e.clientY,on:false,armed:false,id:e.pointerId}},{passive:true,capture:true});
+function lg(){try{var l=state.d.lang;return LB[l]?l:'ru'}catch(e){return 'ru'}}
+function clean(a){a.classList.remove('swp','swp-r','swp-l','swr','armed');a.style.removeProperty('--t');a.style.removeProperty('--sp');var l=a.querySelector(':scope>.sw-back');if(l)l.remove()}
+function mk(a,dir){var o=a.querySelector(':scope>.sw-back');if(o)o.remove();var n=dir>0?0:1,d=document.createElement('div');d.className='sw-back';d.setAttribute('aria-hidden','true');d.innerHTML='<div class="sw-in"><i class="sw-ic">'+IC[n]+'</i><span class="sw-lb">'+LB[lg()][n]+'</span></div>';a.insertBefore(d,a.firstChild)}
+function vib(n){try{navigator.vibrate&&navigator.vibrate(n)}catch(x){}}
+document.addEventListener('pointerdown',function(e){if(e.pointerType==='mouse'){s=null;return}var a=vOf(e.target);if(!a||(e.target.closest&&e.target.closest('button,a'))||e.clientX<EDGE||e.clientX>innerWidth-EDGE||document.body.classList.contains('msel-on')){s=null;return}s={a:a,x:e.clientX,y:e.clientY,on:false,armed:false,dir:0,id:e.pointerId}},{passive:true,capture:true});
 document.addEventListener('pointermove',function(e){if(!s||e.pointerId!==s.id)return;var dx=e.clientX-s.x,dy=e.clientY-s.y;
-if(!s.on){if(Math.abs(dy)>14&&Math.abs(dy)>Math.abs(dx)){s=null;return}if(dx>14&&dx>Math.abs(dy)*1.4){s.on=true;s.a.classList.add('swp');s.a.style.transition='none'}else return}
-var m=Math.max(0,dx-14),t=m<TH?m:TH+(m-TH)*.3;if(t>MAX)t=MAX;s.a.style.transform='translate3d('+t.toFixed(1)+'px,0,0)';s.a.style.setProperty('--sp',Math.min(1,m/TH).toFixed(2));
-var arm=m>=TH;if(arm!==s.armed){s.armed=arm;s.a.classList.toggle('armed',arm);if(arm){try{navigator.vibrate&&navigator.vibrate(16)}catch(x){}}}},{passive:true,capture:true});
-function end(e){if(!s||(e&&e.pointerId!==s.id))return;var o=s;s=null;if(!o.on)return;var fire=o.armed&&e&&e.type==='pointerup';reset(o.a);
-if(fire){var b=o.a.querySelector('.br-share');if(b)setTimeout(function(){b.click()},180)}}
+if(!s.on){if(Math.abs(dy)>14&&Math.abs(dy)>Math.abs(dx)){s=null;return}
+ if(Math.abs(dx)>SW&&Math.abs(dx)>Math.abs(dy)*1.4){var a=s.a;s.dir=dx>0?1:-1;s.on=true;clearTimeout(a._swt);a.classList.remove('swr','armed');a.classList.add('swp',s.dir>0?'swp-r':'swp-l');a.classList.remove(s.dir>0?'swp-l':'swp-r');mk(a,s.dir)}else return}
+var m=Math.max(0,dx*s.dir-SW),t=m<TH?m:TH+(m-TH)*.3;if(t>MAX)t=MAX;
+s.a.style.setProperty('--t',t.toFixed(1)+'px');s.a.style.setProperty('--sp',Math.min(1,m/TH).toFixed(2));
+var arm=m>=TH;if(arm!==s.armed){s.armed=arm;s.a.classList.toggle('armed',arm);if(arm)vib(16)}},{passive:true,capture:true});
+function end(e){if(!s||(e&&e.pointerId!==s.id))return;var o=s;s=null;if(!o.on)return;var a=o.a,fire=o.armed&&e&&e.type==='pointerup';
+a.classList.add('swr');a.classList.remove('armed');a.style.setProperty('--t','0px');a.style.setProperty('--sp','0');
+clearTimeout(a._swt);a._swt=setTimeout(function(){clean(a);a.classList.remove('swfire')},620);
+if(!fire)return;a.classList.remove('swfire');void a.offsetWidth;a.classList.add('swfire');
+if(o.dir>0){var b=a.querySelector('.br-share');if(b)setTimeout(function(){b.click()},200)}
+else setTimeout(function(){try{var i=window.__verseInfo&&window.__verseInfo(a);if(i&&window.__noteVerse)window.__noteVerse(i.text,i.ref,i.k)}catch(x){}},240)}
 document.addEventListener('pointerup',end,{capture:true,passive:true});document.addEventListener('pointercancel',end,{capture:true,passive:true})})()</script>
 </body>
 </html>
