@@ -217,7 +217,7 @@ document.addEventListener('click',e=>{if(e.target.closest('#brRail,#brPop'))retu
 let zenAt=0;
 function zenOn(){document.body.classList.add('zen');zenAt=Date.now();try{const s=getSelection();s&&s.removeAllRanges()}catch(e){}}
 function zenOff(){document.body.classList.remove('zen')}
-document.addEventListener('click',e=>{if(document.body.classList.contains('zen')&&Date.now()-zenAt>600){zenOff();e.stopPropagation();e.preventDefault()}},true);
+document.addEventListener('click',e=>{if(document.body.classList.contains('zen')&&Date.now()-zenAt>600){if(e.target.closest&&e.target.closest('.br-nav'))return;zenOff();e.stopPropagation();e.preventDefault()}},true);
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.body.classList.contains('zen'))zenOff()});
 function buildRail(){const b=q('#brRb');if(!b)return;{const t=q('#brRt');if(t)t.setAttribute('aria-label',tr('a_menu'))}const svg=d=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
 const ZL={ru:'Чтение',en:'Reading',hy:'Ընթերցում',de:'Lesen'};const it=[['book',svg(IC.book),T('book')],['chap',svg(IC.chap),T('chapter')],...(modeOptions().length>1?[['mode',svg(IC.tr),T('translation')]]:[]),['cmp',svg('<rect x="3" y="4" width="8" height="16" rx="1.6"/><rect x="13" y="4" width="8" height="16" rx="1.6"/>'),CL('btn')],['find',svg(IC.find),T('search')],['hist',svg(IC.hist),hl('history')],['zen',svg('<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'),ZL[lang()]||ZL.en]];
