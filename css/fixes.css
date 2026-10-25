@@ -342,9 +342,34 @@ body.br-mode .hero .crossw{zoom:1;width:clamp(68px,13.6vw,93px)}
 .br-like{opacity:0!important;pointer-events:none!important}
 .br-verse.liked .br-like{opacity:.9!important}
 #brReader .br-verse{touch-action:pan-y}
-.br-verse.swp{will-change:transform}
-.br-verse.swp::before{content:"";position:absolute;left:-46px;top:50%;width:26px;height:26px;margin-top:-13px;background:var(--dim);opacity:var(--sp,0);transform:scale(calc(.55 + var(--sp,0)*.45));transition:background .2s,transform .25s cubic-bezier(.34,1.56,.64,1);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 15V4M8 8l4-4 4 4M5 13v6h14v-6'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 15V4M8 8l4-4 4 4M5 13v6h14v-6'/%3E%3C/svg%3E") center/contain no-repeat}
-.br-verse.swp.armed::before{background:var(--head);transform:scale(1.2)}
+/* смах стиха: вправо — «Поделиться», влево — «Заметка». Стих отъезжает, в освободившемся месте проявляется слой с иконкой */
+html body .br-verse.swp{will-change:transform,opacity!important;opacity:calc(1 - var(--sp,0)*.32)!important;filter:none!important;transition:none!important}
+html body .br-verse.swp-r{transform:translate3d(var(--t,0px),0,0)!important}
+html body .br-verse.swp-l{transform:translate3d(calc(var(--t,0px)*-1),0,0)!important}
+.br-verse.swp>.br-vtext{transition:none}
+.br-verse.swp-r>.br-vtext{transform:translate3d(calc(var(--sp,0)*9px),0,0)}
+.br-verse.swp-l>.br-vtext{transform:translate3d(calc(var(--sp,0)*-9px),0,0)}
+html body .br-verse.swp.swr{transition:transform .58s cubic-bezier(.3,1.35,.5,1),opacity .45s ease,background calc(.45s*var(--smd,1)),box-shadow calc(.45s*var(--smd,1))!important}
+.br-verse.swr>.br-vtext{transition:transform .58s cubic-bezier(.3,1.35,.5,1)}
+.sw-back{position:absolute;top:0;bottom:0;width:max(0px,var(--t,0px));overflow:hidden;pointer-events:none;border-radius:14px;opacity:calc(.25 + var(--sp,0)*.75)}
+.swp-r>.sw-back{left:calc(var(--t,0px)*-1);background:linear-gradient(90deg,color-mix(in srgb,var(--head) 26%,transparent),color-mix(in srgb,var(--head) 5%,transparent));box-shadow:inset 3px 0 0 color-mix(in srgb,var(--head) 75%,transparent)}
+.swp-l>.sw-back{right:calc(var(--t,0px)*-1);background:linear-gradient(270deg,color-mix(in srgb,var(--accent) 28%,transparent),color-mix(in srgb,var(--accent) 5%,transparent));box-shadow:inset -3px 0 0 color-mix(in srgb,var(--accent) 80%,transparent)}
+.swr>.sw-back{transition:left .58s cubic-bezier(.3,1.35,.5,1),right .58s cubic-bezier(.3,1.35,.5,1),width .58s cubic-bezier(.3,1.35,.5,1),opacity .45s ease}
+.sw-in{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.sw-ic{position:relative;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-style:normal;color:var(--head);background:color-mix(in srgb,var(--head) 14%,transparent);border:1px solid color-mix(in srgb,var(--head) 38%,transparent);opacity:var(--sp,0);transform:scale(calc(.5 + var(--sp,0)*.5)) rotate(calc((1 - var(--sp,0))*-40deg))}
+.swp-l .sw-ic{color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,transparent);border-color:color-mix(in srgb,var(--accent) 40%,transparent);transform:scale(calc(.5 + var(--sp,0)*.5)) rotate(calc((1 - var(--sp,0))*40deg))}
+.sw-ic svg{width:17px;height:17px}
+.sw-ic::after{content:"";position:absolute;inset:-1px;border-radius:50%;border:2px solid currentColor;opacity:0}
+.sw-lb{font:700 9.5px/1 Manrope,'Noto Sans Armenian',sans-serif;letter-spacing:.09em;text-transform:uppercase;white-space:nowrap;color:var(--dim);opacity:calc((var(--sp,0) - .5)*2);transition:color .2s}
+.br-verse.armed .sw-ic{color:var(--bg,#000);background:var(--head);border-color:var(--head);transform:scale(1.16) rotate(0);box-shadow:0 0 0 6px color-mix(in srgb,var(--head) 20%,transparent),0 0 22px color-mix(in srgb,var(--head) 50%,transparent);transition:transform .32s cubic-bezier(.34,1.7,.64,1),background .2s,box-shadow .3s}
+.br-verse.armed.swp-l .sw-ic{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 6px color-mix(in srgb,var(--accent) 20%,transparent),0 0 22px color-mix(in srgb,var(--accent) 50%,transparent)}
+.br-verse.armed .sw-ic::after{animation:swRing .6s ease-out}
+.br-verse.armed .sw-lb{color:var(--head)}
+.br-verse.armed.swp-l .sw-lb{color:var(--accent)}
+.br-verse.swfire{animation:swFire 1s ease-out}
+@keyframes swRing{from{opacity:.8;transform:scale(1)}to{opacity:0;transform:scale(2.1)}}
+@keyframes swFire{0%{background:color-mix(in srgb,var(--head) 16%,transparent)}100%{background:transparent}}
+@media(prefers-reduced-motion:reduce){.br-verse.swr,.br-verse.swr>.br-vtext,.swr>.sw-back{transition-duration:.01s!important}.br-verse.armed .sw-ic::after,.br-verse.swfire{animation:none}}
 }
 
 /* обводка и заливка кнопки меню меняются плавно (без рывка левой рамки) */
@@ -451,3 +476,9 @@ body.br-mode .hero .crossw{zoom:1;width:clamp(68px,13.6vw,93px)}
 @media (prefers-reduced-motion:reduce){.note.nn,.nn-eico,#modal>.nm-card{animation:none!important}}
 
 #modal q,.note.nn q{quotes:none}
+
+
+/* заметка, привязанная к стиху: ссылка в окне и в списке, точка у номера стиха */
+#mq[data-ref]:not([data-ref=""])::before{content:attr(data-ref);display:block;margin-bottom:.35rem;font:700 10.5px Manrope,'Noto Sans Armenian',sans-serif;font-style:normal;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.nn-ref{display:block;margin:0 0 .3rem;font:700 11px Manrope,'Noto Sans Armenian',sans-serif;letter-spacing:.04em;color:var(--accent)}
+.br-verse.has-note .br-vnum::after{content:"";display:block;width:5px;height:5px;margin:.28rem 0 0 auto;border-radius:50%;background:var(--accent);box-shadow:0 0 7px color-mix(in srgb,var(--accent) 80%,transparent);opacity:.9}
