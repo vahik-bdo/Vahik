@@ -479,6 +479,9 @@ html body .br-verse.swp.swr{transition:transform .58s cubic-bezier(.3,1.35,.5,1)
 
 
 /* заметка, привязанная к стиху: ссылка в окне и в списке, точка у номера стиха */
-#mq[data-ref]:not([data-ref=""])::before{content:attr(data-ref);display:block;margin-bottom:.35rem;font:700 10.5px Manrope,'Noto Sans Armenian',sans-serif;font-style:normal;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+#mq[data-ref]:not([data-ref=""])::after{content:"— " attr(data-ref);display:block;margin-top:.45rem;font:700 12px Manrope,'Noto Sans Armenian',sans-serif;font-style:normal;letter-spacing:.03em;color:var(--accent)}
 .nn-ref{display:block;margin:0 0 .3rem;font:700 11px Manrope,'Noto Sans Armenian',sans-serif;letter-spacing:.04em;color:var(--accent)}
 .br-verse.has-note .br-vnum::after{content:"";display:block;width:5px;height:5px;margin:.28rem 0 0 auto;border-radius:50%;background:var(--accent);box-shadow:0 0 7px color-mix(in srgb,var(--accent) 80%,transparent);opacity:.9}
+
+/* стрелка-меню слева — только на основном экране чтения */
+body:has(:is(#panel,#npanel,#ppanel,#hpanel,#xp,#brSearch,#brCommentary,#brHist,#modal,#pfm,#brPop).open) #brRail,body.tri-lock #brRail{opacity:0!important;pointer-events:none!important;visibility:hidden}
