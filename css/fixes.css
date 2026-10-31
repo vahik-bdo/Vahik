@@ -484,4 +484,36 @@ html body .br-verse.swp.swr{transition:transform .58s cubic-bezier(.3,1.35,.5,1)
 .br-verse.has-note .br-vnum::after{content:"";display:block;width:5px;height:5px;margin:.28rem 0 0 auto;border-radius:50%;background:var(--accent);box-shadow:0 0 7px color-mix(in srgb,var(--accent) 80%,transparent);opacity:.9}
 
 /* стрелка-меню слева — только на основном экране чтения */
-body:has(:is(#panel,#npanel,#ppanel,#hpanel,#xp,#brSearch,#brCommentary,#brHist,#modal,#pfm,#brPop).open) #brRail,body.tri-lock #brRail{opacity:0!important;pointer-events:none!important;visibility:hidden}
+body:has(:is(#panel,#npanel,#ppanel,#hpanel,#xp,#brSearch,#brCommentary,#brHist,#modal,#pfm).open) #brRail,body.tri-lock #brRail{opacity:0!important;pointer-events:none!important;visibility:hidden}
+/* список книг / глав (#brPop) намеренно НЕ прячет панель: интерфейс остаётся на экране, пока глава или книга не выбрана; после выбора reader.js сам закрывает и список, и панель */
+
+/* ===== Устройства с вырезом («чёлка» iPhone X/XR/11/12/13/14, Dynamic Island), жестовой полосой внизу и альбомной ориентацией =====
+   env(safe-area-inset-*) = 0 на обычных экранах, поэтому там ничего не меняется. */
+html{background-color:var(--bg)}
+/* полоса под системной строкой состояния: текст не уходит под часы/«чёлку» */
+html::before{content:"";position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:48;pointer-events:none}
+#bar{top:env(safe-area-inset-top,0px)}
+#lamp{left:max(18px,calc(env(safe-area-inset-left,0px) + 12px));top:env(safe-area-inset-top,0px)}
+.br-toolbar{top:calc(10px + env(safe-area-inset-top,0px))}
+@media(max-width:560px){.br-toolbar{top:calc(6px + env(safe-area-inset-top,0px))}}
+.br-sect{top:env(safe-area-inset-top,0px)}
+/* окна поверх страницы: поиск, комментарии, история, заметки, молитва */
+html #brSearch{top:calc(8px + env(safe-area-inset-top,0px))!important;width:min(760px,calc(100vw - 28px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)));max-height:calc(100vh - 16px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));max-height:calc(100dvh - 16px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))}
+#brCommentary{box-sizing:border-box;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) 0}
+#brHist{padding:max(1rem,env(safe-area-inset-top)) max(1rem,env(safe-area-inset-right)) max(1rem,env(safe-area-inset-bottom)) max(1rem,env(safe-area-inset-left))}
+#modal{padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px);box-sizing:border-box}
+#prayer{padding:max(2rem,env(safe-area-inset-top)) max(2rem,env(safe-area-inset-right)) max(2rem,env(safe-area-inset-bottom)) max(2rem,env(safe-area-inset-left))}
+.nm-card{max-height:calc(90dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))}
+/* панели настроек/заметок/молитв и список книг/глав никогда не вылезают за верх экрана */
+html #panel,html #npanel,html #ppanel,html #hpanel{max-height:min(72dvh,calc(100dvh - 4.6rem - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px)))}
+html #npanel{max-height:min(78dvh,calc(100dvh - 4.6rem - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px)))}
+html .xp{max-height:min(72dvh,calc(100dvh - 4.8rem - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px)))}
+html #brPop{max-height:min(64dvh,calc(100dvh - 24px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px)))}
+/* телефон лёжа (низкий экран): боковая панель компактнее и при нехватке места прокручивается */
+@media(max-height:520px){
+ #brRb{max-height:calc(100dvh - 76px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));overflow-x:hidden;overflow-y:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+ #brRb::-webkit-scrollbar{display:none}
+ #brRb .br-rb{padding:4px 0 3px}
+ #brRb .br-rb span{font-size:9px}
+ .br-rpn button{height:28px}
+}
