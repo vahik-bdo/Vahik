@@ -1,6 +1,6 @@
 /* Service worker: офлайн + надёжные обновления.
    BUILD подставляется автоматически (tools/bump.js, GitHub Action) — вручную ничего поднимать не нужно. */
-const BUILD = '33082c97df';
+const BUILD = '4ecec0d7fb';
 const CORE = 'nz-core-' + BUILD, DATA = 'nz-data-v1', FONTS = 'nz-fonts-v1';
 /* GEN:start (tools/bump.js пересобирает этот блок сам: списки файлов) */
 const CORE_FILES = ["index.html","css/armenian.css","css/base.css","css/compare.css","css/contact.css","css/cross.css","css/effects.css","css/fixes.css","css/fonts.css","css/fonts/literata-cyrillic.woff2","css/fonts/literata-italic-cyrillic.woff2","css/fonts/literata-italic-latin.woff2","css/fonts/literata-latin-ext.woff2","css/fonts/literata-latin.woff2","css/fonts/manrope-cyrillic.woff2","css/fonts/manrope-latin-ext.woff2","css/fonts/manrope-latin.woff2","css/fonts/noto-sans-armenian-400.woff2","css/fonts/noto-sans-armenian-500.woff2","css/fonts/noto-serif-armenian-400.woff2","css/fonts/noto-serif-armenian-600.woff2","css/hy-latin.css","css/layout.css","css/likes.css","css/offline.css","css/perf.css","css/preface-modal.css","css/reader.css","css/torch.css","css/tour.css","css/translation-guide.css","icons/apple-touch-icon.png","icons/cross.webp","icons/favicon-48.png","icons/icon-192.png","icons/icon-512.png","icons/maskable-512.png","js/app.js","js/contact.js","js/hy-latin.js","js/install.js","js/offline.js","js/perf.js","js/preface-gate.js","js/reader.js","js/ready.js","js/scroll-blur.js","js/scroll-reveal.js","js/smooth-scroll.js","js/soundscape.js","js/sw.js","js/torch.js","js/tour.js","js/translation-info.js","manifest.webmanifest"];
@@ -8,9 +8,10 @@ const TFILES = {"arar":["data/arar/1cor.js","data/arar/1jn.js","data/arar/1pet.j
 /* GEN:end */
 /* Тексты (data/<перевод>/<книга>.js) и звуки в установке НЕ скачиваются: читаются по мере открытия и оседают в отдельном кэше.
    Скачать всё заранее можно кнопкой «Офлайн» в настройках. */
-const DATA_FILES = ["assets/audio/birds.mp3", "assets/audio/bolt.mp3", "assets/audio/wind.mp3"];
+const DATA_FILES = ["assets/audio/bell.mp3", "assets/audio/birds.mp3", "assets/audio/bolt.mp3", "assets/audio/wind.mp3"];
+const FONT_CORE = "https://fonts.googleapis.com/css2?family=Noto+Serif+Armenian:wght@400;600&family=Manrope:wght@400;500;600&family=Noto+Sans+Armenian:wght@400;500&display=swap";
 /* для офлайн-сохранения: Literata, основной набор и шрифты из выбора в настройках */
-const FONT_CSS = ["https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Spectral:ital,wght@0,400;0,600;1,400&family=Alegreya:ital,wght@0,400;0,600;1,400&family=Philosopher:ital,wght@0,400;0,700;1,400&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Marck+Script&family=Inter:wght@400;500&display=swap"];
+const FONT_CSS = ["https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap", FONT_CORE, "https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Spectral:ital,wght@0,400;0,600;1,400&family=Alegreya:ital,wght@0,400;0,600;1,400&family=Philosopher:ital,wght@0,400;0,700;1,400&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Marck+Script&family=Inter:wght@400;500&display=swap"];
 const KEEP = /\/\* (latin|cyrillic|armenian) \*\//;
 const NAV_TIMEOUT = 4000;
 const isAsset = u => /\.(css|js)$/.test(u);
@@ -37,7 +38,7 @@ self.addEventListener('install', e => {
       }
     } catch (_) {}
     /* основные шрифты (Literata и армянские) кладём в кэш сразу, остальное — по мере использования */
-    try { const fc2 = await caches.open(FONTS); await Promise.all(FONT_CSS.slice(0, 0).map(u => saveFontCss(fc2, u).catch(() => {}))); } catch (_) {}
+    try { const fc2 = await caches.open(FONTS); await Promise.all(FONT_CSS.slice(0, 2).map(u => saveFontCss(fc2, u).catch(() => {}))); } catch (_) {}
     await self.skipWaiting(); /* новая версия включается сразу, а не «когда закроют все вкладки» */
   })());
 });

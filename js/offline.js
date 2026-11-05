@@ -26,7 +26,7 @@ const L={
   used:'Belegt auf diesem Gerät',persist:'Speicher ist vor automatischer Bereinigung geschützt',nopersist:'Der Browser kann den Speicher bei Platzmangel leeren',offpill:'Offline',mb:'MB',confirm:'Gespeicherte Texte, Klänge und Schriften löschen? Die Oberfläche bleibt.',nosw:'Offline-Modus ist noch nicht bereit: Seite neu laden.'}
 };
 const GROUPS=['cass','rbo','arar','nasb','elb','audio','fonts'];
-/*GEN:sizes*/const SIZES={"arar":1562292,"cass":1468401,"elb":1150810,"nasb":1015567,"rbo":6324341};/*GEN:end*/
+/*GEN:sizes*/const SIZES={"arar":1562325,"cass":1468434,"elb":1150843,"nasb":1015648,"rbo":6324392};/*GEN:end*/
 const lg=()=>L[R.lang]||L.en;
 let st=null,busy=0,sizes={},msg='',err='';
 

@@ -214,8 +214,6 @@ document.body.insertAdjacentHTML('beforeend','<nav id="brRail" class="ui"><butto
 q('#brRt').onclick=e=>{e.stopPropagation();const R=q('#brRail');R.classList.toggle('open');if(!R.classList.contains('open'))closePop()};
 q('#brHx').onclick=closeHist;q('#brHist').onclick=e=>{if(e.target.id==='brHist')closeHist()};
 document.addEventListener('click',e=>{if(e.target.closest('#brRail,#brPop'))return;closePop();q('#brRail').classList.remove('open')})}
-document.addEventListener('click',e=>{const t=e.target.closest&&e.target.closest('#brChapterTitle');if(!t||!matchMedia('(max-width:880px),(pointer:coarse)').matches)return;e.stopImmediatePropagation();ensureRail();popToggle('chap')});
-new MutationObserver(()=>{const t=q('#brChapterTitle');if(t)t.classList.add('br-tap')}).observe(document.body,{childList:true,subtree:true});
 let zenAt=0;
 function zenOn(){document.body.classList.add('zen');zenAt=Date.now();try{const s=getSelection();s&&s.removeAllRanges()}catch(e){}}
 function zenOff(){document.body.classList.remove('zen')}
