@@ -214,6 +214,9 @@ document.body.insertAdjacentHTML('beforeend','<nav id="brRail" class="ui"><butto
 q('#brRt').onclick=e=>{e.stopPropagation();const R=q('#brRail');R.classList.toggle('open');if(!R.classList.contains('open'))closePop()};
 q('#brHx').onclick=closeHist;q('#brHist').onclick=e=>{if(e.target.id==='brHist')closeHist()};
 document.addEventListener('click',e=>{if(e.target.closest('#brRail,#brPop'))return;closePop();q('#brRail').classList.remove('open')})}
+document.addEventListener('click',e=>{const t=e.target.closest&&e.target.closest('#brChapterTitle');if(!t||!matchMedia('(max-width:880px),(pointer:coarse)').matches)return;e.stopImmediatePropagation();ensureRail();popToggle('chap')});
+new MutationObserver(()=>{const t=q('#brChapterTitle');if(t)t.classList.add('br-tap')}).observe(document.body,{childList:true,subtree:true});
+window.__planAPI={books:()=>BOOKS.filter(b=>!b.ot).map(b=>({k:b.k,group:b.group,n:b.chapters})),name:k=>(BRBN[lang()]||BRBN.ru)[k]||BRBN.ru[k]||k,go:(b,c)=>{br.book=b;br.chapter=+c;br.verse=null;buildBooks();buildChapters();render();try{window.scrollTo({top:0,behavior:'smooth'})}catch(e){window.scrollTo(0,0)}}};
 let zenAt=0;
 function zenOn(){document.body.classList.add('zen');zenAt=Date.now();try{const s=getSelection();s&&s.removeAllRanges()}catch(e){}}
 function zenOff(){document.body.classList.remove('zen')}
@@ -266,7 +269,7 @@ window.__markNotes=()=>{let m={};try{m=window.__noteKeys?window.__noteKeys():{}}
 // Replace the original content after the original interface has initialized.
 const originalI18n=ui.i18n.bind(ui);ui.i18n=function(){originalI18n();mount(false)};
 // Keep the four-language interface (ru, en, hy, de), prayer, notes, themes, particles, light/candle, audio, nature dock, fullscreen and all original controls.
-document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;const f=q('#fold');if(f&&f.classList.contains('open')){f.classList.remove('open');q('#fb').setAttribute('aria-expanded',false)}['panel','npanel','ppanel','hpanel','xp'].forEach(k=>{const n=q('#'+k);n&&n.classList.remove('open')});const lm=q('#lm');lm&&lm.classList.remove('open');const m=q('#modal');m&&m.classList.remove('open');closeHist();closePop()});
+document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;const f=q('#fold');if(f&&f.classList.contains('open')){f.classList.remove('open');q('#fb').setAttribute('aria-expanded',false)}['panel','npanel','ppanel','hpanel','rpanel','xp'].forEach(k=>{const n=q('#'+k);n&&n.classList.remove('open')});const lm=q('#lm');lm&&lm.classList.remove('open');const m=q('#modal');m&&m.classList.remove('open');closeHist();closePop()});
 /* ===== избранные стихи: двойное касание = сердце ===== */
 const LKEY='theo-likes-v1';let likes=[];try{likes=JSON.parse(localStorage.getItem(LKEY)||'[]')||[]}catch(e){}
 const saveL=()=>{try{localStorage.setItem(LKEY,JSON.stringify(likes))}catch(e){}};
