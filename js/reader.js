@@ -214,6 +214,8 @@ document.body.insertAdjacentHTML('beforeend','<nav id="brRail" class="ui"><butto
 q('#brRt').onclick=e=>{e.stopPropagation();const R=q('#brRail');R.classList.toggle('open');if(!R.classList.contains('open'))closePop()};
 q('#brHx').onclick=closeHist;q('#brHist').onclick=e=>{if(e.target.id==='brHist')closeHist()};
 document.addEventListener('click',e=>{if(e.target.closest('#brRail,#brPop'))return;closePop();q('#brRail').classList.remove('open')})}
+document.addEventListener('click',e=>{const t=e.target.closest&&e.target.closest('#brChapterTitle');if(!t||!matchMedia('(max-width:880px),(pointer:coarse)').matches)return;e.stopImmediatePropagation();ensureRail();popToggle('chap')});
+new MutationObserver(()=>{const t=q('#brChapterTitle');if(t)t.classList.add('br-tap')}).observe(document.body,{childList:true,subtree:true});
 let zenAt=0;
 function zenOn(){document.body.classList.add('zen');zenAt=Date.now();try{const s=getSelection();s&&s.removeAllRanges()}catch(e){}}
 function zenOff(){document.body.classList.remove('zen')}
@@ -245,7 +247,7 @@ function shareBtns(){const sl={ru:'Поделиться',en:'Share',hy:'Կիսվ
 qa('#brReader .br-verse').forEach(a=>{const n=a.querySelector('.br-vnum'),t=a.querySelector('.br-vtext');if(n&&t)addShare(a,n.textContent.trim(),t.textContent,a.querySelector('.br-src'),sl)});
 qa('#brReader .br-cassv').forEach(p=>{const b=p.querySelector('b');if(b)addShare(p,b.textContent.trim(),p.textContent.slice(b.textContent.length),null,sl)});try{window.__markNotes&&window.__markNotes()}catch(e){}}
 function addShare(el,ref,text,src,label){if(el.querySelector('.br-share'))return;const b=document.createElement('button');b.type='button';b.className='br-share';b.title=label;b.setAttribute('aria-label',label);
-b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4M8 8l4-4 4 4M5 13v6h14v-6"/></svg>';
+b.innerHTML='<svg viewBox="0 -0.5 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4M8 8l4-4 4 4M5 13v6h14v-6"/></svg>';
 b.onclick=e=>{e.stopPropagation();shareVerse(ref,text.trim(),src?src.textContent.trim():T('cass'))};el.append(b)}
 async function shareVerse(ref,text,src){const cs=getComputedStyle(document.documentElement),g=k=>cs.getPropertyValue(k).trim(),bg=g('--bg')||'#4a4c50',fg=g('--fg')||'#eee',ac=g('--head')||g('--accent')||'#d8b45a',dim=g('--dim')||'#aaa';
 const W=1080,H=1350,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');
@@ -275,7 +277,7 @@ const LT={ru:{t:'Избранные стихи',rm:'Убрать',hint:'Сохр
 const lt=()=>LT[lang()]||LT.en;
 function verseText(b,c,v){const m=modeOptions()[0][0];if(!bookReady(m,b))loadBible(m,b).then(()=>{try{renderLikes()}catch(e){}});const data=({cass:CASSIAN,arar:ARARAT,nasb:NASB,elb:ELB1905,rbo:RBO})[m]||{},raw=((data[b]||{})[c]||{})[v];if(raw==null)return '';const d=document.createElement('div');d.innerHTML=txt(raw);return d.textContent.trim()}
 function likeRef(x){const names=BRBN[lang()]||BRBN.ru;return (names[x.b]||BRBN.ru[x.b]||x.b)+' '+x.c+':'+x.v}
-function ensureLikeBtn(a){if(a.querySelector('.br-like'))return;const b=document.createElement('button');b.type='button';b.className='br-like';b.setAttribute('aria-label','♥');b.innerHTML='<svg viewBox="0 0 32 29" aria-hidden="true"><path d="M23.6 0c-2.7 0-5.1 1.4-6.6 3.6C15.5 1.4 13.1 0 10.4 0 4.7 0 .5 4.4.5 9.9c0 7.6 8.4 12.4 14.2 18.5.4.4 1.1.4 1.5 0C22 22.3 31.5 17.5 31.5 9.9 31.5 4.4 27.3 0 23.6 0z"/></svg>';b.onclick=e=>{e.stopPropagation();const r=b.getBoundingClientRect();b.classList.remove('pop');void b.offsetWidth;toggleLike(a,r.left+r.width/2,r.top+r.height/2);b.classList.add('pop')};a.append(b)}
+function ensureLikeBtn(a){if(a.querySelector('.br-like'))return;const b=document.createElement('button');b.type='button';b.className='br-like';b.setAttribute('aria-label','♥');b.innerHTML='<svg viewBox="0 -1.5 32 32" aria-hidden="true"><path d="M23.6 0c-2.7 0-5.1 1.4-6.6 3.6C15.5 1.4 13.1 0 10.4 0 4.7 0 .5 4.4.5 9.9c0 7.6 8.4 12.4 14.2 18.5.4.4 1.1.4 1.5 0C22 22.3 31.5 17.5 31.5 9.9 31.5 4.4 27.3 0 23.6 0z"/></svg>';b.onclick=e=>{e.stopPropagation();const r=b.getBoundingClientRect();b.classList.remove('pop');void b.offsetWidth;toggleLike(a,r.left+r.width/2,r.top+r.height/2);b.classList.add('pop')};a.append(b)}
 function markLikes(){qa('#brReader .br-verse').forEach(a=>{ensureLikeBtn(a);const on=isL(br.book,+br.chapter,+a.id.slice(4));a.classList.toggle('liked',on);const lb=a.querySelector('.br-like');if(lb)lb.setAttribute('aria-pressed',on)});
  const n=document.getElementById('hc'),h=document.getElementById('bHeart');if(n){n.textContent=likes.length;n.style.display=likes.length?'':'none'}if(h){h.classList.toggle('has',likes.length>0);h.title=h.ariaLabel=lt().t}}
 function renderLikes(){const box=document.getElementById('hlist');if(!box)return;
