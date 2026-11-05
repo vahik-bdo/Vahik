@@ -532,3 +532,15 @@ html .br-like{top:auto;bottom:.5rem}
 html .br-share svg,html .br-like svg{width:18px;height:18px;flex:none;display:block;margin:0;transform:none}
 html .br-like svg{fill:none;stroke:currentColor;stroke-width:1.9}
 html .br-verse.liked .br-like svg{fill:#ff4d6d;stroke:#ff4d6d}
+
+/* 3) Список книг/глав на телефоне — нижняя шторка у большого пальца вместо маленького окошка сбоку */
+@media(max-width:880px){
+ html #brPop{left:max(10px,env(safe-area-inset-left));right:max(10px,env(safe-area-inset-right));width:auto;top:auto;bottom:max(10px,env(safe-area-inset-bottom));max-height:min(62dvh,calc(100dvh - 90px - env(safe-area-inset-top,0px)));border-radius:26px 26px 22px 22px;transform:translateY(24px) scale(.98);z-index:70}
+ html #brPop.open{transform:none}
+ html #brPop .bp-grid{grid-template-columns:repeat(6,1fr);gap:4px}
+ html #brPop .bp-n{min-height:48px;font-size:16px}
+ html #brPop .bp-i{min-height:50px;font-size:16px}
+ html #brPop h5{position:sticky;top:-.8rem;background:inherit;padding:.4rem 0;margin:0 0 .2rem;z-index:1}
+ #brChapterTitle{cursor:pointer}
+}
+#brChapterTitle.br-tap::after{content:"▾";font-size:.5em;margin-left:.4em;opacity:.55;vertical-align:middle}
