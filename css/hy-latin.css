@@ -11,3 +11,7 @@ html[lang="hy"] #hyx{display:flex}
  #hyx{right:calc(1rem + 44px + .5rem)}
  body.idle #hyx{opacity:.45!important;pointer-events:auto!important}
 }
+
+/* iPhone с вырезом/«островом» (XR и новее): переключатель AM / ENG стоял на top:.9rem (14px) и уходил под системную строку состояния.
+   Теперь он под вырезом, на одной линии с кнопкой глобуса (у неё такой же отступ сверху). */
+#hyx{top:calc(max(.9rem,env(safe-area-inset-top,0px)) + 1px);right:calc(max(1rem,env(safe-area-inset-right,0px)) + 44px + .5rem)}

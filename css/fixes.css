@@ -517,30 +517,3 @@ html #brPop{max-height:min(64dvh,calc(100dvh - 24px - env(safe-area-inset-top,0p
  #brRb .br-rb span{font-size:9px}
  .br-rpn button{height:28px}
 }
-
-/* ===== v2: правки по отзыву деда (iPhone XR) ===== */
-/* 1) Верхняя «шторка»: больше не глухая панель поверх всего. Она лежит под кнопками/лампой/языком (z-index 2 против 40–50),
-      а нижняя кромка мягко растворяется, поэтому текст не обрезается резко и ничего интерактивного не перекрывается. */
-html::before{z-index:2;height:calc(env(safe-area-inset-top,0px) + min(18px,env(safe-area-inset-top,0px)));background:linear-gradient(to bottom,var(--bg) 0,var(--bg) env(safe-area-inset-top,0px),transparent 100%)}
-#lang,#lamp,#fold,#bar{z-index:60}
-
-/* 2) Поделиться / сердечко: одинаковые кнопки, одинаковые иконки, зеркальные отступы сверху и снизу.
-      html-префикс нужен, потому что likes.css грузится позже и иначе перебивает размер/отступ сердечка. */
-html .br-share,html .br-like{box-sizing:border-box;width:34px;height:34px;right:.3rem;padding:0;margin:0;line-height:0;font-size:0;display:flex;align-items:center;justify-content:center}
-html .br-share{top:.5rem;bottom:auto}
-html .br-like{top:auto;bottom:.5rem}
-html .br-share svg,html .br-like svg{width:18px;height:18px;flex:none;display:block;margin:0;transform:none}
-html .br-like svg{fill:none;stroke:currentColor;stroke-width:1.9}
-html .br-verse.liked .br-like svg{fill:#ff4d6d;stroke:#ff4d6d}
-
-/* 3) Список книг/глав на телефоне — нижняя шторка у большого пальца вместо маленького окошка сбоку */
-@media(max-width:880px){
- html #brPop{left:max(10px,env(safe-area-inset-left));right:max(10px,env(safe-area-inset-right));width:auto;top:auto;bottom:max(10px,env(safe-area-inset-bottom));max-height:min(62dvh,calc(100dvh - 90px - env(safe-area-inset-top,0px)));border-radius:26px 26px 22px 22px;transform:translateY(24px) scale(.98);z-index:70}
- html #brPop.open{transform:none}
- html #brPop .bp-grid{grid-template-columns:repeat(6,1fr);gap:4px}
- html #brPop .bp-n{min-height:48px;font-size:16px}
- html #brPop .bp-i{min-height:50px;font-size:16px}
- html #brPop h5{position:sticky;top:-.8rem;background:inherit;padding:.4rem 0;margin:0 0 .2rem;z-index:1}
- #brChapterTitle{cursor:pointer}
-}
-#brChapterTitle.br-tap::after{content:"▾";font-size:.5em;margin-left:.4em;opacity:.55;vertical-align:middle}
