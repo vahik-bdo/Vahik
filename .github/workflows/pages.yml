@@ -29,6 +29,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - name: Установка esbuild (минификация css/js)
+        run: npm install --no-save --no-package-lock esbuild@0.28.2
       - name: Сборка (css склеивается в один файл)
         run: node tools/build.js _site
       - name: Автоверсия (хеш в sw.js и ?v= в index.html)
