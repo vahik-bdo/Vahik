@@ -144,6 +144,12 @@ html,body{touch-action:pan-x pan-y}
 .br-like{top:auto;bottom:.45rem}
 .br-share svg,.br-like svg{width:17px;height:17px}
 .br-share svg{transform:none;display:block;margin:auto}
+/* единая геометрия кнопок «поделиться» и «сердечко» (likes.css грузится позже и раньше перебивал размеры сердечка) */
+html body .br-share,html body .br-like{position:absolute;right:.35rem;width:32px;height:32px;padding:0;margin:0;display:grid;place-items:center;box-sizing:border-box}
+html body .br-share{top:.45rem;bottom:auto}
+html body .br-like{top:auto;bottom:.45rem}
+html body .br-share svg,html body .br-like svg{display:block;width:17px;height:17px;margin:0;transform:none}
+html body .br-like svg{height:auto;aspect-ratio:32/29}
 /* hold & slide selection in book/chapter lists */
 #brPop.drag{overflow:hidden}
 /* --- v5: no scrollbar / pull-to-refresh, scroll lock under overlays, softer animations --- */
