@@ -36,3 +36,17 @@ html.lite #bg{animation:none!important}
   /* слои backdrop-filter на краях: самая дорогая часть, оставляем только мягкое затухание в цвет фона (.eb b) */
   .eb i{display:none!important}
 }
+
+/* ===== телефоны и планшеты: меньше слоёв — нет мерцания и пропадающих кусков интерфейса =====
+   Причина артефактов (мерцание текста, «дыры» в списке книг, прямоугольники другой яркости, чёрный экран):
+   на Android Chrome каждый backdrop-filter, постоянный will-change и анимация с fill-mode:both — это отдельный GPU-слой.
+   Слоёв набиралось больше, чем держит память видеокарты, и браузер переставал рисовать часть плиток. */
+@media (hover:none) and (pointer:coarse){
+ *,*::before,*::after{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+ /* без размытия фон под окнами делаем темнее — читаемость та же */
+ #brScrim{background:rgba(0,0,0,.55)}
+ #modal,#brHist{background:rgba(0,0,0,.62)}
+ #ctm{background:rgba(8,9,12,.78)}
+ #brRail,#brRt,#brRt svg,#pfm .pfc,#lpk .lpl button{will-change:auto!important}
+ #prayer.off{will-change:auto;transform:none}
+}

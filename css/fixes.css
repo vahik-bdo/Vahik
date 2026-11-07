@@ -130,7 +130,6 @@ html,body{touch-action:pan-x pan-y}
 #prayer.off>*{opacity:0}
 #brRt,#brRt svg{will-change:transform}
 #brRail{will-change:opacity,translate}
-#brPop{will-change:opacity,transform}
 @media(max-width:700px),(pointer:coarse){#brPop,#brRb{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:color-mix(in srgb,var(--panel) 94%,#000)}}
 /* --- v4: symmetric rail toggle, equal verse buttons, outlined pop items with hold animation --- */
 @media(max-width:880px){
@@ -170,7 +169,7 @@ html:has(#panel.open,#npanel.open,#ppanel.open,#hpanel.open,#xp.open,#brSearch.o
 .br-rb:active,.br-rpn button:active{transform:scale(.93);background:color-mix(in srgb,var(--head) 14%,transparent);color:var(--head)}
 #brRt:active{transform:scale(.94)}
 /* lists: modest */
-#brPop.open .bp-i,#brPop.open .bp-n{animation:bpSoft .45s cubic-bezier(.22,1,.36,1) both}
+#brPop.open .bp-i,#brPop.open .bp-n{animation:bpSoft .45s cubic-bezier(.22,1,.36,1) backwards}
 @keyframes bpSoft{from{opacity:0;transform:translate3d(0,6px,0)}to{opacity:1;transform:none}}
 /* v6: animated close of the left rail */
 @media(max-width:880px){
