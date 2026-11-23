@@ -108,12 +108,13 @@ function stepChapter(d){let i=BOOKS.findIndex(b=>b.k===br.book),ch=br.chapter+d;
 function focusVerse(v,smooth=true){qa('.br-verse.target').forEach(x=>x.classList.remove('target'));const el=q('#brv-'+v);if(el){el.classList.add('target');el.scrollIntoView({behavior:smooth?'smooth':'auto',block:'center'});setTimeout(()=>el.classList.remove('target'),2300)}}
 /* ===== Толкования: чтение прямо на сайте (data/comm/*.json: Феофилакт Болгарский — Евангелия, Андрей Кесарийский — Откровение) ===== */
 const COMBK=['mt','mk','lk','jn','rev'],COMAUTH={mt:'Блаженный Феофилакт, архиепископ Болгарский',mk:'Блаженный Феофилакт, архиепископ Болгарский',lk:'Блаженный Феофилакт, архиепископ Болгарский',jn:'Блаженный Феофилакт, архиепископ Болгарский',rev:'Святитель Андрей, архиепископ Кесарийский'},COMDB={},COMPR={};
-const COMTX={ru:{err:'Не удалось загрузить толкование. Проверьте соединение и попробуйте ещё раз.',nov:'К этому стиху отдельного толкования нет.',all:'Толкование ко всей главе',pre:'Предисловие',chap:'Глава',retry:'Повторить'},en:{err:'Could not load the commentary. Check your connection and try again.',nov:'This verse has no separate commentary.',all:'Commentary on the whole chapter',pre:'Preface',chap:'Chapter',retry:'Retry'}};
+const COMTX={ru:{err:'Не удалось загрузить толкование. Проверьте соединение и попробуйте ещё раз.',nov:'К этому стиху отдельного толкования нет.',all:'Толкование ко всей главе',pre:'Предисловие',chap:'Глава',retry:'Повторить',grp:'Толкование на группу стихов'},en:{err:'Could not load the commentary. Check your connection and try again.',nov:'This verse has no separate commentary.',all:'Commentary on the whole chapter',pre:'Preface',chap:'Chapter',retry:'Retry',grp:'Commentary on a group of verses'}};
 function comX(k){return (COMTX[lang()]||COMTX.en)[k]}
 function comLoad(k){if(COMDB[k])return Promise.resolve(COMDB[k]);return COMPR[k]||(COMPR[k]=fetch('data/comm/'+k+'.json').then(r=>{if(!r.ok)throw 0;return r.json()}).then(d=>COMDB[k]=d).catch(e=>{delete COMPR[k];throw e}))}
 function comFind(d,c,v){const ch=d.c[c]||{};if(ch[v])return[v,ch[v]];for(const k in ch){const e=ch[k][0];if(e&&+k<v&&v<=e)return[+k,ch[k]]}return null}
 function comVerses(){return qa('#brReader .br-verse').map(e=>+e.id.slice(4))}
 function comVText(a,z){const s=[];for(let v=a;v<=(z||a);v++){const el=q('#brv-'+v+' .br-vtext');if(el)s.push(el.textContent.trim().replace(/\s+/g,' '))}return s.join(' ')}
+function comGrp(s,z){return z>s?`<div class="com-grp">${esc(comX('grp'))} ${s}–${z}</div>`:''}
 function comParas(arr){return arr.slice(1).map(p=>p[0]==='^'?'':p[0]==='~'?`<h4 class="com-lem">${esc(p.slice(1))}</h4>`:`<p>${esc(p)}</p>`).join('')}
 function comFs(d){let s=parseFloat(localStorage.getItem('brComFs'))||1.06;if(d){s=Math.max(.9,Math.min(1.7,Math.round((s+d)*100)/100));try{localStorage.setItem('brComFs',s)}catch(e){}}q('#brCommentary').style.setProperty('--cfs',s)}
 function comStep(n){const vs=comVerses();if(br.comMode==='chapter'){stepChapter(n);return}const i=vs.indexOf(br.verse||1)+n;if(i<0||i>=vs.length)return;br.verse=vs[i];save();focusVerse(br.verse,false);updateCommentary(n)}
@@ -131,12 +132,12 @@ function updateCommentary(dir=0){const k=br.book,names=BRBN[lang()]||BRBN.ru,bod
  if(!COMDB[k])body.innerHTML='<div class="com-skel"><i></i><i></i><i></i><i></i></div>';
  comLoad(k).then(d=>{if(seq!==comSeq)return;foot.hidden=false;const ch=d.c[br.chapter]||{},vs=comVerses(),cls='com-in'+(dir>0?' fwd':dir<0?' back':'');let h=`<div class="${cls}" lang="ru"><div class="com-auth">${esc(COMAUTH[k])}</div>`;
   if(vm){const v=br.verse||1,f=comFind(d,br.chapter,v),i=vs.indexOf(v);
-   if(f){const s=f[0],e=f[1],z=e[0]||s;h+=`<blockquote class="com-q"><b>${s}${z>s?'–'+z:''}</b><span>${esc(comVText(s,z))}</span></blockquote>${comParas(e)}`}
+   if(f){const s=f[0],e=f[1],z=e[0]||s;h+=comGrp(s,z)+`<blockquote class="com-q"><b>${s}${z>s?'–'+z:''}</b><span>${esc(comVText(s,z))}</span></blockquote>${comParas(e)}`}
    else h+=`<blockquote class="com-q"><b>${v}</b><span>${esc(comVText(v))}</span></blockquote><div class="com-none">${esc(comX('nov'))}</div><button type="button" class="com-go">${esc(comX('all'))}</button>`;
    q('#brComPos').textContent=`${v} / ${vs.length||'—'}`;q('#brComPrev').disabled=i<=0;q('#brComNext').disabled=i<0||i>=vs.length-1}
   else{const keys=Object.keys(ch).map(Number).sort((a,b)=>a-b),pre=(d.p||[]).filter((p,j)=>!(j===0&&/Предисловие/.test(p)));
    if(br.chapter===1&&pre.length)h+=`<details class="com-pre"><summary>${esc(comX('pre'))}</summary>${comParas([0,...pre])}</details>`;
-   h+=keys.map(s=>{const e=ch[s],z=e[0]||s;return `<section class="com-v" data-v="${s}"><button type="button" class="com-vn" data-v="${s}">${s}${z>s?'–'+z:''}</button><div class="com-qt">${esc(comVText(s,z))}</div>${comParas(e)}</section>`}).join('')||`<div class="com-none">${esc(T('noCommentary'))}</div>`;
+   h+=keys.map(s=>{const e=ch[s],z=e[0]||s;return `<section class="com-v" data-v="${s}"><button type="button" class="com-vn" data-v="${s}">${s}${z>s?'–'+z:''}</button>${comGrp(s,z)}<div class="com-qt">${esc(comVText(s,z))}</div>${comParas(e)}</section>`}).join('')||`<div class="com-none">${esc(T('noCommentary'))}</div>`;
    q('#brComPos').textContent=`${comX('chap')} ${br.chapter}`;q('#brComPrev').disabled=br.chapter<=1;q('#brComNext').disabled=br.chapter>=B().chapters}
   body.innerHTML=h+'</div>';body.scrollTop=0;
   if(!vm&&br.verse){const t=[...body.querySelectorAll('.com-v')].filter(s=>+s.dataset.v<=br.verse).pop();if(t){t.classList.add('cur');body.scrollTop=Math.max(0,t.offsetTop-12)}}
