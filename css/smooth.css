@@ -1,0 +1,33 @@
+/* ===== Плавность и чёткость: меньше размытия, меньше слоёв, прокрутка без рывков =====
+   Грузится последним. Дизайн, цвета, шрифты и композиция не меняются. */
+
+/* 1) Радиус размытия панелей: меньше нагрузка, фон панелей и так почти непрозрачный */
+:root{--blur:10px;--blur-edge:3.5px;--blur-scroll:0px}
+@media (hover:none) and (pointer:coarse){:root{--blur:7px}}
+
+/* 2) Размытие ВСЕГО экрана при быстрой прокрутке — убрано: это backdrop-filter на весь вьюпорт, пересчитывался каждый кадр и делал текст мутным */
+#sbl{display:none!important}
+
+/* 3) Края экрана (ПК): один слой блюра вместо двух, остальное — мягкое растворение в цвет фона (дёшево) */
+@media (hover:hover) and (pointer:fine){:root{--blur-edge:3.5px}#ebT{height:calc(120px + env(safe-area-inset-top,0px))}#ebB{height:calc(130px + env(safe-area-inset-bottom,0px))}}
+
+/* 4) Появление текста при прокрутке: только opacity + transform (композитор), без filter:blur и без will-change на сотнях стихов */
+html .sv{filter:none!important;will-change:auto!important;
+ transition:opacity .7s cubic-bezier(.22,1,.36,1) var(--sd,0s),transform .8s cubic-bezier(.22,1,.36,1) var(--sd,0s)}
+html .sv.sv-in{filter:none!important}
+
+/* 5) Одноразовые «вступительные» размытия (заголовки, слова, смена главы): радиус меньше, чтобы текст читался сразу */
+.rv{filter:blur(3px);will-change:auto}
+h2:not(.in){filter:blur(3px)}
+.wr span{filter:blur(3px)}
+@keyframes brSwap{from{opacity:0;transform:translateY(10px);filter:blur(2px)}}
+@keyframes cin{from{opacity:0;transform:scale(.9);filter:blur(3px)}}
+
+/* 6) Размытие под окнами — мягче */
+#modal{-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
+#brHist{-webkit-backdrop-filter:blur(6px)!important;backdrop-filter:blur(6px)!important}
+#msBar button{-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+
+/* 7) Слои: не плодим лишние */
+#brRail{will-change:auto}
+@media (prefers-reduced-motion:reduce){html .sv{opacity:1;transform:none;transition:none}}
