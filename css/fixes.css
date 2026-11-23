@@ -544,3 +544,7 @@ body.com-open #brRail{pointer-events:none!important;visibility:hidden}
 body.com-open #brRt,body.com-open #brRt::after{pointer-events:none!important}
 #brCommentary .com-vn{position:relative;z-index:2;touch-action:manipulation}
 @media(pointer:coarse){#brPop:not(.open){transition:opacity .9s ease .15s,transform .65s cubic-bezier(.22,1,.36,1)}}
+
+/* v23: у стрелки-меню видимая кнопка остаётся её зоной, невидимая подушка вокруг — меньше и уступает цифре стиха; у цифры стиха зона касания шире */
+@media(max-width:880px){html #brRt::after{top:-12px!important;bottom:-12px!important;left:0!important;right:-8px!important}}
+#brReader .br-vnum::before{content:"";position:absolute;inset:-10px -6px -10px -8px}
