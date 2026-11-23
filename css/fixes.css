@@ -528,3 +528,4 @@ html:has(#panel.open,#npanel.open,#ppanel.open,#hpanel.open,#xp.open,#brSearch.o
 html:has(#panel.open,#npanel.open,#ppanel.open,#hpanel.open,#xp.open,#brSearch.open,#brHist.open,#brCommentary.open,#modal.open,#brPop.open,#pfm,#lpk) body{overflow:hidden!important;overscroll-behavior:none!important;touch-action:none}
 #brPop,#panel,#npanel,#ppanel,#hpanel,#xp,#brSearch,#brHist,#brCommentary,#modal,.br-search-results,.bh-card{overscroll-behavior:contain;touch-action:pan-y}
 #brPop.drag,#brRail{touch-action:none}
+#brPop .bp-i,#brPop .bp-n{-webkit-touch-callout:none}
