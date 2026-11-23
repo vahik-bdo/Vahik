@@ -2,7 +2,7 @@
    Жест прокрутки внутри окна не «протекает» на текст под ним (в т.ч. на краях списка и при скольжении пальцем по списку). */
 (function(){
 var OPEN='#panel.open,#npanel.open,#ppanel.open,#hpanel.open,#xp.open,#brSearch.open,#brHist.open,#brCommentary.open,#modal.open,#brPop.open,#pfm,#lpk';
-var BOX='#brPop,#panel,#npanel,#ppanel,#hpanel,#xp,#brSearch,#brHist,#brCommentary,#modal,.br-search-results,.bh-card,.br-guide-scroll';
+var BOX='#brPop,#panel,#npanel,#ppanel,#hpanel,#xp,#brSearch,#brHist,#brCommentary,.br-com-body,#modal,.br-search-results,.bh-card,.br-guide-scroll';
 var y0=0,lastY=0;
 function locked(){try{return !!document.querySelector(OPEN)}catch(e){return false}}
 function scroller(t){for(var e=t&&t.nodeType===1?t:t&&t.parentElement;e&&e!==document.body;e=e.parentElement){
