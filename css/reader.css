@@ -49,7 +49,6 @@ body.br-mode #end{display:none!important}
 .br-com-fs button,.br-com-foot button{border:1px solid var(--line);background:transparent;color:var(--fg);border-radius:9px;padding:.4rem .6rem;font:700 .74rem Manrope,sans-serif;min-width:2.4rem;min-height:2.4rem;cursor:pointer;transition:.2s}
 .br-com-fs button:active,.br-com-foot button:active:not(:disabled){transform:scale(.94)}
 .br-com-tabs button{flex:1;min-height:2.4rem}
-.br-com-prog{height:2px;background:color-mix(in srgb,var(--line) 60%,transparent)}.br-com-prog i{display:block;height:100%;background:var(--head);transform:scaleX(0);transform-origin:0 50%;transition:transform .15s linear}
 #brCommentary .br-com-body{overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:1.1rem 1.15rem 2rem;scroll-behavior:smooth}
 .br-com-foot{padding-bottom:calc(.65rem + env(safe-area-inset-bottom,0px))}.br-com-foot[hidden]{display:none}
 .br-com-foot button:disabled{opacity:.3;cursor:default}.br-com-foot #brComPos{font:600 .72rem Manrope,sans-serif;color:var(--dim)}

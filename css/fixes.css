@@ -529,3 +529,7 @@ html:has(#panel.open,#npanel.open,#ppanel.open,#hpanel.open,#xp.open,#brSearch.o
 #brPop,#panel,#npanel,#ppanel,#hpanel,#xp,#brSearch,#brHist,#brCommentary,#modal,.br-search-results,.bh-card{overscroll-behavior:contain;touch-action:pan-y}
 #brPop.drag,#brRail{touch-action:none}
 #brPop .bp-i,#brPop .bp-n{-webkit-touch-callout:none}
+
+/* Меню книг/глав на ПК: наведение мыши = бирюзовая обводка (как при удержании на телефоне), жёлтого нет */
+.bp-i.on,.bp-n.on{background:color-mix(in srgb,var(--head) 10%,transparent);color:var(--head);outline:0;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--head) 55%,transparent)}
+@media (hover:hover){.bp-i:hover,.bp-n:hover,.bp-i.on:hover,.bp-n.on:hover{border-color:var(--head);background:color-mix(in srgb,var(--head) 10%,transparent);color:var(--head);transform:scale(1.04);box-shadow:0 0 18px -6px var(--head),inset 0 0 12px -8px var(--head)}.bp-i:hover::before,.bp-n:hover::before{opacity:1}}
