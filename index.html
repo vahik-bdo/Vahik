@@ -13,11 +13,11 @@ function end(){clearTimeout(tm);if(pop)pop.classList.remove('drag');pop=null;st=
 document.addEventListener('pointerdown',function(e){var b=it(e.target);if(!b||b.closest('#lpk.ready')===null&&b.closest('#lpk')&&0)return;pop=b.closest('#brPop');st={x:e.clientX,y:e.clientY};drag=false;cur=b;on(b,e);clearTimeout(tm);
 var lp=!!b.closest('#lpk');if(lp){drag=true}else tm=setTimeout(function(){if(!st)return;drag=true;pop.classList.add('drag');try{navigator.vibrate&&navigator.vibrate(8)}catch(x){}},T)},{passive:true});
 document.addEventListener('pointermove',function(e){if(!st)return;if(!drag){if(Math.hypot(e.clientX-st.x,e.clientY-st.y)>10){clearTimeout(tm);if(cur){off(cur);cur=null}st=null}return}
-var el=it(document.elementFromPoint(e.clientX,e.clientY));if(el)set(el,e);else if(cur&&cur.closest('#lpk')){off(cur);cur=null}else if(cur&&e){}
+var el=it(document.elementFromPoint(e.clientX,e.clientY));if(el)set(el,e);else if(cur){off(cur);cur=null}
 if(cur)on(cur,e)},{passive:true});
 document.addEventListener('touchmove',function(e){if(drag)e.preventDefault()},{passive:false});
 function up(){if(!st&&!drag){if(cur){off(cur);cur=null}return}
-var t=cur;end();if(t){swallow=Date.now();if(!t.closest('#lpk'))off(t);t.click()}cur=null}
+var t=cur,was=drag;end();if(was)swallow=Date.now();if(t){swallow=Date.now();if(!t.closest('#lpk'))off(t);t.click()}cur=null}
 document.addEventListener('pointerup',up,{passive:true});
 document.addEventListener('pointercancel',function(){if(cur){off(cur);cur=null}end()},{passive:true});
 document.addEventListener('click',function(e){if(Date.now()-swallow<500&&e.isTrusted&&it(e.target)){e.stopPropagation();e.preventDefault()}},true);
@@ -59,15 +59,15 @@ function ck(){try{var m=document.cookie.match(/(?:^|; )pfAck=([^;]*)/);return m?
 var P=window.__pf={v:V,get:function(){try{var x=localStorage.getItem(K);if(x!==null)return x}catch(e){}return ck()},
  set:function(){try{localStorage.setItem(K,V)}catch(e){}try{document.cookie=K+'='+V+';max-age=63072000;path=/;SameSite=Lax'}catch(e){}}};
 try{if((+localStorage.getItem('pfVisits')||0)>3&&P.get()===null)P.set()}catch(e){} /* кто уже видел текст 3 раза по старой схеме, тому больше не показываем */
-R.setAttribute('data-pf',P.get()===V?'0':'1')})()</script><script>try{if(!localStorage.getItem('fontMig2')){var k='theo-reader-v1',d=JSON.parse(localStorage.getItem(k)||'null');if(d){d.font='Literata';localStorage.setItem(k,JSON.stringify(d))}localStorage.setItem('fontMig2','1')}}catch(e){}</script><script>try{var k2='theo-reader-v1',raw=localStorage.getItem(k2),d2=JSON.parse(raw||'null')||{},R2=document.documentElement,S2=R2.style;if(!localStorage.getItem('lightMig1')){if(raw){d2.light=false;d2.candle=false;localStorage.setItem(k2,JSON.stringify(d2))}localStorage.setItem('lightMig1','1')}if(d2.theme)R2.setAttribute('data-theme',d2.theme);if(d2.bg)R2.setAttribute('data-bg',d2.bg);if(d2.head===undefined||d2.head)S2.setProperty('--head',d2.head||'#8fd3c8');if(d2.color)S2.setProperty('--fg',d2.color);if(d2.lcolor)S2.setProperty('--lc',d2.lcolor);if(d2.lsize)S2.setProperty('--ls',d2.lsize+'px');if(d2.size)S2.setProperty('--base-font-size',d2.size+'px')}catch(e){document.documentElement.style.setProperty('--head','#8fd3c8')}</script><link rel="preload" as="font" type="font/woff2" href="/css/fonts/literata-cyrillic.woff2" crossorigin><link rel="preload" as="font" type="font/woff2" href="/css/fonts/manrope-cyrillic.woff2" crossorigin><link rel="stylesheet" href="css/fonts.css?v=b177033283"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23f4f1ea'/%3E%3Cg fill='%23000'%3E%3Crect x='29' y='7' width='6' height='50' rx='1'/%3E%3Crect x='23' y='12' width='18' height='4' rx='1'/%3E%3Crect x='15' y='22' width='34' height='5' rx='1'/%3E%3Cpath d='M23 44l18 6-1.4 4.2L21.6 48.2z'/%3E%3C/g%3E%3C/svg%3E"><link rel="icon" type="image/png" sizes="48x48" href="icons/favicon-48.png">
+R.setAttribute('data-pf',P.get()===V?'0':'1')})()</script><script>try{if(!localStorage.getItem('fontMig2')){var k='theo-reader-v1',d=JSON.parse(localStorage.getItem(k)||'null');if(d){d.font='Literata';localStorage.setItem(k,JSON.stringify(d))}localStorage.setItem('fontMig2','1')}}catch(e){}</script><script>try{var k2='theo-reader-v1',raw=localStorage.getItem(k2),d2=JSON.parse(raw||'null')||{},R2=document.documentElement,S2=R2.style;if(!localStorage.getItem('lightMig1')){if(raw){d2.light=false;d2.candle=false;localStorage.setItem(k2,JSON.stringify(d2))}localStorage.setItem('lightMig1','1')}if(d2.theme)R2.setAttribute('data-theme',d2.theme);if(d2.bg)R2.setAttribute('data-bg',d2.bg);if(d2.head===undefined||d2.head)S2.setProperty('--head',d2.head||'#8fd3c8');if(d2.color)S2.setProperty('--fg',d2.color);if(d2.lcolor)S2.setProperty('--lc',d2.lcolor);if(d2.lsize)S2.setProperty('--ls',d2.lsize+'px');if(d2.size)S2.setProperty('--base-font-size',d2.size+'px')}catch(e){document.documentElement.style.setProperty('--head','#8fd3c8')}</script><link rel="preload" as="font" type="font/woff2" href="/css/fonts/literata-cyrillic.woff2" crossorigin><link rel="preload" as="font" type="font/woff2" href="/css/fonts/manrope-cyrillic.woff2" crossorigin><link rel="stylesheet" href="css/fonts.css?v=ea38f62a69"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23f4f1ea'/%3E%3Cg fill='%23000'%3E%3Crect x='29' y='7' width='6' height='50' rx='1'/%3E%3Crect x='23' y='12' width='18' height='4' rx='1'/%3E%3Crect x='15' y='22' width='34' height='5' rx='1'/%3E%3Cpath d='M23 44l18 6-1.4 4.2L21.6 48.2z'/%3E%3C/g%3E%3C/svg%3E"><link rel="icon" type="image/png" sizes="48x48" href="icons/favicon-48.png">
 
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap"><link rel="preload" as="image" href="icons/cross.webp" crossorigin><script>(function(){var d=document.documentElement,f=function(){d.classList.add("xm")},i=new Image();i.crossOrigin="anonymous";i.onload=i.onerror=f;i.src="icons/cross.webp";setTimeout(f,3000)})()</script><link rel="stylesheet" href="css/cross.css?v=b177033283"><link rel="stylesheet" href="css/base.css?v=b177033283">
-<link rel="stylesheet" href="css/reader.css?v=b177033283">
-<link rel="stylesheet" href="css/fixes.css?v=b177033283">
-<link rel="stylesheet" href="css/armenian.css?v=b177033283">
-<link rel="stylesheet" href="css/translation-guide.css?v=b177033283">
-<link rel="stylesheet" href="css/likes.css?v=b177033283"><link rel="stylesheet" href="css/compare.css?v=b177033283">
-<link rel="stylesheet" href="css/torch.css?v=b177033283"><link rel="stylesheet" href="css/effects.css?v=b177033283"><link rel="stylesheet" href="css/layout.css?v=b177033283"><link rel="stylesheet" href="css/preface-modal.css?v=b177033283"><link rel="stylesheet" href="css/tour.css?v=b177033283"><link rel="stylesheet" href="css/contact.css?v=b177033283"><link rel="stylesheet" href="css/hy-latin.css?v=b177033283"><link rel="stylesheet" href="css/plan.css?v=b177033283"><link rel="stylesheet" href="css/perf.css?v=b177033283">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap"><link rel="preload" as="image" href="icons/cross.webp" crossorigin><script>(function(){var d=document.documentElement,f=function(){d.classList.add("xm")},i=new Image();i.crossOrigin="anonymous";i.onload=i.onerror=f;i.src="icons/cross.webp";setTimeout(f,3000)})()</script><link rel="stylesheet" href="css/cross.css?v=ea38f62a69"><link rel="stylesheet" href="css/base.css?v=ea38f62a69">
+<link rel="stylesheet" href="css/reader.css?v=ea38f62a69">
+<link rel="stylesheet" href="css/fixes.css?v=ea38f62a69">
+<link rel="stylesheet" href="css/armenian.css?v=ea38f62a69">
+<link rel="stylesheet" href="css/translation-guide.css?v=ea38f62a69">
+<link rel="stylesheet" href="css/likes.css?v=ea38f62a69"><link rel="stylesheet" href="css/compare.css?v=ea38f62a69">
+<link rel="stylesheet" href="css/torch.css?v=ea38f62a69"><link rel="stylesheet" href="css/effects.css?v=ea38f62a69"><link rel="stylesheet" href="css/layout.css?v=ea38f62a69"><link rel="stylesheet" href="css/preface-modal.css?v=ea38f62a69"><link rel="stylesheet" href="css/tour.css?v=ea38f62a69"><link rel="stylesheet" href="css/contact.css?v=ea38f62a69"><link rel="stylesheet" href="css/hy-latin.css?v=ea38f62a69"><link rel="stylesheet" href="css/plan.css?v=ea38f62a69"><link rel="stylesheet" href="css/perf.css?v=ea38f62a69">
 </head>
 <body>
 <div id="bg"></div><canvas id="fx"></canvas><canvas id="fx2"></canvas>
@@ -105,29 +105,28 @@ R.setAttribute('data-pf',P.get()===V?'0':'1')})()</script><script>try{if(!localS
 <button class="btn" id="sel" data-t="addn">Добавить размышление</button>
 <div id="modal"><div class="nm-card" role="dialog" aria-modal="true" aria-labelledby="mh"><div class="nm-head"><span class="nm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l4-1 11-11a2.1 2.1 0 0 0-3-3L5 16z"/></svg></span><h3 id="mh"></h3><button class="nm-x" id="mx" type="button" aria-label="×">×</button></div><q id="mq"></q><textarea id="mt" placeholder="Ваше размышление…" maxlength="5000"></textarea><div class="nm-meta"><span id="mcnt"></span></div><div class="nm-btns"><button class="btn" id="mc" type="button" data-t="cancel">Отмена</button><button class="btn on" id="ms" type="button" data-t="save">Сохранить</button></div></div></div>
 <div id="prayer"><div class="crossw sm"><div class="cross"></div></div><p id="pt">Господи Иисусе Христе, помилуй меня, грешного.</p><button class="btn" id="pb" data-t="amen">Аминь</button></div>
-<script src="js/hy-latin.js?v=b177033283"></script>
-<script src="js/app.js?v=b177033283"></script>
-<script src="js/perf.js?v=b177033283"></script>
-<script src="js/soundscape.js?v=b177033283"></script>
+<script src="js/hy-latin.js?v=ea38f62a69"></script>
+<script src="js/app.js?v=ea38f62a69"></script>
+<script src="js/perf.js?v=ea38f62a69"></script>
+<script src="js/soundscape.js?v=ea38f62a69"></script>
 <!-- TORCH MODE (candle) -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="tHeat" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".012 .035" numOctaves="2" seed="3" result="n"><animate attributeName="baseFrequency" dur="7s" values=".012 .035;.02 .05;.012 .035" repeatCount="indefinite"/></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n" scale="14" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
-<script src="js/torch.js?v=b177033283"></script>
+<script src="js/torch.js?v=ea38f62a69"></script>
 <!-- /TORCH MODE -->
-<script src="js/plan.js?v=b177033283"></script>
-<script src="js/translation-info.js?v=b177033283"></script>
-<script src="js/reader.js?v=b177033283"></script>
-<script src="js/scroll-reveal.js?v=b177033283"></script>
-<script src="js/scroll-blur.js?v=b177033283"></script>
-<script src="js/preface-gate.js?v=b177033283"></script>
-<script src="js/tour.js?v=b177033283"></script>
+<script src="js/plan.js?v=ea38f62a69"></script>
+<script src="js/translation-info.js?v=ea38f62a69"></script>
+<script src="js/reader.js?v=ea38f62a69"></script>
+<script src="js/scroll-reveal.js?v=ea38f62a69"></script>
+<script src="js/scroll-blur.js?v=ea38f62a69"></script>
+<script src="js/preface-gate.js?v=ea38f62a69"></script>
+<script src="js/tour.js?v=ea38f62a69"></script>
 <!-- SMOOTH INNER SCROLL + KEYS + iPhone fullscreen hint -->
-<script src="js/smooth-scroll.js?v=b177033283"></script>
-<script src="js/scroll-lock.js?v=b177033283"></script>
-<script src="js/pop-hold.js?v=b177033283"></script>
-<script src="js/contact.js?v=b177033283"></script>
+<script src="js/smooth-scroll.js?v=ea38f62a69"></script>
+<script src="js/scroll-lock.js?v=ea38f62a69"></script>
+<script src="js/contact.js?v=ea38f62a69"></script>
 
-<script src="js/install.js?v=b177033283"></script>
-<script src="js/ready.js?v=b177033283"></script>
+<script src="js/install.js?v=ea38f62a69"></script>
+<script src="js/ready.js?v=ea38f62a69"></script>
 <script>
 /* Обновления сайта: проверка при открытии и при возвращении в приложение; тост «Обновить» после смены версии */
 (function(){
