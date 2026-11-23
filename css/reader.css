@@ -49,7 +49,7 @@ body.br-mode #end{display:none!important}
 .br-com-fs button,.br-com-foot button{border:1px solid var(--line);background:transparent;color:var(--fg);border-radius:9px;padding:.4rem .6rem;font:700 .74rem Manrope,sans-serif;min-width:2.4rem;min-height:2.4rem;cursor:pointer;transition:.2s}
 .br-com-fs button:active,.br-com-foot button:active:not(:disabled){transform:scale(.94)}
 .br-com-tabs button{flex:1;min-height:2.4rem}
-#brCommentary .br-com-body{overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:1.1rem 1.15rem 2rem;scroll-behavior:smooth}
+#brCommentary .br-com-body{overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:1.1rem 1.15rem 2rem}
 .br-com-foot{padding-bottom:calc(.65rem + env(safe-area-inset-bottom,0px))}.br-com-foot[hidden]{display:none}
 .br-com-foot button:disabled{opacity:.3;cursor:default}.br-com-foot #brComPos{font:600 .72rem Manrope,sans-serif;color:var(--dim)}
 .br-com-foot button{font-size:1.15rem;min-width:3.2rem}
