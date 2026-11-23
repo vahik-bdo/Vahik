@@ -76,3 +76,6 @@ body.br-mode #end{display:none!important}
 @keyframes comSk{to{background-position:-200% 0}}
 @media (max-width:560px){#brCommentary{width:100vw;border-left:0}#brCommentary .br-com-body{padding:1rem .95rem 1.6rem}}
 @media (prefers-reduced-motion:reduce){.com-in,.com-v.cur{animation:none}#brCommentary .br-com-body{scroll-behavior:auto}}
+
+.com-grp{font:700 .66rem/1.4 Manrope,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--head);margin:0 0 .5rem}
+.com-v .com-vn{margin-right:.6rem;vertical-align:middle}.com-v .com-grp{display:inline-block;vertical-align:middle;margin:0 0 .45rem}
