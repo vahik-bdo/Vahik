@@ -118,10 +118,10 @@ function comGrp(s,z){return z>s?`<div class="com-grp">${esc(comX('grp'))} ${s}�
 function comParas(arr){return arr.slice(1).map(p=>p[0]==='^'?'':p[0]==='~'?`<h4 class="com-lem">${esc(p.slice(1))}</h4>`:`<p>${esc(p)}</p>`).join('')}
 function comFs(d){let s=parseFloat(localStorage.getItem('brComFs'))||1.06;if(d){s=Math.max(.9,Math.min(1.7,Math.round((s+d)*100)/100));try{localStorage.setItem('brComFs',s)}catch(e){}}q('#brCommentary').style.setProperty('--cfs',s)}
 function comStep(n){const vs=comVerses();if(br.comMode==='chapter'){stepChapter(n);return}const d=COMDB[br.book],f=d&&comFind(d,br.chapter,br.verse||1);let cur=br.verse||1;if(f)cur=n>0?(f[1][0]||f[0]):f[0];const i=vs.indexOf(cur)+n;if(i<0||i>=vs.length)return;br.verse=vs[i];save();focusVerse(br.verse,false);updateCommentary(n)}
-function comInit(){comFs(0);q('#brComFsM').onclick=()=>comFs(-.08);q('#brComFsP').onclick=()=>comFs(.08);q('#brComPrev').onclick=()=>comStep(-1);q('#brComNext').onclick=()=>comStep(1);
+function comInit(){const cm=q('#brCommentary');if(cm&&window.MutationObserver){const sync=()=>document.body.classList.toggle('com-open',cm.classList.contains('open'));new MutationObserver(sync).observe(cm,{attributes:true,attributeFilter:['class']});sync()}comFs(0);q('#brComFsM').onclick=()=>comFs(-.08);q('#brComFsP').onclick=()=>comFs(.08);q('#brComPrev').onclick=()=>comStep(-1);q('#brComNext').onclick=()=>comStep(1);
  const bd=q('#brComBody');bd.addEventListener('scroll',()=>{},{passive:true});
  bd.addEventListener('click',e=>{const n=e.target.closest('.com-vn');if(n){br.verse=+n.dataset.v;br.comMode='verse';focusVerse(br.verse,false);updateCommentary(1);return}if(e.target.closest('.com-go')){br.comMode='chapter';updateCommentary();return}if(e.target.closest('.com-retry'))updateCommentary()});
- let sx,sy;bd.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});bd.addEventListener('touchend',e=>{if(br.comMode!=='verse'||sx==null)return;const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;sx=null;if(Math.abs(dx)>80&&Math.abs(dy)<45)comStep(dx<0?1:-1)},{passive:true});
+ /* свайп влево-вправо по толкованиям отключён */
  document.addEventListener('keydown',e=>{if(!q('#brCommentary').classList.contains('open'))return;if(e.key==='Escape')closeCommentary();else if(e.key==='ArrowRight')comStep(1);else if(e.key==='ArrowLeft')comStep(-1)})}
 let comSeq=0;
 function updateCommentary(dir=0){const k=br.book,names=BRBN[lang()]||BRBN.ru,body=q('#brComBody'),seq=++comSeq,vm=br.comMode!=='chapter';
