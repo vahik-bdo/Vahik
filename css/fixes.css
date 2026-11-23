@@ -522,3 +522,9 @@ html #brPop{max-height:min(64dvh,calc(100dvh - 24px - env(safe-area-inset-top,0p
  #brRb .br-rb span{font-size:9px}
  .br-rpn button{height:28px}
 }
+
+/* --- scroll-lock: фон неподвижен под открытыми списками/панелями --- */
+html:has(#panel.open,#npanel.open,#ppanel.open,#hpanel.open,#xp.open,#brSearch.open,#brHist.open,#brCommentary.open,#modal.open,#brPop.open,#pfm,#lpk),
+html:has(#panel.open,#npanel.open,#ppanel.open,#hpanel.open,#xp.open,#brSearch.open,#brHist.open,#brCommentary.open,#modal.open,#brPop.open,#pfm,#lpk) body{overflow:hidden!important;overscroll-behavior:none!important;touch-action:none}
+#brPop,#panel,#npanel,#ppanel,#hpanel,#xp,#brSearch,#brHist,#brCommentary,#modal,.br-search-results,.bh-card{overscroll-behavior:contain;touch-action:pan-y}
+#brPop.drag,#brRail{touch-action:none}
