@@ -117,7 +117,7 @@ function comVText(a,z){const s=[];for(let v=a;v<=(z||a);v++){const el=q('#brv-'+
 function comGrp(s,z){return z>s?`<div class="com-grp">${esc(comX('grp'))} ${s}–${z}</div>`:''}
 function comParas(arr){return arr.slice(1).map(p=>p[0]==='^'?'':p[0]==='~'?`<h4 class="com-lem">${esc(p.slice(1))}</h4>`:`<p>${esc(p)}</p>`).join('')}
 function comFs(d){let s=parseFloat(localStorage.getItem('brComFs'))||1.06;if(d){s=Math.max(.9,Math.min(1.7,Math.round((s+d)*100)/100));try{localStorage.setItem('brComFs',s)}catch(e){}}q('#brCommentary').style.setProperty('--cfs',s)}
-function comStep(n){const vs=comVerses();if(br.comMode==='chapter'){stepChapter(n);return}const i=vs.indexOf(br.verse||1)+n;if(i<0||i>=vs.length)return;br.verse=vs[i];save();focusVerse(br.verse,false);updateCommentary(n)}
+function comStep(n){const vs=comVerses();if(br.comMode==='chapter'){stepChapter(n);return}const d=COMDB[br.book],f=d&&comFind(d,br.chapter,br.verse||1);let cur=br.verse||1;if(f)cur=n>0?(f[1][0]||f[0]):f[0];const i=vs.indexOf(cur)+n;if(i<0||i>=vs.length)return;br.verse=vs[i];save();focusVerse(br.verse,false);updateCommentary(n)}
 function comInit(){comFs(0);q('#brComFsM').onclick=()=>comFs(-.08);q('#brComFsP').onclick=()=>comFs(.08);q('#brComPrev').onclick=()=>comStep(-1);q('#brComNext').onclick=()=>comStep(1);
  const bd=q('#brComBody');bd.addEventListener('scroll',()=>{},{passive:true});
  bd.addEventListener('click',e=>{const n=e.target.closest('.com-vn');if(n){br.verse=+n.dataset.v;br.comMode='verse';focusVerse(br.verse,false);updateCommentary(1);return}if(e.target.closest('.com-go')){br.comMode='chapter';updateCommentary();return}if(e.target.closest('.com-retry'))updateCommentary()});
