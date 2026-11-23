@@ -6,8 +6,8 @@
 <script>["gesturestart","gesturechange","gestureend"].forEach(function(e){document.addEventListener(e,function(x){x.preventDefault()},{passive:false})})</script><script>(function(){var T=400,cur=null,st=null,drag=false,tm=0,swallow=0,pop=null,SEL='#brPop .bp-i,#brPop .bp-n,#lpk .lpl button';
 function it(e){return e&&e.closest&&e.closest(SEL)}
 function cl(el){return el.closest('#lpk')?'lit':'hold'}
-function on(el,e){el.classList.add(cl(el));if(e){var r=el.getBoundingClientRect();el.style.setProperty('--mx',(e.clientX-r.left)+'px');el.style.setProperty('--my',(e.clientY-r.top)+'px')}}
-function off(el){el.classList.remove('hold');el.classList.remove('lit')}
+function on(el,e){clearTimeout(el._fd);el.classList.remove('fade');el.classList.add(cl(el));if(e){var r=el.getBoundingClientRect();el.style.setProperty('--mx',(e.clientX-r.left)+'px');el.style.setProperty('--my',(e.clientY-r.top)+'px')}}
+function off(el){var was=el.classList.contains('hold')||el.classList.contains('lit');el.classList.remove('hold');el.classList.remove('lit');if(was){el.classList.add('fade');clearTimeout(el._fd);el._fd=setTimeout(function(){el.classList.remove('fade')},1300)}}
 function set(el,e){if(cur===el)return;if(cur)off(cur);cur=el;if(el){on(el,e);try{navigator.vibrate&&navigator.vibrate(4)}catch(x){}}}
 function end(){clearTimeout(tm);if(pop)pop.classList.remove('drag');pop=null;st=null;drag=false}
 document.addEventListener('pointerdown',function(e){var b=it(e.target);if(!b||b.closest('#lpk.ready')===null&&b.closest('#lpk')&&0)return;pop=b.closest('#brPop');st={x:e.clientX,y:e.clientY};drag=false;cur=b;on(b,e);clearTimeout(tm);
