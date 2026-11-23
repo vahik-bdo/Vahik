@@ -533,3 +533,14 @@ html:has(#panel.open,#npanel.open,#ppanel.open,#hpanel.open,#xp.open,#brSearch.o
 /* Меню книг/глав на ПК: наведение мыши = бирюзовая обводка (как при удержании на телефоне), жёлтого нет */
 .bp-i.on,.bp-n.on{background:color-mix(in srgb,var(--head) 10%,transparent);color:var(--head);outline:0;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--head) 55%,transparent)}
 @media (hover:hover){.bp-i:hover,.bp-n:hover,.bp-i.on:hover,.bp-n.on:hover{border-color:var(--head);background:color-mix(in srgb,var(--head) 10%,transparent);color:var(--head);transform:scale(1.04);box-shadow:0 0 18px -6px var(--head),inset 0 0 12px -8px var(--head)}.bp-i:hover::before,.bp-n:hover::before{opacity:1}}
+
+/* v22: подсветка выбора (глава/стих/язык) гаснет плавно после отпускания пальца, а не мгновенно */
+.bp-i.fade,.bp-n.fade{transition:transform 1.1s cubic-bezier(.22,1,.36,1),background 1.2s ease,color 1.2s ease,border-color 1.2s ease,box-shadow 1.3s ease}
+.bp-i.fade::before,.bp-n.fade::before{transition:opacity 1.3s ease}
+#lpk .lpl button.fade{transition:transform 1.1s cubic-bezier(.22,1,.36,1),background 1.2s ease,border-color 1.2s ease,box-shadow 1.3s ease!important;transition-delay:0s!important}
+#lpk .lpl button.fade::before,#lpk .lpl button.fade::after{transition:opacity 1.3s ease,transform 1.1s ease}
+/* v22: пока открыты толкования, зона касания левой стрелки не перехватывает номера стихов (без зависимости от :has) */
+body.com-open #brRail{pointer-events:none!important;visibility:hidden}
+body.com-open #brRt,body.com-open #brRt::after{pointer-events:none!important}
+#brCommentary .com-vn{position:relative;z-index:2;touch-action:manipulation}
+@media(pointer:coarse){#brPop:not(.open){transition:opacity .9s ease .15s,transform .65s cubic-bezier(.22,1,.36,1)}}
