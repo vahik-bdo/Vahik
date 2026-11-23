@@ -270,8 +270,14 @@ draw(){const x=this.x,W=this.W,H=this.H;x.clearRect(0,0,W,H);x.lineCap='round';x
 }
 ['copy','cut','contextmenu','dragstart','selectstart'].forEach(ev=>document.addEventListener(ev,e=>{const t=e.target.nodeType===1?e.target:e.target.parentElement;if(!t||!t.closest('textarea'))e.preventDefault()}));
 document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&'cxaspu'.includes(e.key.toLowerCase())&&!(e.target.closest&&e.target.closest('textarea')))e.preventDefault()});
-(()=>{if(matchMedia('(pointer:coarse)').matches)return;let t=scrollY,c=scrollY,run=0;const mx=()=>document.documentElement.scrollHeight-innerHeight,f=()=>{c+=(t-c)*(window.__smk||.085);if(Math.abs(t-c)<.4){c=t;run=0}scrollTo(0,c);if(run)requestAnimationFrame(f)};
-addEventListener('wheel',e=>{if(e.ctrlKey||e.target.closest('#panel,#npanel,#ppanel,#hpanel,#rpanel,#modal,#xp,#brSearch,#brCommentary,#brHist,#brPop,#pfm,.br-guide-scroll,select'))return;e.preventDefault();t=Math.max(0,Math.min(mx(),t+e.deltaY*(e.deltaMode?32:1)));if(!run){run=1;c=scrollY;requestAnimationFrame(f)}},{passive:false});
+(()=>{if(matchMedia('(pointer:coarse)').matches||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+/* плавное колесо мыши. Тачпад и мелкие дельты — нативно (без перехвата). Шаг по времени кадра, а не «на кадр»: одинаково на 60/120/144 Гц */
+let t=scrollY,c=scrollY,run=0,last=0,max=0;const TAU=188;
+const f=now=>{const dt=Math.min(64,now-(last||now-16.7));last=now;c+=(t-c)*(1-Math.exp(-dt/TAU));if(Math.abs(t-c)<.4){c=t;run=0;last=0}scrollTo(0,c);if(run)requestAnimationFrame(f)};
+addEventListener('wheel',e=>{if(e.ctrlKey||e.defaultPrevented||e.target.closest('#panel,#npanel,#ppanel,#hpanel,#rpanel,#modal,#xp,#brSearch,#brCommentary,#brHist,#brPop,#pfm,.br-guide-scroll,select'))return;
+ if(!e.deltaMode&&(Math.abs(e.deltaY)<50||e.deltaY%1!==0||e.deltaX!==0))return;
+ e.preventDefault();if(!run){max=document.documentElement.scrollHeight-innerHeight;c=t=scrollY}
+ t=Math.max(0,Math.min(max,t+e.deltaY*(e.deltaMode?32:1)));if(!run){run=1;last=0;requestAnimationFrame(f)}},{passive:false});
 addEventListener('scroll',()=>{if(!run)t=c=scrollY},{passive:true})})();
 $('#bulb').onclick=e=>{e.stopPropagation();$('#fb').click()};
 {const P=ParticleEngine.prototype,L=P.loop,mob=matchMedia('(pointer:coarse)').matches||innerWidth<700,low=(navigator.deviceMemory||8)<=4||(navigator.hardwareConcurrency||8)<=4;let last=0,slow=0;
