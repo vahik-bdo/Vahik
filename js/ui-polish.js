@@ -63,4 +63,12 @@ if(md&&mt){
     if(e.target===md&&dirty()){e.stopImmediatePropagation();nudge()}
   },true);
 }
+
+/* ---------- 4. пауза декоративных анимаций на время прокрутки ---------- */
+(function(){var R=D.documentElement,on=false,t=0;
+  addEventListener('scroll',function(){
+    if(!on){on=true;R.classList.add('is-scrolling')}
+    clearTimeout(t);t=setTimeout(function(){on=false;R.classList.remove('is-scrolling')},160);
+  },{passive:true});
+})();
 })();
