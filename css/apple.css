@@ -24,7 +24,7 @@ html body.br-mode .hero .crossw,html body .hero .crossw{
  background:radial-gradient(ellipse 50% 50% at 50% 48%,color-mix(in srgb,var(--head) 26%,transparent),transparent 72%)}
 .hero .cross{filter:none!important;animation:none!important;will-change:auto}
 html.cx #sbl{display:none!important}
-#ebT{transition:transform .6s cubic-bezier(.22,1,.36,1);transform-origin:top center}html.cx #ebT{transform:scaleY(.5)}  /* верхний край размывает всегда, как нижний; пока на экране крест — зона вдвое короче, и крест остаётся чистым */
+#ebT{transition:opacity .45s ease}html.cx #ebT{opacity:0}  /* пока крест на экране, верхний край не размывает его */
 html body.br-mode .hero{padding-top:1.5vh;margin-bottom:1.4rem}
 @media(max-width:480px){html body .hero .crossw{width:clamp(120px,40vw,168px)}}
 
