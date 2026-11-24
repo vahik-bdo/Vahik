@@ -102,7 +102,7 @@ function tipShow(k,keep){if(!cw)return;k=(k==null)?-1:k;if(!tp){tp=D.createEleme
 function tipHide(d){clearTimeout(tpT);clearTimeout(swT);tpT=setTimeout(function(){sticky=false;tp&&tp.classList.remove('on');cur=-1;tp&&(tp.dataset.k='',tp.dataset.pin='');cw&&(cw.setAttribute('aria-expanded','false'),cw.querySelectorAll('.hs.on').forEach(function(e){e.classList.remove('on')}))},d||0)}
 /* уход курсора: если толкование «закреплено» кликом или стрелками — не прячем */
 function leave(d){if(!sticky)tipHide(d)}
-var PR={1:2,2:1,9:10,10:9,16:17,17:16},SK={2:1,10:1,17:1},ST=[];HS.forEach(function(_,i){if(!SK[i])ST.push(i)});
+var PR={1:2,2:1,7:8,8:7,9:10,10:9,16:17,17:16},SK={2:1,8:1,10:1,17:1},ST=[];HS.forEach(function(_,i){if(!SK[i])ST.push(i)});
 function lead(i){return SK[i]?PR[i]:i}
 function pos(){return cur<0?0:ST.indexOf(lead(cur))+1}
 function step(dir){var n=ST.length,p=cur<0?(dir>0?-1:0):ST.indexOf(lead(cur)),k=ST[(p+dir+n)%n],kb=D.activeElement&&D.activeElement.closest&&D.activeElement.closest('.ct-ar');
