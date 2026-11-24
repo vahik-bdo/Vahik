@@ -91,7 +91,7 @@ function tipPos(){var r=cw.getBoundingClientRect(),w=tp.offsetWidth,h=tp.offsetH
 function tipClamp(){var h=tp.offsetHeight,y=parseFloat(tp.style.top)||0;y=Math.max(12,Math.min(innerHeight-h-12,y));tp.style.top=Math.round(y)+'px'}
 function tipShow(k,keep){if(!cw)return;k=(k==null)?-1:k;if(!tp){tp=D.createElement('div');tp.id='crossTip';tp.setAttribute('role','tooltip');D.body.appendChild(tp);
   tp.addEventListener('mouseenter',function(){clearTimeout(tpT)});
-  tp.addEventListener('mouseleave',function(){if(hov)leave(380)});
+  tp.addEventListener('mouseleave',function(){if(hov)leave(170)});
   tp.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('.ct-ar');if(a){e.stopPropagation();step(+a.dataset.d||1)}})}
  clearTimeout(tpT);clearTimeout(swT);
  if(k!==cur||!tp.classList.contains('on')){var was=tp.classList.contains('on');cur=k;tipBuild(k);
@@ -119,7 +119,7 @@ if(cw){cw.setAttribute('tabindex','0');cw.setAttribute('aria-expanded','false');
   if(hov){e.addEventListener('mouseenter',function(){clearTimeout(swT);
     /* пока курсор пролетает над соседней деталью по пути к карточке, толкование не дёргается */
     if(tp&&tp.classList.contains('on')&&cur>=0&&cur!==i)swT=setTimeout(function(){tipShow(i)},110);else tipShow(i)});
-   e.addEventListener('mouseleave',function(){clearTimeout(swT);leave(420)})}
+   e.addEventListener('mouseleave',function(){clearTimeout(swT);leave(150)})}
   e.addEventListener('focus',function(){tipShow(i)});
   e.addEventListener('click',function(ev){ev.stopPropagation();
    if(cur===i&&tp&&tp.classList.contains('on')&&(!hov||sticky)){sticky=false;tipHide();return}
