@@ -22,9 +22,6 @@ html body .hero .cross::after{
 html body .hero .crossw.pulse .cross{background-position:0 0;animation:crTapT .5s ease-out!important}
 @keyframes crTapT{40%{transform:scale(1.045)}}
 
-/* полноэкранный крест: статичная заливка, масштабирование — слоем на GPU */
-html body #crossFs .cross{background:var(--head);background-position:0 0;will-change:transform}
-
 @media (prefers-reduced-motion:reduce){
   html body .hero .cross::after,html body .hero .crossw.pulse .cross{animation:none!important}
 }
