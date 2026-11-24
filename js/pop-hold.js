@@ -10,7 +10,7 @@ function mark(el){var p=pop();if(!p)return;[].forEach.call(p.querySelectorAll('.
  if(el&&!el.classList.contains('hold')){el.classList.add('hold');try{navigator.vibrate&&navigator.vibrate(6)}catch(e){}}}
 function end(){if(!S)return;clearTimeout(S.t);var p=pop();if(p){p.classList.remove('drag');mark(null)}S=null}
 document.addEventListener('pointerdown',function(e){
- if(e.pointerType==='mouse'||!e.isPrimary)return;
+ if(!e.isPrimary||(e.pointerType==='mouse'&&e.button!==0))return;
  var b=item(e.clientX,e.clientY);if(!b||!e.target.closest('#brPop'))return;
  end();S={b:b,x:e.clientX,y:e.clientY,drag:0,out:0,id:e.pointerId};
  S.t=setTimeout(function(){if(!S||S.out)return;S.drag=1;pop().classList.add('drag');mark(S.b)},HOLD_MS)},{passive:true});

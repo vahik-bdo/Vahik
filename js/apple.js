@@ -79,10 +79,11 @@ var HS=[
 {b:[158,626,76,52],o:["Г  А","Глава Адамова"],ru:["Глава Адамова","«Г А» — «Глава Адамова», то есть голова Адама. По древнему преданию, Адам погребён на Голгофе, и Кровь Христа, стекая на череп, смыла грех праотца. Христос Своей смертью победил смерть и воскресил падших."],en:["The head of Adam","“Г А”: “the head of Adam”. By ancient tradition Adam was buried at Golgotha, and the Blood of Christ flowing down upon the skull washed away the sin of the forefather. By His death Christ conquered death and raised the fallen."]}
 ];
 var cw=$('.hero .crossw'),tp=null,tpT=0,cur=-1;
+function ctT(t){var w=String(t).split(/\s+/);return w.length<2?'<b>'+t+'</b>':'<b>'+w[0]+'</b> <em>'+w.slice(1).join(' ')+'</em>'}
 function tipBuild(k){var L=(H.lang||'ru').slice(0,2);
  if(k>=0){var h=HS[k],d=h[L]||h.en;
-  tp.innerHTML='<h5>'+d[0]+'</h5>'+(h.o?'<div class="ct-o">'+h.o.map(function(x){return'<div>'+x+'</div>'}).join('')+'</div>':'')+'<p>'+d[1]+'</p>';tp.classList.add('det')}
- else{var g=CT[L]||CT.en;tp.innerHTML='<h5>'+g[0]+'</h5>'+g[1].map(function(x){return'<p>'+x+'</p>'}).join('');tp.classList.remove('det')}}
+  tp.innerHTML='<h5>'+ctT(d[0])+'</h5>'+(h.o?'<div class="ct-o">'+h.o.map(function(x){return'<div>'+x+'</div>'}).join('')+'</div>':'')+'<p>'+d[1]+'</p>'+'<i class="ct-n" aria-hidden="true">'+String(k+1).padStart(2,'0')+'</i>';tp.classList.add('det')}
+ else{var g=CT[L]||CT.en;tp.innerHTML='<h5>'+ctT(g[0])+'</h5>'+g[1].map(function(x){return'<p>'+x+'</p>'}).join('');tp.classList.remove('det')}}
 function tipPos(){var r=cw.getBoundingClientRect(),w=tp.offsetWidth,h=tp.offsetHeight,vw=innerWidth,vh=innerHeight,x,y;
  if(vw>=820){x=r.right+28;y=Math.max(12,Math.min(vh-h-12,r.top+r.height/2-h/2))}
  else{x=(vw-w)/2;y=r.bottom+12;if(y+h>vh-12)y=Math.max(12,vh-h-12)}

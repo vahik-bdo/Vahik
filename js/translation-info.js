@@ -200,7 +200,7 @@ function open(k){
  const sec=t[l]||t[Object.keys(t)[0]];if(!sec)return;
  close();lastFocus=document.activeElement;
  ov=document.createElement('div');ov.className='tri-ov';
- ov.innerHTML=`<div class="tri-box" role="dialog" aria-modal="true" aria-label="${esc(UI[l].about)}"><button class="tri-x" type="button" aria-label="${esc(UI[l].close)}">×</button><div class="tri-kicker">${esc(UI[l].about)}</div><h3>${esc(nm(k,l))}</h3>${body(sec)}</div>`;
+ ov.innerHTML=`<div class="tri-box" role="dialog" aria-modal="true" aria-label="${esc(UI[l].about)}"><button class="tri-x" type="button" aria-label="${esc(UI[l].close)}">×</button><div class="tri-kicker">${esc(UI[l].about)}</div><h3${nm(k,l).length>9?' class="lg"':''}>${esc(nm(k,l))}</h3>${body(sec)}</div>`;
  ov.addEventListener('click',e=>{if(e.target===ov||e.target.closest('.tri-x'))close()});
  document.body.appendChild(ov);document.documentElement.classList.add('tri-lock');document.addEventListener('keydown',onKey,true);
  const x=ov.querySelector('.tri-x');if(x)x.focus({preventScroll:true});
