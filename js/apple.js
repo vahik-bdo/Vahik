@@ -98,16 +98,19 @@ function tipShow(k,keep){if(!cw)return;k=(k==null)?-1:k;if(!tp){tp=D.createEleme
   if(keep&&was){tp.dataset.pin='1';tipClamp()}else{tp.dataset.pin='';tipPos()}}
  else if(!keep&&!sticky)tp.dataset.pin='';
  tp.classList.add('on');cw.setAttribute('aria-expanded','true');
- var PR={1:2,2:1,7:8,8:7,9:10,10:9,16:17,17:16};cw.querySelectorAll('.hs').forEach(function(e,i){e.classList.toggle('on',i===k||i===PR[k])})}
+ cw.querySelectorAll('.hs').forEach(function(e,i){e.classList.toggle('on',i===k||i===PR[k])})}
 function tipHide(d){clearTimeout(tpT);clearTimeout(swT);tpT=setTimeout(function(){sticky=false;tp&&tp.classList.remove('on');cur=-1;tp&&(tp.dataset.k='',tp.dataset.pin='');cw&&(cw.setAttribute('aria-expanded','false'),cw.querySelectorAll('.hs.on').forEach(function(e){e.classList.remove('on')}))},d||0)}
 /* уход курсора: если толкование «закреплено» кликом или стрелками — не прячем */
 function leave(d){if(!sticky)tipHide(d)}
-function step(dir){var n=HS.length,k=cur<0?(dir>0?0:n-1):(cur+dir+n)%n,kb=D.activeElement&&D.activeElement.closest&&D.activeElement.closest('.ct-ar');
+var PR={1:2,2:1,9:10,10:9,16:17,17:16},SK={2:1,10:1,17:1},ST=[];HS.forEach(function(_,i){if(!SK[i])ST.push(i)});
+function lead(i){return SK[i]?PR[i]:i}
+function pos(){return cur<0?0:ST.indexOf(lead(cur))+1}
+function step(dir){var n=ST.length,p=cur<0?(dir>0?-1:0):ST.indexOf(lead(cur)),k=ST[(p+dir+n)%n],kb=D.activeElement&&D.activeElement.closest&&D.activeElement.closest('.ct-ar');
  sticky=true;tipShow(k,true);
  if(kb)setTimeout(function(){var b=tp&&tp.querySelector('.ct-ar[data-d="'+dir+'"]');b&&b.focus({preventScroll:true})},0)}
 if(cw){cw.setAttribute('tabindex','0');cw.setAttribute('aria-expanded','false');
  var hov=matchMedia('(hover:hover)').matches,NS='http://www.w3.org/2000/svg';
- HS.forEach(function(h,i){var e=D.createElement('span');e.className='hs';e.tabIndex=0;e.setAttribute('role','button');e.setAttribute('aria-label',(h[(H.lang||'ru').slice(0,2)]||h.en)[0]);
+ HS.forEach(function(h,i){var e=D.createElement('span');e.className='hs'+(i===6?' nb':'');e.tabIndex=0;e.setAttribute('role','button');e.setAttribute('aria-label',(h[(H.lang||'ru').slice(0,2)]||h.en)[0]);
   e.style.cssText='left:'+(h.b[0]/3.8).toFixed(3)+'%;top:'+(h.b[1]/6.96).toFixed(3)+'%;width:'+(h.b[2]/3.8).toFixed(3)+'%;height:'+(h.b[3]/6.96).toFixed(3)+'%';
   /* вместо прямоугольника — точный контур детали (SVG): подсветка и область наведения повторяют форму предмета */
   var sv=D.createElementNS(NS,'svg');sv.setAttribute('viewBox',h.b.join(' '));sv.setAttribute('preserveAspectRatio','none');sv.setAttribute('aria-hidden','true');sv.setAttribute('focusable','false');
@@ -122,12 +125,9 @@ if(cw){cw.setAttribute('tabindex','0');cw.setAttribute('aria-expanded','false');
    if(cur===i&&tp&&tp.classList.contains('on')&&(!hov||sticky)){sticky=false;tipHide();return}
    if(hov)sticky=true;tipShow(i)});
   cw.appendChild(e)});
- if(hov){cw.addEventListener('mouseenter',function(){if(!sticky)tipShow(-1)});cw.addEventListener('mouseleave',function(){leave(420)})}
- cw.addEventListener('click',function(e){e.stopPropagation();
-  if(tp&&tp.classList.contains('on')&&cur===-1&&(!hov||sticky)){sticky=false;tipHide()}else{if(hov)sticky=true;tipShow(-1)}});
- cw.addEventListener('keydown',function(e){if(e.target===cw&&(e.key==='Enter'||e.key===' ')){e.preventDefault();tp&&tp.classList.contains('on')?tipHide():tipShow(-1)}});
+  cw.addEventListener('keydown',function(e){if(e.target===cw&&(e.key==='Enter'||e.key===' ')){e.preventDefault();tp&&tp.classList.contains('on')?tipHide():tipShow(0)}});
  D.addEventListener('click',function(e){if(tp&&tp.classList.contains('on')&&!e.target.closest('#crossTip'))tipHide()});
  D.addEventListener('keydown',function(e){if(e.key==='Escape')tipHide();
   else if((e.key==='ArrowRight'||e.key==='ArrowLeft')&&tp&&tp.classList.contains('on')&&!e.altKey&&!e.ctrlKey&&!e.metaKey&&!e.shiftKey&&!/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName||'')&&!e.target.isContentEditable){e.preventDefault();step(e.key==='ArrowRight'?1:-1)}});
- var sy0=0;addEventListener('scroll',function(){if(tp&&tp.classList.contains('on')&&Math.abs(scrollY-sy0)>60){sy0=scrollY;tipHide()}},{passive:true});window.__crossTip={show:tipShow,hide:tipHide,step:step,count:function(){return HS.length},isOn:function(){return !!(tp&&tp.classList.contains('on'))},cur:function(){return cur}}}
+ var sy0=0;addEventListener('scroll',function(){if(tp&&tp.classList.contains('on')&&Math.abs(scrollY-sy0)>60){sy0=scrollY;tipHide()}},{passive:true});window.__crossTip={show:tipShow,hide:tipHide,step:step,count:function(){return ST.length},pos:pos,isOn:function(){return !!(tp&&tp.classList.contains('on'))},cur:function(){return cur}}}
 })();

@@ -5,6 +5,7 @@ var tap=null,swallow=0;
 cw.addEventListener('pointerdown',function(e){if(e.pointerType==='mouse')return;tap={x:e.clientX,y:e.clientY,t:Date.now(),el:e.target}},{passive:true});
 cw.addEventListener('pointerup',function(e){if(e.pointerType==='mouse'||!tap)return;var T=window.__crossTip;
  if(Math.hypot(e.clientX-tap.x,e.clientY-tap.y)<12&&Date.now()-tap.t<500&&T){var h=tap.el.closest&&tap.el.closest('.hs'),i=h?[].indexOf.call(cw.querySelectorAll('.hs'),h):-1;
+  if(i<0){tap=null;return}
   swallow=Date.now();e.preventDefault();
   if(T.isOn()&&T.cur()===i)T.hide();else T.show(i);
   cw.classList.remove('pulse');void cw.offsetWidth;cw.classList.add('pulse')}
