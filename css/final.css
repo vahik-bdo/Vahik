@@ -1,10 +1,10 @@
 /* ===== 1. Крест: живое мягкое свечение (края + переливание внутри) ===== */
 html body .hero .crossw{touch-action:pan-y;-webkit-tap-highlight-color:transparent}
 /* мягкое сияние, как свет солнца: от центра креста плавно растворяется без видимой границы */
-html body .hero .crossw::before{inset:-45% -150% -40%;-webkit-mask:none;mask:none;filter:blur(18px);transform:none;opacity:1;
+html body .hero .crossw::before{inset:-45% -150% -40%;-webkit-mask:none;mask:none;transform:none;opacity:1;
  background:radial-gradient(ellipse 50% 50% at 50% 42%,color-mix(in srgb,var(--head) 16%,transparent) 0%,color-mix(in srgb,var(--head) 12%,transparent) 14%,color-mix(in srgb,var(--head) 8%,transparent) 28%,color-mix(in srgb,var(--head) 4.5%,transparent) 44%,color-mix(in srgb,var(--head) 2%,transparent) 60%,color-mix(in srgb,var(--head) 0.7%,transparent) 78%,transparent 100%)}
 html body .hero .cross{background:linear-gradient(115deg,var(--head) 0%,var(--head) 30%,color-mix(in srgb,var(--head) 45%,#fff) 46%,color-mix(in srgb,var(--head) 70%,#ffe9b8) 52%,var(--head) 68%,var(--head) 100%);
- background-size:260% 100%;animation:crShine 8s ease-in-out infinite!important}
+ background-size:260% 100%;animation:crShine 5s ease-in-out 1.2s 1 both!important}
 @keyframes crShine{0%{background-position:120% 0}55%,100%{background-position:-20% 0}}
 @media (prefers-reduced-motion:reduce){html body .hero .crossw,html body .hero .crossw::before,html body .hero .cross{animation:none!important}}
 
@@ -22,8 +22,8 @@ html body .hero .cross{background:linear-gradient(115deg,var(--head) 0%,var(--he
 /* полноэкранный крест */
 #crossFs{position:fixed;inset:0;z-index:2000;display:grid;place-items:center;background:color-mix(in srgb,var(--bg) 96%,#000);opacity:0;visibility:hidden;transition:opacity .45s ease,visibility 0s .45s;touch-action:none}
 #crossFs.on{opacity:1;visibility:visible;transition:opacity .45s ease}
-#crossFs .cross{height:100dvh;height:100svh;width:auto;max-width:100vw;aspect-ratio:380/696;visibility:visible;transform:scale(.7);transition:transform .6s cubic-bezier(.22,1,.36,1);animation:crShine 8s ease-in-out infinite!important}
+#crossFs .cross{height:100dvh;height:100svh;width:auto;max-width:100vw;aspect-ratio:380/696;visibility:visible;transform:scale(.7);transition:transform .6s cubic-bezier(.22,1,.36,1);animation:none!important;background-position:-20% 0}
 #crossFs.on .cross{transform:scale(1)}
 #crossFs::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 50% 55% at 50% 50%,color-mix(in srgb,var(--head) 22%,transparent),transparent 70%)}
 #crossFs .cross{position:relative}
-.hero .crossw.pulse .cross{animation:crShine 8s ease-in-out infinite,crTap .5s ease-out!important}@keyframes crTap{40%{filter:brightness(1.35)}}
+.hero .crossw.pulse .cross{animation:crTap .5s ease-out!important;background-position:-20% 0}@keyframes crTap{40%{filter:brightness(1.35)}}
