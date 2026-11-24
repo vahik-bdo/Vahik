@@ -20,3 +20,5 @@ button:disabled,.btn:disabled,[aria-disabled="true"]{cursor:default}
 }
 :where(button,.btn,[role="button"],summary){-webkit-user-select:none;user-select:none}
 @media (prefers-reduced-motion:reduce){:where(button,[role="button"],.btn){transition:none;translate:none!important;scale:none!important}#ms.nudge{animation:none}}
+/* основной текст: обычная стрелка вместо «текстового» курсора (выделение текста работает как раньше) */
+#brReader .br-verse,#brReader .br-verse *:not(button):not(a):not(.br-vnum):not(.br-vchip){cursor:default}
