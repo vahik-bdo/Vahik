@@ -178,3 +178,5 @@ html body #brRail.open #brRt svg{transform:rotate(-90deg)!important;margin:0!imp
 #crossTip .ct-o div+div{margin-top:.35rem}
 
 .hero .crossw .hs .hh{cursor:pointer}
+
+#crossTip{transition:opacity .26s cubic-bezier(.22,1,.36,1),transform .34s cubic-bezier(.22,1,.36,1)}
