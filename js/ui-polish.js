@@ -39,7 +39,10 @@ D.addEventListener('click',function(e){
 /* толкования/поиск и боковая панель не бывают открыты одновременно */
 function sync(){
   var c=D.getElementById('brCommentary'),s=D.getElementById('brSearch');
-  if((c&&c.classList.contains('open'))||(s&&s.classList.contains('open'))){
+  var ov=(c&&c.classList.contains('open'))||(s&&s.classList.contains('open'));
+  /* пока открыто окно поверх страницы, фоновые эффекты ставятся на паузу (меньше нагрузка, стабильные 60 fps) */
+  D.documentElement.classList.toggle('ov-open',!!(ov||openPanels().length));
+  if(ov){
     closePanels();
     var f=D.getElementById('fold');if(f&&f.classList.contains('open')){f.classList.remove('open');var b=D.getElementById('fb');if(b)b.setAttribute('aria-expanded','false')}
   }
