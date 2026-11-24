@@ -1,15 +1,9 @@
 /* apple.js: крест при прокрутке, автосворачивание левой колонки / меню «···» / панели настроек */
 (function(){
 var D=document,H=D.documentElement,$=function(s){return D.querySelector(s)};
-/* 1. крест: плавно по мере прокрутки (сглаживание по кадрам), параллакс, исчезает к началу текста */
-var cur=0,raf=0,S=H.style,lastS='';
-function frame(){raf=0;var R=Math.max(460,innerHeight*.85),y=window.pageYOffset||H.scrollTop||0,t=Math.min(1,Math.max(0,y/R));
- cur+=(t-cur)*.14;if(Math.abs(t-cur)<.002)cur=t;
- var o=1-Math.pow(cur,1.35),sc=1-.5*cur,ty=cur*R*.42,k=o.toFixed(3)+'|'+sc.toFixed(3)+'|'+ty.toFixed(1);
- if(k!==lastS){lastS=k;S.setProperty('--co',o.toFixed(3));S.setProperty('--cs',sc.toFixed(3));S.setProperty('--cy',ty.toFixed(1)+'px')}
- H.classList.toggle('cx',cur<.98);H.classList.toggle('cx-gone',cur>=.995);
- if(cur!==t)raf=requestAnimationFrame(frame)}
-addEventListener('scroll',function(){if(!raf)raf=requestAnimationFrame(frame)},{passive:true});frame();
+/* 1. крест статичный; на время, пока он на экране, отключается полноэкранное размытие при прокрутке */
+var cxOn=null;function cxChk(){var on=(window.pageYOffset||0)<Math.max(500,innerHeight*.7);if(on!==cxOn){cxOn=on;H.classList.toggle('cx',on)}}
+addEventListener('scroll',cxChk,{passive:true});cxChk();
 
 /* толкования: подписи «Стих / Толкование» (язык интерфейса) */
 var LV={ru:['Стих','Толкование'],en:['Verse','Commentary'],hy:['Համար','Մեկնություն'],de:['Vers','Auslegung'],pl:['Wers','Komentarz'],hu:['Vers','Magyarázat']};
@@ -17,7 +11,9 @@ function decorate(body){
  var L=LV[(H.lang||'ru').slice(0,2)]||LV.en;
  body.querySelectorAll('.com-q:not([data-tag])').forEach(function(q){var b=q.querySelector('b');q.setAttribute('data-tag',L[0]+(b?' '+b.textContent:''))});
  body.querySelectorAll('.com-qt:not([data-tag])').forEach(function(q){q.setAttribute('data-tag',L[0])});
- body.querySelectorAll('.com-q,.com-qt').forEach(function(q){var n=q.nextElementSibling;if(n&&/^(P|H4)$/.test(n.tagName)&&!n.classList.contains('com-first')){n.classList.add('com-first');n.setAttribute('data-tag',L[1])}})}
+ body.querySelectorAll('.com-q,.com-qt').forEach(function(q){var n=q.nextElementSibling;if(!n||!/^(P|H4)$/.test(n.tagName))return;
+  var w=D.createElement('div');w.className='com-body';w.setAttribute('data-tag',L[1]);q.parentNode.insertBefore(w,n);
+  while(w.nextElementSibling&&/^(P|H4)$/.test(w.nextElementSibling.tagName))w.appendChild(w.nextElementSibling)})}
 function comWatch(){var b=$('#brComBody');if(!b)return false;var mo=new MutationObserver(function(){mo.disconnect();decorate(b);mo.observe(b,{childList:true,subtree:true})});mo.observe(b,{childList:true,subtree:true});decorate(b);return true}
 if(!comWatch()){var m=0,iv2=setInterval(function(){if(comWatch()||++m>40)clearInterval(iv2)},400)}
 
