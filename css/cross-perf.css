@@ -10,22 +10,44 @@ html body .hero .cross{
   animation:none!important;
   position:relative;overflow:hidden}
 
-/* блик: светлая полоса едет слева направо один раз (виден только внутри маски креста) */
+/* блик: раз в ~13 секунд по кресту плавно проходит свет (виден только внутри маски креста).
+   Два слоя: широкое мягкое сияние с тёплым золотым краем + тонкая яркая «сердцевина»; следом, чуть позже, идёт слабый шлейф.
+   Двигается только transform (GPU), в паузе между проходами ничего не рисуется. */
+html body .hero .cross::before,html body .hero .cross::after{
+  content:"";position:absolute;top:-5%;bottom:-5%;left:0;pointer-events:none;
+  transform:translate3d(-170%,0,0);will-change:transform}
 html body .hero .cross::after{
-  content:"";position:absolute;top:0;bottom:0;left:0;width:70%;pointer-events:none;
-  background:linear-gradient(115deg,transparent 0%,color-mix(in srgb,var(--head) 45%,#fff) 45%,color-mix(in srgb,var(--head) 70%,#ffe9b8) 55%,transparent 100%);
-  transform:translate3d(-110%,0,0);
-  animation:crShineX 5s ease-in-out 1.2s 1 both}
-@keyframes crShineX{0%{transform:translate3d(-110%,0,0)}55%,100%{transform:translate3d(170%,0,0)}}
+  width:62%;
+  background:linear-gradient(104deg,
+    transparent 0%,
+    color-mix(in srgb,#ffe7b0 10%,transparent) 18%,
+    color-mix(in srgb,var(--head) 38%,transparent) 32%,
+    color-mix(in srgb,#fff6dc 42%,transparent) 44%,
+    color-mix(in srgb,#ffffff 78%,transparent) 50%,
+    color-mix(in srgb,#fff6dc 42%,transparent) 56%,
+    color-mix(in srgb,#ffd98a 30%,transparent) 68%,
+    color-mix(in srgb,#ffe7b0 8%,transparent) 82%,
+    transparent 100%);
+  animation:crShineX 13s linear 1.6s infinite both}
+html body .hero .cross::before{
+  width:38%;
+  background:linear-gradient(104deg,transparent 0%,color-mix(in srgb,#ffd98a 22%,transparent) 45%,color-mix(in srgb,#fff2cf 38%,transparent) 55%,transparent 100%);
+  animation:crShineX 13s linear 2.05s infinite both}
+/* проход ≈2.4 с с мягким разгоном и замедлением, остальное время — покой */
+@keyframes crShineX{
+  0%{transform:translate3d(-170%,0,0);animation-timing-function:cubic-bezier(.4,.1,.25,1)}
+  18%,100%{transform:translate3d(330%,0,0)}}
+html.is-scrolling .hero .cross::before,html.is-scrolling .hero .cross::after,
+html.ov-open .hero .cross::before,html.ov-open .hero .cross::after{animation-play-state:paused}
 
 /* тап по кресту: лёгкое увеличение вместо перерисовки через filter */
 html body .hero .crossw.pulse .cross{background-position:0 0;animation:crTapT .5s ease-out!important}
 @keyframes crTapT{40%{transform:scale(1.045)}}
 
 @media (prefers-reduced-motion:reduce){
-  html body .hero .cross::after,html body .hero .crossw.pulse .cross{animation:none!important}
+  html body .hero .cross::before,html body .hero .cross::after,html body .hero .crossw.pulse .cross{animation:none!important}
 }
-html.lite .hero .cross::after{display:none}
+html.lite .hero .cross::before,html.lite .hero .cross::after{display:none}
 
 /* ГЛАВНАЯ причина лагов на ПК, пока на экране что-то анимируется (крест, заголовок, лампа):
    закрытые панели и шторки (opacity:0, но не display:none) держали backdrop-filter и пересчитывали размытие заднего плана КАЖДЫЙ кадр.
