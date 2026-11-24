@@ -1,0 +1,31 @@
+/* Крест без лагов.
+   Раньше у креста с маской (mask) анимировались background-position (блик crShine) и filter (вспышка crTap при тапе):
+   для элемента с маской это полная перерисовка на CPU каждый кадр, на слабых телефонах ~5 к/с, а на весь экран — ещё хуже.
+   Теперь крест — статичная заливка, блик и «пульс» двигаются только через transform (идёт на GPU, без перерисовки маски).
+   Подключается последним, поэтому перекрывает final.css / apple.css. */
+
+/* заливка креста статична */
+html body .hero .cross{
+  background:var(--head);background-size:auto;background-position:0 0;
+  animation:none!important;
+  position:relative;overflow:hidden}
+
+/* блик: светлая полоса едет слева направо один раз (виден только внутри маски креста) */
+html body .hero .cross::after{
+  content:"";position:absolute;top:0;bottom:0;left:0;width:70%;pointer-events:none;
+  background:linear-gradient(115deg,transparent 0%,color-mix(in srgb,var(--head) 45%,#fff) 45%,color-mix(in srgb,var(--head) 70%,#ffe9b8) 55%,transparent 100%);
+  transform:translate3d(-110%,0,0);
+  animation:crShineX 5s ease-in-out 1.2s 1 both}
+@keyframes crShineX{0%{transform:translate3d(-110%,0,0)}55%,100%{transform:translate3d(170%,0,0)}}
+
+/* тап по кресту: лёгкое увеличение вместо перерисовки через filter */
+html body .hero .crossw.pulse .cross{background-position:0 0;animation:crTapT .5s ease-out!important}
+@keyframes crTapT{40%{transform:scale(1.045)}}
+
+/* полноэкранный крест: статичная заливка, масштабирование — слоем на GPU */
+html body #crossFs .cross{background:var(--head);background-position:0 0;will-change:transform}
+
+@media (prefers-reduced-motion:reduce){
+  html body .hero .cross::after,html body .hero .crossw.pulse .cross{animation:none!important}
+}
+html.lite .hero .cross::after{display:none}
