@@ -1,20 +1,6 @@
-/* Крест: один тап = толкование; щипок двумя пальцами = на весь экран */
+/* Крест: один тап = толкование (полноэкранный режим и щипок убраны) */
 (function(){var D=document,cw=D.querySelector('.hero .crossw');if(!cw)return;
-var fs=null,tap=null,swallow=0;
-function openFs(){if(!fs){fs=D.createElement('div');fs.id='crossFs';fs.innerHTML='<div class="cross" role="img"></div>';D.body.appendChild(fs);
- fs.addEventListener('click',closeFs);var p0=0;
- fs.addEventListener('touchstart',function(e){if(e.touches.length===2)p0=dist(e.touches)},{passive:true});
- fs.addEventListener('touchmove',function(e){if(e.touches.length===2&&p0&&dist(e.touches)<p0*.7){p0=0;closeFs()}},{passive:true})}
- window.__crossTip&&window.__crossTip.hide();
- requestAnimationFrame(function(){fs.classList.add('on')});try{navigator.vibrate&&navigator.vibrate(8)}catch(e){}}
-function closeFs(){fs&&fs.classList.remove('on')}
-function dist(t){return Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY)}
-D.addEventListener('keydown',function(e){if(e.key==='Escape')closeFs()});
-/* щипок */
-var d0=0;
-cw.addEventListener('touchstart',function(e){if(e.touches.length===2){d0=dist(e.touches);tap=null}},{passive:true});
-cw.addEventListener('touchmove',function(e){if(d0&&e.touches.length===2&&dist(e.touches)>d0*1.25){d0=0;swallow=Date.now();openFs()}},{passive:true});
-cw.addEventListener('touchend',function(e){if(e.touches.length<2)d0=0},{passive:true});
+var tap=null,swallow=0;
 /* одиночный тап (на телефоне без курсора) */
 cw.addEventListener('pointerdown',function(e){if(e.pointerType==='mouse')return;tap={x:e.clientX,y:e.clientY,t:Date.now(),el:e.target}},{passive:true});
 cw.addEventListener('pointerup',function(e){if(e.pointerType==='mouse'||!tap)return;var T=window.__crossTip;
