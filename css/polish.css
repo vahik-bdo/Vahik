@@ -34,3 +34,11 @@ html.ov-open #fx,html.ov-open #fx2{opacity:0}
 #brCommentary .br-com-body{contain:content;overflow-anchor:none}
 .com-v{content-visibility:auto;contain-intrinsic-size:auto 220px}
 @media (prefers-reduced-motion:reduce){#fx,#fx2{transition:none}}
+
+/* пока страница прокручивается, фон не анимируется: все кадры уходят на прокрутку текста */
+html.is-scrolling :where(#bg,#lamp,#light,#wick,.halo,.crossw,.hero h1,.st,.wv,.wn,.fa,.end .sp,.bless){animation-play-state:paused!important}
+/* каждый стих — отдельный блок раскладки: лайк, тап или свайп не пересчитывают соседей */
+#brReader .br-verse{contain:layout style}
+/* слабое устройство (авто-режим lite): под окнами вместо размытия — ровное затемнение */
+html.lite #brScrim,html.lite #modal,html.lite #brHist{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html.lite #brScrim{background:rgba(0,0,0,.55)}
