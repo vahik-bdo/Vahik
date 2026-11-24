@@ -29,4 +29,23 @@ if (list.length) {
   fs.writeFileSync(idx, html);
   for (const f of fs.readdirSync(path.join(out, 'css'))) if (f.endsWith('.css') && f !== 'app.css') fs.unlinkSync(path.join(out, 'css', f));
 }
+/* Минификация (если esbuild установлен: в GitHub Actions ставится отдельным шагом). Имена переменных не трогаем:
+   скрипты делят глобальные имена, поэтому только пробелы, комментарии и упрощение синтаксиса. */
+try {
+  const esb = require('esbuild');
+  const walk = d => fs.readdirSync(d, {withFileTypes: true}).flatMap(e => e.isDirectory() ? walk(path.join(d, e.name)) : [path.join(d, e.name)]);
+  let before = 0, after = 0;
+  for (const f of [...walk(path.join(out, 'css')), ...walk(path.join(out, 'js'))]) {
+    const loader = f.endsWith('.css') ? 'css' : f.endsWith('.js') ? 'js' : null;
+    if (!loader) continue;
+    const src = fs.readFileSync(f, 'utf8');
+    const r = esb.transformSync(src, {loader, minifyWhitespace: true, minifySyntax: true, legalComments: 'none', charset: 'utf8'});
+    before += src.length; after += r.code.length;
+    fs.writeFileSync(f, r.code);
+  }
+  console.log('минификация: ' + Math.round(before / 1024) + ' КБ → ' + Math.round(after / 1024) + ' КБ');
+} catch (e) {
+  if (e.code !== 'MODULE_NOT_FOUND') throw e;
+  console.log('esbuild не установлен: минификация пропущена');
+}
 console.log('build →', out, '· css склеено:', list.length, 'файлов в css/app.css');
