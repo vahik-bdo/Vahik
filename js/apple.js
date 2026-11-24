@@ -98,7 +98,7 @@ function tipShow(k,keep){if(!cw)return;k=(k==null)?-1:k;if(!tp){tp=D.createEleme
   if(keep&&was){tp.dataset.pin='1';tipClamp()}else{tp.dataset.pin='';tipPos()}}
  else if(!keep&&!sticky)tp.dataset.pin='';
  tp.classList.add('on');cw.setAttribute('aria-expanded','true');
- cw.querySelectorAll('.hs').forEach(function(e,i){e.classList.toggle('on',i===k)})}
+ var PR={1:2,2:1,7:8,8:7,9:10,10:9,16:17,17:16};cw.querySelectorAll('.hs').forEach(function(e,i){e.classList.toggle('on',i===k||i===PR[k])})}
 function tipHide(d){clearTimeout(tpT);clearTimeout(swT);tpT=setTimeout(function(){sticky=false;tp&&tp.classList.remove('on');cur=-1;tp&&(tp.dataset.k='',tp.dataset.pin='');cw&&(cw.setAttribute('aria-expanded','false'),cw.querySelectorAll('.hs.on').forEach(function(e){e.classList.remove('on')}))},d||0)}
 /* уход курсора: если толкование «закреплено» кликом или стрелками — не прячем */
 function leave(d){if(!sticky)tipHide(d)}
