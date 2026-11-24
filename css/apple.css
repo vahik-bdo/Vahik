@@ -162,7 +162,7 @@ html body #brRail.open #brRt svg{transform:rotate(-90deg)!important;margin:0!imp
 .hero .crossw .hs svg{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none}
 .hero .crossw .hs .hh{fill:transparent;stroke:transparent;stroke-linejoin:round;pointer-events:all}
 .hero .crossw .hs .hv{fill:transparent;stroke:transparent;stroke-width:1.6px;vector-effect:non-scaling-stroke;stroke-linejoin:round;pointer-events:none;transition:fill .25s var(--ease),stroke .25s var(--ease),filter .25s var(--ease)}
-.hero .crossw .hs:hover .hv,.hero .crossw .hs:focus-visible .hv,.hero .crossw .hs.on .hv{fill:color-mix(in srgb,var(--head) 18%,transparent);stroke:color-mix(in srgb,var(--head) 85%,transparent);filter:drop-shadow(0 0 5px color-mix(in srgb,var(--head) 60%,transparent))}
+.hero .crossw .hs:hover .hv,.hero .crossw .hs:focus-visible .hv,.hero .crossw .hs.on .hv{fill:rgba(255,243,208,.34);stroke:none;filter:drop-shadow(0 0 4px rgba(255,236,180,.95)) drop-shadow(0 0 14px color-mix(in srgb,var(--head) 80%,transparent));animation:hvFlare 2.6s ease-in-out infinite}
 #crossTip .ct-nav{display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin:-.35rem -.55rem .7rem}
 #crossTip .ct-nav .ct-eb{margin:0;flex:1}
 #crossTip .ct-ar{flex:none;width:32px;height:32px;padding:0;display:grid;place-items:center;border-radius:50%;border:1px solid color-mix(in srgb,var(--head) 30%,transparent);background:transparent;color:var(--head);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .2s,transform .2s}
@@ -173,3 +173,19 @@ html body #brRail.open #brRt svg{transform:rotate(-90deg)!important;margin:0!imp
 #crossTip .ct-o{margin:0 0 .8rem;padding:.7rem .9rem;border-radius:14px;background:color-mix(in srgb,var(--head) 9%,transparent)}
 #crossTip .ct-o div{font:italic 500 1.2rem/1.4 var(--f-elegant),"Palatino Linotype","Times New Roman",serif;color:var(--fg);letter-spacing:.01em}
 #crossTip .ct-o div+div{margin-top:.35rem}
+
+/* ===== блики как на рельефной иконе: свет скользит по кресту, затем тёплая вспышка ===== */
+.hero .cross{position:relative}
+.hero .cross::after{content:"";position:absolute;inset:0;pointer-events:none;
+ background:linear-gradient(112deg,transparent 38%,rgba(255,226,160,.0) 42%,rgba(255,236,185,.85) 48.5%,#fff 50%,rgba(255,214,140,.7) 52.5%,transparent 60%);
+ background-size:280% 100%;background-position:135% 0;animation:crSheen 8s cubic-bezier(.45,.05,.3,1) infinite}
+@keyframes crSheen{0%,30%{background-position:135% 0}62%,100%{background-position:-35% 0}}
+@keyframes hvFlare{50%{fill:rgba(255,248,225,.5)}}
+/* ===== глубокое сияние вокруг креста (широкая «чаша» света + вертикальное гало), дышит ===== */
+.hero .crossw{position:relative;animation:none;filter:drop-shadow(0 0 6px color-mix(in srgb,var(--head) 70%,transparent)) drop-shadow(0 0 26px color-mix(in srgb,var(--head) 45%,transparent))}
+.hero .crossw::before{content:"";position:absolute;z-index:-1;left:50%;top:46%;width:min(150vw,1100px);height:min(112vw,760px);transform:translate(-50%,-50%);pointer-events:none;
+ background:radial-gradient(ellipse 50% 46% at 50% 50%,color-mix(in srgb,var(--head) 30%,transparent) 0,color-mix(in srgb,var(--head) 13%,transparent) 42%,transparent 72%),
+ radial-gradient(ellipse 14% 50% at 50% 50%,rgba(255,244,210,.26) 0,transparent 100%);
+ filter:blur(14px);animation:holyBreath 7s ease-in-out infinite}
+@keyframes holyBreath{50%{opacity:.62;transform:translate(-50%,-50%) scale(1.07)}}
+@media (prefers-reduced-motion:reduce){.hero .cross::after,.hero .crossw::before,.hero .crossw .hs .hv{animation:none!important}}
