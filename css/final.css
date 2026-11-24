@@ -1,0 +1,52 @@
+/* ===== 1. Крест: живое мягкое свечение (края + переливание внутри) ===== */
+html body .hero .crossw{overflow:visible;animation:crBreath 7s ease-in-out infinite!important;touch-action:pan-y;-webkit-tap-highlight-color:transparent}
+html body .hero .crossw::before{inset:-10% -70% -6%;opacity:.9;
+ background:radial-gradient(ellipse 46% 52% at 50% 46%,color-mix(in srgb,var(--head) 30%,transparent),transparent 70%),
+  radial-gradient(ellipse 22% 60% at 50% 50%,color-mix(in srgb,var(--head) 22%,#fff 6%),transparent 75%);
+ animation:crHalo 9s ease-in-out infinite}
+html body .hero .crossw::after{content:"";position:absolute;z-index:-1;inset:-14% -48%;pointer-events:none;border-radius:50%;
+ background:conic-gradient(from 0deg,transparent 0 8%,color-mix(in srgb,var(--head) 38%,transparent) 18%,transparent 32%,color-mix(in srgb,var(--head) 20%,#fff 10%) 52%,transparent 66%,color-mix(in srgb,var(--head) 34%,transparent) 84%,transparent 96%);
+ -webkit-mask:radial-gradient(closest-side,transparent 52%,#000 74%,transparent 100%);mask:radial-gradient(closest-side,transparent 52%,#000 74%,transparent 100%);
+ opacity:.5;animation:crSpin 38s linear infinite}
+html body .hero .cross{background:linear-gradient(115deg,var(--head) 0%,var(--head) 30%,color-mix(in srgb,var(--head) 45%,#fff) 46%,color-mix(in srgb,var(--head) 70%,#ffe9b8) 52%,var(--head) 68%,var(--head) 100%);
+ background-size:260% 100%;animation:crShine 8s ease-in-out infinite!important}
+@keyframes crShine{0%{background-position:120% 0}55%,100%{background-position:-20% 0}}
+@keyframes crBreath{50%{transform:translateZ(0) translateY(-3px) scale(1.012)}}
+@keyframes crHalo{50%{opacity:.55;transform:scale(1.07)}}
+@keyframes crSpin{to{transform:rotate(360deg)}}
+html.lite .hero .crossw::after{animation:none}
+@media (prefers-reduced-motion:reduce){html body .hero .crossw,html body .hero .crossw::before,html body .hero .crossw::after,html body .hero .cross{animation:none!important}}
+
+/* ===== 2. Плавное сворачивание панелей: на телефоне как на ПК ===== */
+@media(max-width:880px),(hover:none){
+ #brRail{transition:opacity .4s ease,translate .5s cubic-bezier(.22,1,.36,1)!important}
+ #brRail:not(.open) #brRb{display:flex!important;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-6px) scale(.97);transition:opacity .28s ease,transform .45s cubic-bezier(.22,1,.36,1),visibility 0s .45s}
+ #brRail.open #brRb,#brRail.open #brRb>*{animation:none!important}
+ #brRail.open #brRb{transition:opacity .35s ease,transform .5s cubic-bezier(.22,1,.36,1),visibility 0s}
+ #brRail.touched.open #brRt,#brRail.touched:not(.open) #brRt{animation-duration:.45s}
+ #panel,#npanel,#ppanel,#xp,#hpanel,#brPop{transition:opacity .4s cubic-bezier(.22,1,.36,1),transform .5s cubic-bezier(.22,1,.36,1)!important;will-change:opacity,transform}
+ #brCommentary{transition:transform .5s cubic-bezier(.22,1,.36,1)!important}
+ #brScrim,#brHist{transition-duration:.4s!important}
+ #fm .btn{transition:opacity .3s ease,transform .5s cubic-bezier(.22,1,.36,1)!important;transition-delay:calc((2 - var(--i))*.04s)!important}
+ #fold.open #fm .btn{transition-delay:calc(var(--i)*.06s)!important}
+}
+
+/* ===== 4. Толкование: сдержанно и симметрично ===== */
+#crossTip{width:min(340px,calc(100vw - 40px));padding:1.1rem 1.25rem 1.15rem;border-radius:18px;text-align:center}
+#crossTip.det{width:min(360px,calc(100vw - 40px))}
+#crossTip h5{font-size:1.2rem;margin:0 0 .6rem}
+#crossTip p{font-size:.84rem;line-height:1.55;text-align:center;text-wrap:balance;hyphens:auto}
+#crossTip .ct-o{text-align:center;padding:.6rem .8rem}
+#crossTip .ct-o div{font-size:1.05rem}
+@media(max-width:820px){
+ #crossTip{left:50%!important;right:auto!important;top:auto!important;bottom:max(18px,env(safe-area-inset-bottom));transform:translate3d(-50%,14px,0)!important;max-height:62dvh;overflow:auto;overscroll-behavior:contain;width:min(360px,calc(100vw - 40px))}
+ #crossTip.on{transform:translate3d(-50%,0,0)!important}
+}
+/* полноэкранный крест */
+#crossFs{position:fixed;inset:0;z-index:2000;display:grid;place-items:center;background:color-mix(in srgb,var(--bg) 96%,#000);opacity:0;visibility:hidden;transition:opacity .45s ease,visibility 0s .45s;touch-action:none}
+#crossFs.on{opacity:1;visibility:visible;transition:opacity .45s ease}
+#crossFs .cross{height:100dvh;height:100svh;width:auto;max-width:100vw;aspect-ratio:380/696;visibility:visible;transform:scale(.7);transition:transform .6s cubic-bezier(.22,1,.36,1);animation:crShine 8s ease-in-out infinite!important}
+#crossFs.on .cross{transform:scale(1)}
+#crossFs::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 50% 55% at 50% 50%,color-mix(in srgb,var(--head) 22%,transparent),transparent 70%)}
+#crossFs .cross{position:relative}
+.hero .crossw.pulse .cross{animation:crShine 8s ease-in-out infinite,crTap .5s ease-out!important}@keyframes crTap{40%{filter:brightness(1.35)}}
