@@ -1,28 +1,9 @@
 /* ===== 1. Крест: живое мягкое свечение (края + переливание внутри) ===== */
-html body .hero .crossw{overflow:visible;animation:crBreath 7s ease-in-out infinite!important;touch-action:pan-y;-webkit-tap-highlight-color:transparent}
-html body .hero .crossw::before{inset:0;opacity:.6;
- background:var(--head);-webkit-mask:var(--cross-mask) center/100% 100% no-repeat;mask:var(--cross-mask) center/100% 100% no-repeat;
- filter:blur(14px);transform:scale(1.12);animation:crHalo 10s ease-in-out infinite}
+html body .hero .crossw{touch-action:pan-y;-webkit-tap-highlight-color:transparent}
 html body .hero .cross{background:linear-gradient(115deg,var(--head) 0%,var(--head) 30%,color-mix(in srgb,var(--head) 45%,#fff) 46%,color-mix(in srgb,var(--head) 70%,#ffe9b8) 52%,var(--head) 68%,var(--head) 100%);
  background-size:260% 100%;animation:crShine 8s ease-in-out infinite!important}
 @keyframes crShine{0%{background-position:120% 0}55%,100%{background-position:-20% 0}}
-@keyframes crBreath{50%{transform:translateZ(0) translateY(-3px) scale(1.012)}}
-@keyframes crHalo{50%{opacity:.32}}
 @media (prefers-reduced-motion:reduce){html body .hero .crossw,html body .hero .crossw::before,html body .hero .cross{animation:none!important}}
-
-/* ===== 2. Плавное сворачивание панелей: на телефоне как на ПК ===== */
-@media(max-width:880px),(hover:none){
- #brRail{transition:opacity .4s ease,translate .5s cubic-bezier(.22,1,.36,1)!important}
- #brRail:not(.open) #brRb{display:flex!important;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-6px) scale(.97);transition:opacity .28s ease,transform .45s cubic-bezier(.22,1,.36,1),visibility 0s .45s}
- #brRail.open #brRb,#brRail.open #brRb>*{animation:none!important}
- #brRail.open #brRb{transition:opacity .35s ease,transform .5s cubic-bezier(.22,1,.36,1),visibility 0s}
- #brRail.touched.open #brRt,#brRail.touched:not(.open) #brRt{animation-duration:.45s}
- #panel,#npanel,#ppanel,#xp,#hpanel,#brPop{transition:opacity .4s cubic-bezier(.22,1,.36,1),transform .5s cubic-bezier(.22,1,.36,1)!important;will-change:opacity,transform}
- #brCommentary{transition:transform .5s cubic-bezier(.22,1,.36,1)!important}
- #brScrim,#brHist{transition-duration:.4s!important}
- #fm .btn{transition:opacity .3s ease,transform .5s cubic-bezier(.22,1,.36,1)!important;transition-delay:calc((2 - var(--i))*.04s)!important}
- #fold.open #fm .btn{transition-delay:calc(var(--i)*.06s)!important}
-}
 
 /* ===== 4. Толкование: сдержанно и симметрично ===== */
 #crossTip{width:min(340px,calc(100vw - 40px));padding:1.1rem 1.25rem 1.15rem;border-radius:18px;text-align:center}
