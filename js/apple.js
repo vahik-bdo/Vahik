@@ -1,10 +1,25 @@
 /* apple.js: крест при прокрутке, автосворачивание левой колонки / меню «···» / панели настроек */
 (function(){
 var D=document,H=D.documentElement,$=function(s){return D.querySelector(s)};
-/* 1. крест: --cp от 0 (виден) до 1 (скрыт) */
-var cp=-1,tk=0;
-function cross(){tk=0;var y=window.pageYOffset||H.scrollTop||0,p=Math.min(1,Math.max(0,y/Math.max(160,innerHeight*.28)));p=Math.round(p*100)/100;if(p!==cp){cp=p;H.style.setProperty('--cp',p)}}
-addEventListener('scroll',function(){if(!tk)tk=requestAnimationFrame(cross)},{passive:true});cross();
+/* 1. крест: плавно по мере прокрутки (сглаживание по кадрам), параллакс, исчезает к началу текста */
+var cur=0,raf=0,S=H.style,lastS='';
+function frame(){raf=0;var R=Math.max(460,innerHeight*.85),y=window.pageYOffset||H.scrollTop||0,t=Math.min(1,Math.max(0,y/R));
+ cur+=(t-cur)*.14;if(Math.abs(t-cur)<.002)cur=t;
+ var o=1-Math.pow(cur,1.35),sc=1-.5*cur,ty=cur*R*.42,k=o.toFixed(3)+'|'+sc.toFixed(3)+'|'+ty.toFixed(1);
+ if(k!==lastS){lastS=k;S.setProperty('--co',o.toFixed(3));S.setProperty('--cs',sc.toFixed(3));S.setProperty('--cy',ty.toFixed(1)+'px')}
+ H.classList.toggle('cx',cur<.98);H.classList.toggle('cx-gone',cur>=.995);
+ if(cur!==t)raf=requestAnimationFrame(frame)}
+addEventListener('scroll',function(){if(!raf)raf=requestAnimationFrame(frame)},{passive:true});frame();
+
+/* толкования: подписи «Стих / Толкование» (язык интерфейса) */
+var LV={ru:['Стих','Толкование'],en:['Verse','Commentary'],hy:['Համար','Մեկնություն'],de:['Vers','Auslegung'],pl:['Wers','Komentarz'],hu:['Vers','Magyarázat']};
+function decorate(body){
+ var L=LV[(H.lang||'ru').slice(0,2)]||LV.en;
+ body.querySelectorAll('.com-q:not([data-tag])').forEach(function(q){var b=q.querySelector('b');q.setAttribute('data-tag',L[0]+(b?' '+b.textContent:''))});
+ body.querySelectorAll('.com-qt:not([data-tag])').forEach(function(q){q.setAttribute('data-tag',L[0])});
+ body.querySelectorAll('.com-q,.com-qt').forEach(function(q){var n=q.nextElementSibling;if(n&&/^(P|H4)$/.test(n.tagName)&&!n.classList.contains('com-first')){n.classList.add('com-first');n.setAttribute('data-tag',L[1])}})}
+function comWatch(){var b=$('#brComBody');if(!b)return false;var mo=new MutationObserver(function(){mo.disconnect();decorate(b);mo.observe(b,{childList:true,subtree:true})});mo.observe(b,{childList:true,subtree:true});decorate(b);return true}
+if(!comWatch()){var m=0,iv2=setInterval(function(){if(comWatch()||++m>40)clearInterval(iv2)},400)}
 
 /* общий помощник: закрыть после паузы бездействия */
 function idleClose(isOpen,close,ms,zone){
