@@ -47,4 +47,30 @@ function railInit(){
  var last=window.pageYOffset;addEventListener('scroll',function(){var y=window.pageYOffset;if(Math.abs(y-last)>90){last=y;if(R.classList.contains('open')&&!$('#brPop.open'))R.classList.remove('open')}},{passive:true});
  return true}
 if(!railInit()){var n=0,iv=setInterval(function(){if(railInit()||++n>40)clearInterval(iv)},250)}
+
+/* 8. толкование креста: при наведении (на сенсорных, по касанию) */
+var CT={
+ru:['Православный крест',['Верхняя малая перекладина: табличка с надписью «Иисус Назорей, Царь Иудейский» (Ин. 19:19).','Средняя перекладина: распростёртые руки Распятого.','Нижняя косая перекладина: подножие. Поднятый конец указывает на покаявшегося разбойника, опущенный: на непокаявшегося.','IC XC: Иисус Христос. NIKA: «Побеждает».','Череп у подножия Голгофы: голова Адама. Христос Своей смертью победил смерть.']],
+en:['The Orthodox cross',['Upper short bar: the plaque reading “Jesus of Nazareth, King of the Jews” (John 19:19).','Middle bar: the outstretched hands of the Crucified.','Lower slanted bar: the footrest. The raised end points to the repentant thief, the lowered end to the unrepentant one.','IC XC: Jesus Christ. NIKA: “He conquers”.','The skull at the foot of Golgotha: the head of Adam. By His death Christ conquered death.']],
+hy:['Ուղղափառ խաչ',['Վերին փոքր խաչափայտ. տախտակը՝ «Հիսուս Նազովրեցի, Հրեից թագավոր» (Հովհ. 19:19)։','Միջին խաչափայտ. Խաչյալի տարածված ձեռքերը։','Ստորին թեք խաչափայտ. ոտքերի հենարանը։ Բարձրացած ծայրը ցույց է տալիս զղջացող ավազակին, իջածը՝ չզղջացողին։','IC XC. Հիսուս Քրիստոս։ NIKA. «Հաղթում է»։','Գանգը Գողգոթայի ստորոտին Ադամի գլուխն է։ Քրիստոսը Իր մահվամբ հաղթեց մահվանը։']],
+de:['Das orthodoxe Kreuz',['Oberer kurzer Querbalken: die Tafel „Jesus von Nazaret, König der Juden“ (Joh 19,19).','Mittlerer Querbalken: die ausgestreckten Hände des Gekreuzigten.','Unterer schräger Balken: der Fußschemel. Das erhobene Ende weist auf den reuigen Schächer, das gesenkte auf den unbußfertigen.','IC XC: Jesus Christus. NIKA: „Er siegt“.','Der Schädel am Fuß Golgathas: der Kopf Adams. Durch seinen Tod hat Christus den Tod besiegt.']],
+pl:['Krzyż prawosławny',['Górna krótka poprzeczka: tabliczka z napisem „Jezus Nazareński, Król Żydowski” (J 19,19).','Środkowa poprzeczka: wyciągnięte ręce Ukrzyżowanego.','Dolna ukośna poprzeczka: podnóżek. Uniesiony koniec wskazuje na skruszonego łotra, opuszczony na nieskruszonego.','IC XC: Jezus Chrystus. NIKA: „Zwycięża”.','Czaszka u stóp Golgoty: głowa Adama. Swoją śmiercią Chrystus pokonał śmierć.']],
+hu:['Az ortodox kereszt',['Felső rövid gerenda: a felirat táblája: „Názáreti Jézus, a zsidók királya” (Jn 19,19).','Középső gerenda: a Megfeszített kitárt karjai.','Alsó ferde gerenda: a lábtartó. Az emelkedő vége a megtérő lator felé mutat, a lesüllyedő a megtérni nem akaró felé.','IC XC: Jézus Krisztus. NIKA: „Győz”.','A koponya a Golgota tövében Ádám feje. Halálával Krisztus legyőzte a halált.']]};
+var cw=$('.hero .crossw'),tp=null,tpT=0;
+function tipBuild(){var d=CT[(H.lang||'ru').slice(0,2)]||CT.en;
+ tp.innerHTML='<h5>'+d[0]+'</h5>'+d[1].map(function(x){return'<p>'+x+'</p>'}).join('')}
+function tipPos(){var r=cw.getBoundingClientRect(),w=tp.offsetWidth,h=tp.offsetHeight,vw=innerWidth,vh=innerHeight,x,y;
+ if(vw>=820){x=r.right+28;y=Math.max(12,Math.min(vh-h-12,r.top+r.height/2-h/2))}
+ else{x=(vw-w)/2;y=Math.max(12,Math.min(vh-h-12,r.bottom+12))}
+ tp.style.left=Math.round(x)+'px';tp.style.top=Math.round(y)+'px'}
+function tipShow(){if(!cw)return;if(!tp){tp=D.createElement('div');tp.id='crossTip';tp.setAttribute('role','tooltip');D.body.appendChild(tp)}
+ clearTimeout(tpT);tipBuild();tipPos();tp.classList.add('on');cw.setAttribute('aria-expanded','true')}
+function tipHide(d){clearTimeout(tpT);tpT=setTimeout(function(){tp&&tp.classList.remove('on');cw&&cw.setAttribute('aria-expanded','false')},d||0)}
+if(cw){cw.setAttribute('tabindex','0');cw.setAttribute('aria-expanded','false');
+ if(matchMedia('(hover:hover)').matches){cw.addEventListener('mouseenter',tipShow);cw.addEventListener('mouseleave',function(){tipHide(120)})}
+ cw.addEventListener('click',function(e){e.stopPropagation();tp&&tp.classList.contains('on')?tipHide():tipShow()});
+ cw.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();tp&&tp.classList.contains('on')?tipHide():tipShow()}});
+ D.addEventListener('click',function(e){if(tp&&tp.classList.contains('on')&&!e.target.closest('#crossTip'))tipHide()});
+ D.addEventListener('keydown',function(e){if(e.key==='Escape')tipHide()});
+ addEventListener('scroll',function(){if(tp&&tp.classList.contains('on'))tipHide()},{passive:true})}
 })();
