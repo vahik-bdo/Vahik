@@ -1,0 +1,20 @@
+/* Финальная полировка: курсор, состояния, фокус, размеры целей. Специфичность нулевая (:where) —
+   любые существующие правила сайта сильнее и не ломаются. */
+:where(button,[role="button"],a[href],select,summary,label[for],input[type="checkbox"],input[type="radio"],input[type="range"],input[type="file"],.btn,.sw,[data-mode],[data-l]){cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+:where(button:disabled,[aria-disabled="true"],.btn:disabled,input:disabled,select:disabled){cursor:default}
+:where(button,[role="button"],.btn,select){transition:background-color .18s ease,border-color .18s ease,color .18s ease,opacity .18s ease,scale .14s ease,box-shadow .18s ease}
+@media (hover:hover){
+  :where(button:not(:disabled),[role="button"],.btn,summary):hover{filter:brightness(1.1)}
+}
+:where(button:not(:disabled),[role="button"],.btn):active{scale:.96}
+:where(button,[role="button"],a[href],select,summary,input,textarea,[tabindex]):focus-visible{outline:2px solid var(--head,#8fd18a);outline-offset:2px;border-radius:inherit}
+:where(button,select,summary,a):focus:not(:focus-visible){outline:none}
+/* пустое сохранение заметки: мягкое «покачивание» вместо потери текста */
+#ms.nudge{animation:psNudge .45s ease}
+@keyframes psNudge{0%,100%{transform:none}25%{transform:translateX(-4px)}60%{transform:translateX(4px)}}
+/* пальцы: цели не меньше ~40px, без случайного выделения текста на кнопках */
+@media (pointer:coarse){
+  :where(.br-icon,.br-com-fs button,.br-com-foot button,.br-search-close,.br-share,.hv-del){min-width:40px;min-height:40px}
+}
+:where(button,.btn,[role="button"],summary){-webkit-user-select:none;user-select:none}
+@media (prefers-reduced-motion:reduce){:where(button,[role="button"],.btn){transition:none}#ms.nudge{animation:none}}
