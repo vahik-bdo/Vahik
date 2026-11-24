@@ -86,3 +86,19 @@ html body .hero .crossw::before{
     color-mix(in srgb,var(--head) 1.8%,transparent) 66%,
     color-mix(in srgb,var(--head) .7%,transparent) 80%,
     transparent 100%)}
+
+/* глубокое мягкое «дышащее» свечение вокруг всего креста: статичный градиент, меняется только opacity (GPU, почти бесплатно) */
+html body .hero .crossw::after{
+  content:"";position:absolute;z-index:-1;pointer-events:none;inset:-22% -95% -18%;
+  background:radial-gradient(ellipse 36% 50% at 50% 50%,
+    color-mix(in srgb,var(--head) 30%,transparent) 0%,
+    color-mix(in srgb,var(--head) 19%,transparent) 22%,
+    color-mix(in srgb,var(--head) 10%,transparent) 44%,
+    color-mix(in srgb,var(--head) 4%,transparent) 66%,
+    transparent 100%);
+  opacity:.45;will-change:opacity;
+  animation:crBreath 8s ease-in-out infinite}
+@keyframes crBreath{0%,100%{opacity:.3}50%{opacity:.85}}
+html.is-scrolling .hero .crossw::after,html.ov-open .hero .crossw::after{animation-play-state:paused}
+html.lite .hero .crossw::after{animation:none;opacity:.5}
+@media (prefers-reduced-motion:reduce){html body .hero .crossw::after{animation:none;opacity:.5}}
