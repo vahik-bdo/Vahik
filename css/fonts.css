@@ -11,3 +11,7 @@
 @font-face{font-family:'Noto Serif Armenian';font-style:normal;font-display:swap;font-weight:600;src:url(fonts/noto-serif-armenian-600.woff2) format('woff2');unicode-range:U+0308,U+0530-058F,U+2010,U+2024,U+25CC,U+FB13-FB17}
 @font-face{font-family:'Noto Sans Armenian';font-style:normal;font-display:swap;font-weight:400;src:url(fonts/noto-sans-armenian-400.woff2) format('woff2');unicode-range:U+0308,U+0530-058F,U+2010,U+2024,U+25CC,U+FB13-FB17}
 @font-face{font-family:'Noto Sans Armenian';font-style:normal;font-display:swap;font-weight:500;src:url(fonts/noto-sans-armenian-500.woff2) format('woff2');unicode-range:U+0308,U+0530-058F,U+2010,U+2024,U+25CC,U+FB13-FB17}
+
+@font-face{font-family:'Montserrat';font-style:normal;font-display:swap;font-weight:400;src:url(fonts/montserrat-400.woff2) format('woff2')}
+@font-face{font-family:'Montserrat';font-style:normal;font-display:swap;font-weight:600;src:url(fonts/montserrat-600.woff2) format('woff2')}
+@font-face{font-family:'Montserrat';font-style:italic;font-display:swap;font-weight:400;src:url(fonts/montserrat-italic-400.woff2) format('woff2')}
