@@ -5,7 +5,7 @@ const $=s=>document.querySelector(s);
 
 class State{
   static KEY='theo-reader-v1';
-  static def={theme:'dark-black',font:'Literata',size:20,particles:'rain',track:0,vol:.4,click:true,mode:'full',notes:[],secs:0,lsize:340,lcolor:'',bg:'glow',autoTheme:true,lang:/^hy/.test(navigator.language)?'hy':/^ru/.test(navigator.language)?'ru':/^de/.test(navigator.language)?'de':'en',color:'',head:'#8fd3c8',light:false,calm:false,candle:false};
+  static def={theme:'dark-black',font:'Montserrat',size:20,particles:'off',track:0,vol:.4,click:true,mode:'full',notes:[],secs:0,lsize:340,lcolor:'',bg:'glow',autoTheme:true,lang:/^hy/.test(navigator.language)?'hy':/^ru/.test(navigator.language)?'ru':/^de/.test(navigator.language)?'de':'en',color:'',head:'#8fd3c8',light:false,calm:false,candle:false};
   constructor(){let s={};try{s=JSON.parse(localStorage.getItem(State.KEY))||{}}catch(e){}this.d={...State.def,...s}}
   set(k,v){this.d[k]=v;this.save()}
   save(){try{localStorage.setItem(State.KEY,JSON.stringify(this.d))}catch(e){}}
