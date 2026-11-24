@@ -4,10 +4,10 @@ html body .hero .crossw::before{inset:-10% -70% -6%;opacity:.9;
  background:radial-gradient(ellipse 46% 52% at 50% 46%,color-mix(in srgb,var(--head) 30%,transparent),transparent 70%),
   radial-gradient(ellipse 22% 60% at 50% 50%,color-mix(in srgb,var(--head) 22%,#fff 6%),transparent 75%);
  animation:crHalo 9s ease-in-out infinite}
-html body .hero .crossw::after{content:"";position:absolute;z-index:-1;inset:-14% -48%;pointer-events:none;border-radius:50%;
+html body .hero .crossw::after{content:"";position:absolute;z-index:-1;inset:-6% -26%;pointer-events:none;border-radius:50%;
  background:conic-gradient(from 0deg,transparent 0 8%,color-mix(in srgb,var(--head) 38%,transparent) 18%,transparent 32%,color-mix(in srgb,var(--head) 20%,#fff 10%) 52%,transparent 66%,color-mix(in srgb,var(--head) 34%,transparent) 84%,transparent 96%);
  -webkit-mask:radial-gradient(closest-side,transparent 52%,#000 74%,transparent 100%);mask:radial-gradient(closest-side,transparent 52%,#000 74%,transparent 100%);
- opacity:.5;animation:crSpin 38s linear infinite}
+ opacity:.28;animation:crSpin 60s linear infinite}
 html body .hero .cross{background:linear-gradient(115deg,var(--head) 0%,var(--head) 30%,color-mix(in srgb,var(--head) 45%,#fff) 46%,color-mix(in srgb,var(--head) 70%,#ffe9b8) 52%,var(--head) 68%,var(--head) 100%);
  background-size:260% 100%;animation:crShine 8s ease-in-out infinite!important}
 @keyframes crShine{0%{background-position:120% 0}55%,100%{background-position:-20% 0}}
