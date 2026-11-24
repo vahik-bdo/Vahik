@@ -26,3 +26,10 @@ html body .hero .crossw.pulse .cross{background-position:0 0;animation:crTapT .5
   html body .hero .cross::after,html body .hero .crossw.pulse .cross{animation:none!important}
 }
 html.lite .hero .cross::after{display:none}
+
+/* ГЛАВНАЯ причина лагов на ПК, пока на экране что-то анимируется (крест, заголовок, лампа):
+   закрытые панели и шторки (opacity:0, но не display:none) держали backdrop-filter и пересчитывали размытие заднего плана КАЖДЫЙ кадр.
+   Пока панель закрыта — размытия нет, при открытии оно включается как раньше. */
+#panel:not(.open),#npanel:not(.open),#ppanel:not(.open),#hpanel:not(.open),#rpanel:not(.open),#xp:not(.open),
+#brPop:not(.open),#brCommentary:not(.open),#brHist:not(.open),#brScrim:not(.on){
+  -webkit-backdrop-filter:none!important;backdrop-filter:none!important}
