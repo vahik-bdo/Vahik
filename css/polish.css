@@ -22,3 +22,15 @@ button:disabled,.btn:disabled,[aria-disabled="true"]{cursor:default}
 @media (prefers-reduced-motion:reduce){:where(button,[role="button"],.btn){transition:none;translate:none!important;scale:none!important}#ms.nudge{animation:none}}
 /* основной текст: обычная стрелка вместо «текстового» курсора (выделение текста работает как раньше) */
 #brReader .br-verse,#brReader .br-verse *:not(button):not(a):not(.br-vnum):not(.br-vchip){cursor:default}
+
+/* ===== плавность (60 fps) =====
+   Пока открыты толкования, поиск или панель, страница под ними не меняется: декоративные анимации и частицы на паузе,
+   иначе размытие под окном пересчитывается каждый кадр. После закрытия всё возвращается само. */
+html.ov-open :where(#bg,#lamp,#light,#wick,.halo,.crossw,.hero h1,.st,.wv,.wn,.fa,.end .sp,.bless){animation-play-state:paused!important}
+#fx,#fx2{transition:opacity .35s ease}
+html.ov-open #fx,html.ov-open #fx2{opacity:0}
+/* толкования: изоляция отрисовки, чтобы смена текста не пересчитывала всю страницу */
+#brCommentary{contain:layout style}
+#brCommentary .br-com-body{contain:content;overflow-anchor:none}
+.com-v{content-visibility:auto;contain-intrinsic-size:auto 220px}
+@media (prefers-reduced-motion:reduce){#fx,#fx2{transition:none}}
