@@ -104,5 +104,5 @@ if(cw){cw.setAttribute('tabindex','0');cw.setAttribute('aria-expanded','false');
  cw.addEventListener('keydown',function(e){if(e.target===cw&&(e.key==='Enter'||e.key===' ')){e.preventDefault();tp&&tp.classList.contains('on')?tipHide():tipShow(-1)}});
  D.addEventListener('click',function(e){if(tp&&tp.classList.contains('on')&&!e.target.closest('#crossTip'))tipHide()});
  D.addEventListener('keydown',function(e){if(e.key==='Escape')tipHide()});
- addEventListener('scroll',function(){if(tp&&tp.classList.contains('on'))tipHide()},{passive:true})}
+ var sy0=0;addEventListener('scroll',function(){if(tp&&tp.classList.contains('on')&&Math.abs(scrollY-sy0)>60){sy0=scrollY;tipHide()}},{passive:true});window.__crossTip={show:tipShow,hide:tipHide,isOn:function(){return !!(tp&&tp.classList.contains('on'))},cur:function(){return cur}}}
 })();
