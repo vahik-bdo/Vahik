@@ -193,3 +193,13 @@ html body #brRail.open #brRt svg{transform:rotate(-90deg)!important;margin:0!imp
  filter:blur(14px);animation:holyBreath 7s ease-in-out infinite}
 @keyframes holyBreath{50%{opacity:.62;transform:translate(-50%,-50%) scale(1.07)}}
 @media (prefers-reduced-motion:reduce){.hero .cross::after,.hero .crossw::before,.hero .crossw{animation:none!important}}
+
+/* ===== золотой крестчатый нимб: постоянное тёплое свечение, лучи и кольцо; при наведении ярче ===== */
+.hero .crossw .hs.nb::before,.hero .crossw .hs.nb::after{content:"";position:absolute;pointer-events:none;border-radius:50%}
+.hero .crossw .hs.nb::before{inset:-45%;background:radial-gradient(circle,rgba(255,236,170,.55) 0,rgba(255,196,86,.32) 32%,rgba(255,170,50,.12) 55%,transparent 72%);animation:nbPulse 5s ease-in-out infinite}
+.hero .crossw .hs.nb::after{inset:-8%;background:repeating-conic-gradient(from 0deg,rgba(255,226,140,.5) 0 3deg,transparent 3deg 22.5deg);-webkit-mask:radial-gradient(circle,transparent 46%,#000 52%,transparent 74%);mask:radial-gradient(circle,transparent 46%,#000 52%,transparent 74%);animation:nbSpin 60s linear infinite}
+.hero .crossw .hs.nb .hv{fill:rgba(255,214,110,.10);stroke:rgba(255,222,140,.55);stroke-width:1.2px;filter:drop-shadow(0 0 6px rgba(255,200,90,.7))}
+.hero .crossw .hs.nb:hover .hv,.hero .crossw .hs.nb.on .hv,.hero .crossw .hs.nb:focus-visible .hv{fill:rgba(255,222,130,.32);stroke:rgba(255,240,190,.95);filter:drop-shadow(0 0 10px rgba(255,205,100,.95))}
+@keyframes nbPulse{50%{opacity:.6;transform:scale(1.08)}}
+@keyframes nbSpin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.hero .crossw .hs.nb::before,.hero .crossw .hs.nb::after{animation:none}}
