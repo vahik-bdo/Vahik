@@ -16,20 +16,19 @@ h2,h3{font-family:var(--ui);letter-spacing:-.02em;text-wrap:balance}
 .br-vnum,#hc,#nc,.com-vn,#brComPos{font-variant-numeric:tabular-nums}
 :where(button,.btn,#brRb,#brPop,#panel,#npanel,#ppanel,#hpanel,#rpanel,.br-toolbar,.br-nav,#lm){font-family:var(--ui);letter-spacing:-.005em}
 
-/* ---- 1. большой крест, который уменьшается и исчезает при прокрутке ---- */
+/* ---- 1. большой крест: без filter/анимаций (быстро), мягкое свечение градиентом, поверх размытия ---- */
 html body.br-mode .hero .crossw,html body .hero .crossw{
- zoom:1;width:clamp(132px,30vw,200px);margin:0 auto 1.6rem;
- transform-origin:50% 0;
- transform:translate3d(0,calc(var(--cp,0)*-14px),0) scale(calc(1 - var(--cp,0)*.6));
- opacity:calc(1 - var(--cp,0)*1.05);
- filter:drop-shadow(0 0 14px color-mix(in srgb,var(--head) 70%,transparent));
- will-change:transform,opacity;
- transition:none;
-}
-html[style*="--cp:1"] .hero .crossw{visibility:hidden}
+ position:relative;isolation:isolate;zoom:1;width:clamp(132px,30vw,200px);margin:0 auto 1.6rem;
+ transform-origin:50% 0;transform:translate3d(0,var(--cy,0px),0) scale(var(--cs,1));opacity:var(--co,1);
+ filter:none!important;animation:none!important;will-change:transform,opacity}
+.hero .crossw::before{content:"";position:absolute;z-index:-1;inset:-4% -60% -2%;pointer-events:none;
+ background:radial-gradient(ellipse 50% 50% at 50% 48%,color-mix(in srgb,var(--head) 26%,transparent),transparent 72%)}
+.hero .cross{filter:none!important;animation:crIn 1.1s var(--ease) both}
+@keyframes crIn{from{opacity:0;transform:scale(.95)}}
+html.cx #sbl{display:none!important}
+html.cx-gone .hero .crossw{visibility:hidden}
 html body.br-mode .hero{padding-top:1.5vh;margin-bottom:1.4rem}
 @media(max-width:480px){html body .hero .crossw{width:clamp(120px,40vw,168px)}}
-html.lite .hero .crossw{filter:none}
 
 /* ---- 2. левая колонка: по умолчанию свёрнута в язычок, раскрывается по касанию ---- */
 html body #brRb{display:none}
@@ -110,3 +109,38 @@ html.lite #brCommentary,html.ov-open #brCommentary{-webkit-backdrop-filter:none;
 .br-com-foot #brComPos{min-width:4.5rem;text-align:center;font:600 .78rem var(--ui)}
 
 @media (prefers-reduced-motion:reduce){.com-in .com-v{animation:none}#brCommentary{transition:opacity .2s}}
+
+/* левая колонка в открытом виде: «язычок» становится ровной полосой над колонкой, стрелка вверх по центру */
+html body #brRail.open #brRt{align-self:stretch!important;margin:0 0 6px!important;width:auto!important;height:30px!important;border:var(--hair) solid var(--line)!important;border-radius:16px!important;animation:none!important;box-shadow:none!important;display:grid;place-items:center}
+html body #brRail.open #brRt svg{transform:rotate(-90deg)!important;margin:0!important}
+
+/* настройки · атмосфера: ровная сетка, «Свеча» на всю ширину */
+#panel #parts{display:grid!important;grid-template-columns:repeat(2,1fr);gap:.5rem}
+#panel #parts .btn{width:100%;justify-content:center;margin:0}
+#panel .row:has(>#cd){display:grid!important;grid-template-columns:1fr;gap:.5rem}
+#panel #cd{width:100%;justify-content:center;margin:0}
+
+/* толкования: стих и толкование различаются подписью, цветом и шрифтом */
+.com-grp{display:none}
+.com-q{display:block!important}
+.com-q b{display:none!important}
+.com-q[data-tag]::before,.com-qt[data-tag]::before,.com-first[data-tag]::before{content:attr(data-tag);display:block;font:700 .64rem/1 var(--ui);letter-spacing:.14em;text-transform:uppercase;color:var(--head);margin-bottom:.55rem}
+.com-q,.com-qt{font-family:var(--serif);font-style:italic}
+.com-qt{padding:.7rem 1rem .8rem;margin:.2rem 0 1rem;border-radius:14px;background:color-mix(in srgb,var(--head) 7%,transparent)}
+.com-in p,.com-lem{font-family:var(--ui)!important;font-size:calc(var(--cfs)*.98rem);line-height:1.72;letter-spacing:-.003em}
+.com-first{position:relative;padding-top:1.35rem!important;margin-top:1.3rem}
+.com-first::after{content:"";position:absolute;left:0;right:0;top:0;height:var(--hair);background:color-mix(in srgb,var(--fg) 14%,transparent)}
+.com-first::before{position:absolute;top:.5rem;left:0}
+h4.com-first{padding-top:1.6rem!important}
+
+/* ---- 7. разные шрифты разделов (умеренно) ---- */
+:root{--serif:"Literata Local","Noto Serif Armenian",Georgia,serif}
+.br-head h2{font-family:var(--serif);font-weight:600;letter-spacing:-.01em}
+:where(#panel,#npanel,#ppanel,#hpanel,#rpanel) h4{font-family:var(--serif);font-style:italic;font-weight:500;letter-spacing:0;text-transform:none}
+#pt,.bless,#prayer p{font-family:var(--serif);font-style:italic}
+.br-com-title{font-family:var(--serif);font-weight:600;letter-spacing:-.01em}
+.br-vnum{font-family:var(--ui)}
+#brRb span,.br-rb span{font-family:var(--ui);letter-spacing:.01em}
+.com-q::before,.com-qt::before{position:static!important;inset:auto!important;width:auto!important;white-space:nowrap}
+.com-q::before,.com-qt::before{background:none!important;height:auto!important;border:0!important;border-radius:0!important;opacity:1!important;transform:none!important;box-shadow:none!important;color:var(--head)!important}
+#panel .row:has(>#cd){margin-top:.5rem}
