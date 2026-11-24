@@ -1,8 +1,8 @@
 /* ===== 1. Крест: живое мягкое свечение (края + переливание внутри) ===== */
 html body .hero .crossw{touch-action:pan-y;-webkit-tap-highlight-color:transparent}
-/* очень мягкое свечение по форме самого креста (вместо круглого пятна) */
-html body .hero .crossw::before{inset:0;background:var(--head);-webkit-mask:var(--cross-mask) center/100% 100% no-repeat;mask:var(--cross-mask) center/100% 100% no-repeat;
- filter:blur(26px);transform:scale(1.2);opacity:.22}
+/* мягкое сияние, как свет солнца: от центра креста плавно растворяется без видимой границы */
+html body .hero .crossw::before{inset:-45% -150% -40%;-webkit-mask:none;mask:none;filter:blur(18px);transform:none;opacity:1;
+ background:radial-gradient(ellipse 50% 50% at 50% 42%,color-mix(in srgb,var(--head) 16%,transparent) 0%,color-mix(in srgb,var(--head) 12%,transparent) 14%,color-mix(in srgb,var(--head) 8%,transparent) 28%,color-mix(in srgb,var(--head) 4.5%,transparent) 44%,color-mix(in srgb,var(--head) 2%,transparent) 60%,color-mix(in srgb,var(--head) 0.7%,transparent) 78%,transparent 100%)}
 html body .hero .cross{background:linear-gradient(115deg,var(--head) 0%,var(--head) 30%,color-mix(in srgb,var(--head) 45%,#fff) 46%,color-mix(in srgb,var(--head) 70%,#ffe9b8) 52%,var(--head) 68%,var(--head) 100%);
  background-size:260% 100%;animation:crShine 8s ease-in-out infinite!important}
 @keyframes crShine{0%{background-position:120% 0}55%,100%{background-position:-20% 0}}
