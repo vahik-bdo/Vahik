@@ -1,12 +1,14 @@
 /* Финальная полировка: курсор, состояния, фокус, размеры целей. Специфичность нулевая (:where) —
    любые существующие правила сайта сильнее и не ломаются. */
-:where(button,[role="button"],a[href],select,summary,label[for],input[type="checkbox"],input[type="radio"],input[type="range"],input[type="file"],.btn,.sw,[data-mode],[data-l]){cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
-:where(button:disabled,[aria-disabled="true"],.btn:disabled,input:disabled,select:disabled){cursor:default}
-:where(button,[role="button"],.btn,select){transition:background-color .18s ease,border-color .18s ease,color .18s ease,opacity .18s ease,scale .14s ease,box-shadow .18s ease}
+/* курсор-«рука» только у действующих кнопок и ссылок */
+:where(button:not(:disabled),[role="button"]:not([aria-disabled="true"]),a[href],select,summary,input[type="checkbox"],input[type="radio"],input[type="range"],input[type="color"],.btn:not(:disabled),.sw){cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+button:disabled,.btn:disabled,[aria-disabled="true"]{cursor:default}
+/* лёгкая анимация всех кнопок: плавный переход, приподнимание при наведении, «нажатие» при клике */
+:where(button,[role="button"],.btn,.sw,summary,select){transition:background-color .2s ease,border-color .2s ease,color .2s ease,opacity .2s ease,box-shadow .2s ease,filter .2s ease,translate .2s cubic-bezier(.22,1,.36,1),scale .14s ease}
 @media (hover:hover){
-  :where(button:not(:disabled),[role="button"],.btn,summary):hover{filter:brightness(1.1)}
+  :where(button:not(:disabled),[role="button"],.btn:not(:disabled),summary):hover{filter:brightness(1.1);translate:0 -1px}
 }
-:where(button:not(:disabled),[role="button"],.btn):active{scale:.96}
+:where(button:not(:disabled),[role="button"],.btn:not(:disabled)):active{scale:.95;translate:0 0;filter:brightness(.97)}
 :where(button,[role="button"],a[href],select,summary,input,textarea,[tabindex]):focus-visible{outline:2px solid var(--head,#8fd18a);outline-offset:2px;border-radius:inherit}
 :where(button,select,summary,a):focus:not(:focus-visible){outline:none}
 /* пустое сохранение заметки: мягкое «покачивание» вместо потери текста */
@@ -17,4 +19,4 @@
   :where(.br-icon,.br-com-fs button,.br-com-foot button,.br-search-close,.br-share,.hv-del){min-width:40px;min-height:40px}
 }
 :where(button,.btn,[role="button"],summary){-webkit-user-select:none;user-select:none}
-@media (prefers-reduced-motion:reduce){:where(button,[role="button"],.btn){transition:none}#ms.nudge{animation:none}}
+@media (prefers-reduced-motion:reduce){:where(button,[role="button"],.btn){transition:none;translate:none!important;scale:none!important}#ms.nudge{animation:none}}
