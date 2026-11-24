@@ -13,7 +13,7 @@ const UI={
  hy:{about:'Թարգմանության մասին',close:'Փակել'},
  de:{about:'Über diese Übersetzung',close:'Schließen'}
 };
-const NAME={cass:'Кассиан',rbo:'РБО',arar:'Նոր Արարատ 2018',nasb:'NASB',elb:'Elberfelder 1905'};
+const NAME={cass:'Епископ Кассиан (Безобразов)',rbo:'РБО',arar:'Նոր Արարատ 2018',nasb:'NASB',elb:'Elberfelder 1905'};
 const NAME_L={cass:{en:'Cassian',hy:'Կասիան',de:'Kassian'},rbo:{en:'RBS (Modern Russian)',hy:'ՌԲՕ',de:'RBO (Modernes Russisch)'}};
 
 const TR={
