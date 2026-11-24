@@ -148,7 +148,7 @@ html body #brRail.open #brRt svg{transform:rotate(-90deg)!important;margin:0!imp
 #panel .row:has(>#cd){margin-top:.5rem}
 
 /* толкование креста */
-.hero .crossw{cursor:help}
+.hero .crossw{cursor:pointer}
 .hero .crossw:focus-visible{outline-offset:8px;border-radius:12px}
 #crossTip{position:fixed;z-index:60;width:min(340px,calc(100vw - 32px));box-sizing:border-box;padding:1.15rem 1.3rem 1.25rem;border-radius:22px;background:color-mix(in srgb,var(--bg) 94%,var(--panel));box-shadow:0 24px 70px -18px rgba(0,0,0,.6),0 0 0 var(--hair) color-mix(in srgb,var(--fg) 12%,transparent);opacity:0;visibility:hidden;transform:translate3d(0,8px,0) scale(.98);transition:opacity .35s var(--ease),transform .5s var(--spring),visibility 0s .35s;pointer-events:none}
 #crossTip.on{opacity:1;visibility:visible;transform:none;transition-delay:0s;pointer-events:auto}
@@ -158,7 +158,7 @@ html body #brRail.open #brRt svg{transform:rotate(-90deg)!important;margin:0!imp
 @media (prefers-reduced-motion:reduce){#crossTip{transition:opacity .2s}}
 
 /* зоны наведения на частях креста */
-.hero .crossw .hs{position:absolute;display:block;z-index:2;border-radius:9px;cursor:help;outline:none;transition:background .25s var(--ease),box-shadow .25s var(--ease)}
+.hero .crossw .hs{position:absolute;display:block;z-index:2;border-radius:9px;cursor:pointer;outline:none;transition:background .25s var(--ease),box-shadow .25s var(--ease)}
 .hero .crossw .hs:hover,.hero .crossw .hs:focus-visible,.hero .crossw .hs.on{background:color-mix(in srgb,var(--head) 18%,transparent);box-shadow:0 0 0 1.5px color-mix(in srgb,var(--head) 75%,transparent),0 0 16px color-mix(in srgb,var(--head) 35%,transparent)}
 #crossTip.det{width:min(390px,calc(100vw - 32px))}
 #crossTip .ct-o{margin:0 0 .8rem;padding:.7rem .9rem;border-radius:14px;background:color-mix(in srgb,var(--head) 9%,transparent)}
