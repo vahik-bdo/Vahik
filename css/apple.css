@@ -158,8 +158,17 @@ html body #brRail.open #brRt svg{transform:rotate(-90deg)!important;margin:0!imp
 @media (prefers-reduced-motion:reduce){#crossTip{transition:opacity .2s}}
 
 /* зоны наведения на частях креста */
-.hero .crossw .hs{position:absolute;display:block;z-index:2;border-radius:9px;cursor:pointer;outline:none;transition:background .25s var(--ease),box-shadow .25s var(--ease)}
-.hero .crossw .hs:hover,.hero .crossw .hs:focus-visible,.hero .crossw .hs.on{background:color-mix(in srgb,var(--head) 18%,transparent);box-shadow:0 0 0 1.5px color-mix(in srgb,var(--head) 75%,transparent),0 0 16px color-mix(in srgb,var(--head) 35%,transparent)}
+.hero .crossw .hs{position:absolute;display:block;z-index:2;cursor:pointer;outline:none;pointer-events:none}
+.hero .crossw .hs svg{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.hero .crossw .hs .hh{fill:transparent;stroke:transparent;stroke-linejoin:round;pointer-events:all}
+.hero .crossw .hs .hv{fill:transparent;stroke:transparent;stroke-width:1.6px;vector-effect:non-scaling-stroke;stroke-linejoin:round;pointer-events:none;transition:fill .25s var(--ease),stroke .25s var(--ease),filter .25s var(--ease)}
+.hero .crossw .hs:hover .hv,.hero .crossw .hs:focus-visible .hv,.hero .crossw .hs.on .hv{fill:color-mix(in srgb,var(--head) 18%,transparent);stroke:color-mix(in srgb,var(--head) 85%,transparent);filter:drop-shadow(0 0 5px color-mix(in srgb,var(--head) 60%,transparent))}
+#crossTip .ct-nav{display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin:-.35rem -.55rem .7rem}
+#crossTip .ct-nav .ct-eb{margin:0;flex:1}
+#crossTip .ct-ar{flex:none;width:32px;height:32px;padding:0;display:grid;place-items:center;border-radius:50%;border:1px solid color-mix(in srgb,var(--head) 30%,transparent);background:transparent;color:var(--head);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .2s,transform .2s}
+#crossTip .ct-ar.ct-nx svg{transform:scaleX(-1)}
+#crossTip .ct-ar:hover,#crossTip .ct-ar:focus-visible{background:color-mix(in srgb,var(--head) 16%,transparent);outline:none}
+#crossTip .ct-ar:active{transform:scale(.9)}
 #crossTip.det{width:min(390px,calc(100vw - 32px))}
 #crossTip .ct-o{margin:0 0 .8rem;padding:.7rem .9rem;border-radius:14px;background:color-mix(in srgb,var(--head) 9%,transparent)}
 #crossTip .ct-o div{font:italic 500 1.2rem/1.4 var(--f-elegant),"Palatino Linotype","Times New Roman",serif;color:var(--fg);letter-spacing:.01em}
