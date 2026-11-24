@@ -72,3 +72,17 @@ html.lite .hero .cross::before,html.lite .hero .cross::after{display:none}
 #panel:not(.open),#npanel:not(.open),#ppanel:not(.open),#hpanel:not(.open),#rpanel:not(.open),#xp:not(.open),
 #brPop:not(.open),#brCommentary:not(.open),#brHist:not(.open),#brScrim:not(.on){
   -webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+
+/* мягкое «солнечное» сияние вокруг креста: очень плавный градиент без видимой границы, статичный (ничего не пересчитывается) */
+html body .hero .crossw::before{
+  inset:-70% -230% -62%;
+  background:radial-gradient(ellipse 50% 50% at 50% 44%,
+    color-mix(in srgb,var(--head) 30%,#ffe9b8) 0%,
+    color-mix(in srgb,var(--head) 22%,transparent) 8%,
+    color-mix(in srgb,var(--head) 16%,transparent) 18%,
+    color-mix(in srgb,var(--head) 10.5%,transparent) 30%,
+    color-mix(in srgb,var(--head) 6.5%,transparent) 42%,
+    color-mix(in srgb,var(--head) 3.6%,transparent) 54%,
+    color-mix(in srgb,var(--head) 1.8%,transparent) 66%,
+    color-mix(in srgb,var(--head) .7%,transparent) 80%,
+    transparent 100%)}
