@@ -75,7 +75,7 @@ html.lite .hero .cross::before,html.lite .hero .cross::after{display:none}
 
 /* мягкое «солнечное» сияние вокруг креста: очень плавный градиент без видимой границы, статичный (ничего не пересчитывается) */
 html body .hero .crossw::before{
-  inset:-70% -230% -62%;
+  inset:-66.5% -218.5% -59%;
   background:radial-gradient(ellipse 50% 50% at 50% 44%,
     color-mix(in srgb,var(--head) 21%,#ffe9b8) 0%,
     color-mix(in srgb,var(--head) 15.4%,transparent) 8%,
@@ -89,16 +89,16 @@ html body .hero .crossw::before{
 
 /* глубокое мягкое «дышащее» свечение вокруг всего креста: статичный градиент, меняется только opacity (GPU, почти бесплатно) */
 html body .hero .crossw::after{
-  content:"";position:absolute;z-index:-1;pointer-events:none;inset:-22% -95% -18%;
+  content:"";position:absolute;z-index:-1;pointer-events:none;inset:-21% -90% -17%;
   background:radial-gradient(ellipse 36% 50% at 50% 50%,
     color-mix(in srgb,var(--head) 21%,transparent) 0%,
     color-mix(in srgb,var(--head) 13.3%,transparent) 22%,
     color-mix(in srgb,var(--head) 7%,transparent) 44%,
     color-mix(in srgb,var(--head) 2.8%,transparent) 66%,
     transparent 100%);
-  opacity:.3;will-change:opacity;
+  opacity:.27;will-change:opacity;
   animation:crBreath 8s ease-in-out infinite}
-@keyframes crBreath{0%,100%{opacity:.2}50%{opacity:.6}}
+@keyframes crBreath{0%,100%{opacity:.18}50%{opacity:.55}}
 html.is-scrolling .hero .crossw::after,html.ov-open .hero .crossw::after{animation-play-state:paused}
 html.lite .hero .crossw::after{animation:none;opacity:.35}
 @media (prefers-reduced-motion:reduce){html body .hero .crossw::after{animation:none;opacity:.35}}

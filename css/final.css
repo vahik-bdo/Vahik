@@ -55,7 +55,7 @@ html body .hero .cross{background:linear-gradient(115deg,var(--head) 0%,var(--he
 
 
 /* Большой крест на главной: яркое «неоновое» свечение по контуру, как у креста на заставке (статичное — ничего не анимируется) */
-html body.br-mode .hero .crossw,html body .hero .crossw{filter:drop-shadow(0 0 4px color-mix(in srgb,var(--head) 38%,transparent)) drop-shadow(0 0 20px color-mix(in srgb,var(--head) 55%,transparent))!important}
+html body.br-mode .hero .crossw,html body .hero .crossw{filter:drop-shadow(0 0 4px color-mix(in srgb,var(--head) 36%,transparent)) drop-shadow(0 0 19px color-mix(in srgb,var(--head) 52%,transparent))!important}
 
 /* Иисусова молитва на вступительном экране: строго Literata (прямой, не курсив) на всех языках и устройствах */
 html body #prayer #pt,html body #prayer #pt .w,html body #prayer #pt span{font-family:'Literata Local','Literata','Noto Serif Armenian',Georgia,'Times New Roman',serif!important;font-style:normal!important;font-weight:400!important;font-synthesis:none;font-optical-sizing:auto}
@@ -64,7 +64,7 @@ html body #prayer #pt,html body #prayer #pt .w,html body #prayer #pt span{font-f
 html,body{touch-action:pan-y!important;overscroll-behavior:none!important;overflow-x:clip!important;max-width:100%}
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 
-/* Детали креста: подсветка при наведении мгновенная, без transition и без размытых теней */
-html body .hero .crossw .hs .hv{transition:none!important;filter:none!important}
+/* Детали креста: небольшая задержка (~0,1 с) и мягкий переход подсветки, без размытых теней — чтобы наведение читалось спокойно */
+html body .hero .crossw .hs .hv{transition:fill .2s ease .08s,stroke .2s ease .08s!important;filter:none!important}
 html body .hero .crossw .hs:hover .hv,html body .hero .crossw .hs:focus-visible .hv,html body .hero .crossw .hs.on .hv{filter:none!important}
-@media (hover:hover){html body #crossTip{transition:opacity .12s ease,transform .16s ease-out,visibility 0s!important}}
+@media (hover:hover){html body #crossTip{transition:opacity .2s ease,transform .26s cubic-bezier(.22,1,.36,1),visibility 0s!important}}
