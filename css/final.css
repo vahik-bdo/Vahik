@@ -50,3 +50,8 @@ html body #prayer #pt,html body #prayer #pt .w,html body #prayer #pt span{font-f
    Нет сдвига вбок, нет зума щипком и двойным тапом, нет «резинки» у краёв. Внутренние прокручиваемые окна не затронуты. */
 html,body{touch-action:pan-y!important;overscroll-behavior:none!important;overflow-x:clip!important;max-width:100%}
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+
+/* Детали креста: подсветка при наведении мгновенная, без transition и без размытых теней */
+html body .hero .crossw .hs .hv{transition:none!important;filter:none!important}
+html body .hero .crossw .hs:hover .hv,html body .hero .crossw .hs:focus-visible .hv,html body .hero .crossw .hs.on .hv{filter:none!important}
+@media (hover:hover){html body #crossTip{transition:opacity .12s ease,transform .16s ease-out,visibility 0s!important}}
