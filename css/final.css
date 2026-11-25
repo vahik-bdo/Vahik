@@ -68,3 +68,18 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 html body .hero .crossw .hs .hv{transition:fill .2s ease .08s,stroke .2s ease .08s!important;filter:none!important}
 html body .hero .crossw .hs:hover .hv,html body .hero .crossw .hs:focus-visible .hv,html body .hero .crossw .hs.on .hv{filter:none!important}
 @media (hover:hover){html body #crossTip{transition:opacity .2s ease,transform .26s cubic-bezier(.22,1,.36,1),visibility 0s!important}}
+
+/* ПК: кнопки «поделиться» и «сердце» у стихов не показываем (на телефоне остаются) */
+@media (hover:hover) and (pointer:fine){
+ html body .br-share,html body .br-like,html body .br-verse.liked .br-like{display:none!important}
+}
+
+/* Толкования: кнопки размера шрифта убраны */
+html body #brCommentary .br-com-fs{display:none!important}
+
+/* Толкования: низ области текста закруглён так же, как верх окна; текст не заходит под переключатель */
+html body #brCommentary .br-com-body{
+ margin:0 .9rem .5rem;padding:1rem .7rem 1.6rem;
+ border-radius:0 0 26px 26px;overflow-y:auto}
+html body #brCommentary .br-com-foot{flex:none;margin-top:0}
+@media(max-width:560px){html body #brCommentary .br-com-body{margin:0 .5rem .4rem;padding-inline:.45rem;border-radius:0 0 22px 22px}}
