@@ -204,7 +204,7 @@ h2:not(.in){opacity:0;transform:translateY(24px);filter:blur(10px)}h2{transition
 /* Mobile + desktop optimisation */
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 #dock{right:max(1rem,env(safe-area-inset-right));bottom:max(1rem,env(safe-area-inset-bottom))}
-#lang{top:max(.9rem,env(safe-area-inset-top));right:max(1rem,env(safe-area-inset-right))}
+#lang{top:calc(.9rem + env(safe-area-inset-top,0px));right:max(1rem,env(safe-area-inset-right))}
 #fold{left:max(2px,env(safe-area-inset-left))}
 #panel,#npanel,#ppanel,#hpanel{max-height:72vh;max-height:72dvh;bottom:calc(4.2rem + env(safe-area-inset-bottom,0px));right:max(1rem,env(safe-area-inset-right))}
 @media(pointer:coarse){.btn{min-height:44px}.sw{width:36px;height:36px}#bulb{box-sizing:content-box;padding:6px 12px;margin:-2px -12px 0}}
