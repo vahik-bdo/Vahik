@@ -13,11 +13,30 @@
   }
   function anyOpen(){var lm=$('#lm'),R=$('#brRail'),P=$('#brPop');
     return (lm&&lm.classList.contains('open'))||(R&&R.classList.contains('open'))||(P&&P.classList.contains('open'))}
-  /* touched: включает плавное перемещение язычка при открытии/закрытии колонки */
+  /* Плавное закрытие колонки. Любой код, снимающий .open с #brRail, перехватывается:
+     .open возвращается на время анимации (до отрисовки кадра), панель медленно гаснет,
+     затем .open снимается и язычок плавно уезжает на своё место (rtUp). */
+  var DUR=900,closing=false,wasOpen=false;
+  var st=D.createElement('style');
+  st.textContent=
+   '#brRail.rc-closing #brRb{animation:none!important;opacity:0!important;visibility:visible!important;pointer-events:none!important;transform:translate3d(-14px,0,0) scale(.95)!important;transition:opacity '+DUR+'ms ease,transform '+DUR+'ms cubic-bezier(.22,1,.36,1)!important}'+
+   '#brRail.rc-closing #brRb>*{animation:none!important}'+
+   '#brRail.rc-closing{pointer-events:none!important}'+
+   '#brRail.touched:not(.open) #brRt{animation-duration:1000ms!important}';
+  D.head.appendChild(st);
   function watchRail(){
-    var R=$('#brRail');if(!R||R._rc)return !!R;R._rc=1;
-    new MutationObserver(function(){if(R.classList.contains('open')&&!R.classList.contains('touched'))R.classList.add('touched')})
-      .observe(R,{attributes:true,attributeFilter:['class']});
+    var R=$('#brRail');if(!R||R._rc)return !!R;R._rc=1;wasOpen=R.classList.contains('open');
+    new MutationObserver(function(){
+      var now=R.classList.contains('open');
+      if(now&&!R.classList.contains('touched'))R.classList.add('touched');
+      if(closing){ if(!now)R.classList.add('open'); return }
+      if(wasOpen&&!now){
+        closing=true;R.classList.add('rc-closing','open');
+        setTimeout(function(){R.classList.remove('rc-closing');closing=false;wasOpen=false;R.classList.remove('open')},DUR+40);
+        return;
+      }
+      wasOpen=now;
+    }).observe(R,{attributes:true,attributeFilter:['class']});
     return true;
   }
   if(!watchRail()){var mo=new MutationObserver(function(){if(watchRail())mo.disconnect()});mo.observe(D.body||D.documentElement,{childList:true,subtree:true})}
