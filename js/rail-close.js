@@ -11,6 +11,7 @@
    'html body #brRail.rc-closing.open{opacity:0!important;translate:-5px -50%!important;pointer-events:none!important;transition:opacity '+OUT+'ms ease-out,translate '+OUT+'ms cubic-bezier(.22,1,.36,1)!important}'+
    'html body #brRail.rc-closing.open #brRb{animation:none!important;opacity:1!important;visibility:visible!important;transform:none!important;transition:none!important}'+
    'html body #brRail.rc-hold{opacity:0!important;transition:none!important}'+
+   'html body #brRail.rc-hold #brRb,html body #brRail.rc-fadein #brRb{opacity:0!important;visibility:hidden!important;transition:none!important;animation:none!important}'+
    'html body #brRail.rc-fadein{transition:opacity '+IN+'ms ease!important}';
   D.head.appendChild(st);
 
