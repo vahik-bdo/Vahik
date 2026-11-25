@@ -118,7 +118,7 @@ if(cw){cw.setAttribute('tabindex','0');cw.setAttribute('aria-expanded','false');
   hh.style.strokeWidth=(Math.min(h.b[2],h.b[3])<34?9:3)+'px';sv.appendChild(hh);sv.appendChild(hv);e.appendChild(sv);
   if(hov){e.addEventListener('mouseenter',function(){clearTimeout(swT);
     /* пока курсор пролетает над соседней деталью по пути к карточке, толкование не дёргается */
-    if(tp&&tp.classList.contains('on')&&cur>=0&&cur!==i)tipShow(i);else tipShow(i)});
+    if(tp&&tp.classList.contains('on')&&cur>=0&&cur!==i)swT=setTimeout(function(){tipShow(i)},140);else swT=setTimeout(function(){tipShow(i)},140)});
    e.addEventListener('mouseleave',function(){clearTimeout(swT);leave(150)})}
   e.addEventListener('focus',function(){tipShow(i)});
   e.addEventListener('click',function(ev){ev.stopPropagation();
