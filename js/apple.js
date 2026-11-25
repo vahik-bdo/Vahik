@@ -81,8 +81,8 @@ var HS=[
 var cw=$('.hero .crossw'),tp=null,tpT=0,swT=0,cur=-1,sticky=false;
 function tipBuild(k){var L=(H.lang||'ru').slice(0,2);
  if(k>=0){var h=HS[k],d=h[L]||h.en;
-  tp.innerHTML='<h5>'+d[0]+'</h5>'+(h.o?'<div class="ct-o">'+h.o.map(function(x){return'<div>'+x+'</div>'}).join('')+'</div>':'')+'<p>'+d[1]+'</p>';tp.classList.add('det')}
- else{var g=CT[L]||CT.en;tp.innerHTML='<h5>'+g[0]+'</h5>'+g[1].map(function(x){return'<p>'+x+'</p>'}).join('');tp.classList.remove('det')}}
+  tp.innerHTML='<div class="ct-body"><h5>'+d[0]+'</h5>'+(h.o?'<div class="ct-o">'+h.o.map(function(x){return'<div>'+x+'</div>'}).join('')+'</div>':'')+'<p>'+d[1]+'</p></div>';tp.classList.add('det')}
+ else{var g=CT[L]||CT.en;tp.innerHTML='<div class="ct-body"><h5>'+g[0]+'</h5>'+g[1].map(function(x){return'<p>'+x+'</p>'}).join('')+'</div>';tp.classList.remove('det')}}
 function tipPos(){var r=cw.getBoundingClientRect(),w=tp.offsetWidth,h=tp.offsetHeight,vw=innerWidth,vh=innerHeight,x,y;
  if(vw>=820){x=r.right+28;y=Math.max(12,Math.min(vh-h-12,r.top+r.height/2-h/2))}
  else{x=(vw-w)/2;y=r.bottom+12;if(y+h>vh-12)y=Math.max(12,vh-h-12)}
@@ -94,7 +94,7 @@ function tipShow(k,keep){if(!cw)return;k=(k==null)?-1:k;if(!tp){tp=D.createEleme
   tp.addEventListener('mouseleave',function(){if(hov)leave(170)});
   tp.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('.ct-ar');if(a){e.stopPropagation();step(+a.dataset.d||1)}})}
  clearTimeout(tpT);clearTimeout(swT);
- if(k!==cur||!tp.classList.contains('on')){var was=tp.classList.contains('on');cur=k;tipBuild(k);tp.scrollTop=0;tp.classList.remove('sw');if(was){void tp.offsetWidth;tp.classList.add('sw')}
+ if(k!==cur||!tp.classList.contains('on')){var was=tp.classList.contains('on');cur=k;tipBuild(k);tp.scrollTop=0;tp.classList.remove('ctsw');if(was){void tp.offsetWidth;tp.classList.add('ctsw')}
   if(keep&&was){tp.dataset.pin='1';tipClamp()}else{tp.dataset.pin='';tipPos()}}
  else if(!keep&&!sticky)tp.dataset.pin='';
  tp.classList.add('on');cw.setAttribute('aria-expanded','true');
