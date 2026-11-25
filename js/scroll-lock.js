@@ -19,3 +19,13 @@ document.addEventListener('touchmove',function(e){
  if((atTop&&dy>0)||(atBot&&dy<0))e.preventDefault(); /* край списка: не передаём странице */
 },{passive:false,capture:true});
 })();
+
+/* Без зума и «ёрзанья» страницы двумя пальцами (iOS Safari игнорирует user-scalable=no) */
+(function(){
+var o={passive:false};
+function stop(e){e.preventDefault()}
+['gesturestart','gesturechange','gestureend'].forEach(function(n){document.addEventListener(n,stop,o)});
+document.addEventListener('touchstart',function(e){if(e.touches.length>1)e.preventDefault()},{passive:false,capture:true});
+document.addEventListener('touchmove',function(e){if(e.touches.length>1)e.preventDefault()},{passive:false,capture:true});
+document.addEventListener('wheel',function(e){if(e.ctrlKey)e.preventDefault()},o);
+})();
