@@ -1,12 +1,104 @@
-/* Крест без свечения и анимаций: статичная заливка, ничего не перерисовывается.
-   Свечение, блик, «дыхание» и drop-shadow убраны полностью — они вызывали лаги. */
-html body .hero .cross{background:var(--head);background-size:auto;background-position:0 0;animation:none!important;filter:none!important;will-change:auto}
-html body .hero .cross::before,html body .hero .cross::after,
-html body .hero .crossw::before,html body .hero .crossw::after{content:none!important;display:none!important;animation:none!important}
-html body .hero .crossw,html body.br-mode .hero .crossw{filter:none!important;animation:none!important}
-html body .hero .crossw.pulse .cross{animation:none!important}
+/* Крест без лагов.
+   Раньше у креста с маской (mask) анимировались background-position (блик crShine) и filter (вспышка crTap при тапе):
+   для элемента с маской это полная перерисовка на CPU каждый кадр, на слабых телефонах ~5 к/с, а на весь экран — ещё хуже.
+   Теперь крест — статичная заливка, блик и «пульс» двигаются только через transform (идёт на GPU, без перерисовки маски).
+   Подключается последним, поэтому перекрывает final.css / apple.css. */
 
-/* закрытые панели не держат размытие заднего плана */
+/* заливка креста статична */
+html body .hero .cross{
+  background:var(--head);background-size:auto;background-position:0 0;
+  animation:none!important;
+  position:relative;overflow:hidden}
+
+/* блик: раз в ~13 секунд по кресту проходит свет, как по металлу (виден только внутри маски креста).
+   Не «вуаль», а добавление света (plus-lighter): гравировка остаётся контрастной, светятся только её света.
+   ::after — узкий яркий блик: резкий передний край, длинный тёплый хвост, белая сердцевина.
+   ::before — на время прохода весь крест чуть теплеет и «вспыхивает» (меняется только opacity).
+   Двигается transform/opacity (GPU), в паузе между проходами ничего не рисуется. */
+html body .hero .cross::before,html body .hero .cross::after{
+  content:"";position:absolute;pointer-events:none;
+  mix-blend-mode:screen;mix-blend-mode:plus-lighter}
+html body .hero .cross::before{
+  inset:0;opacity:0;will-change:opacity;
+  background:linear-gradient(180deg,rgba(255,244,225,.035) 0%,rgba(255,238,210,.02) 60%,rgba(255,232,195,.03) 100%);
+  animation:crLift 13s linear 1.6s infinite both}
+html body .hero .cross::after{
+  top:-4%;bottom:-4%;left:0;width:60%;
+  transform:translate3d(-190%,0,0) skewX(-16deg);will-change:transform;
+  background:
+    /* яркая сердцевина: плавный колокол, без жёстких краёв */
+    linear-gradient(90deg,
+      transparent 50%,
+      rgba(255,248,230,.04) 55%,
+      rgba(255,250,236,.16) 59%,
+      rgba(255,252,242,.40) 63%,
+      rgba(255,255,255,.58) 66%,
+      rgba(255,252,242,.36) 69%,
+      rgba(255,248,230,.14) 73%,
+      rgba(255,248,230,.04) 77%,
+      transparent 82%),
+    /* тёплое сияние и длинный хвост позади */
+    linear-gradient(90deg,
+      transparent 4%,
+      rgba(255,205,125,.04) 22%,
+      rgba(255,212,135,.10) 42%,
+      rgba(255,222,160,.15) 58%,
+      rgba(255,214,140,.07) 74%,
+      transparent 92%);
+  animation:crShineX 13s linear 1.6s infinite both}
+/* проход ≈2.4 с: мягкий разгон, замедление к краю; остальное время — покой */
+@keyframes crShineX{
+  0%{transform:translate3d(-190%,0,0) skewX(-16deg);animation-timing-function:cubic-bezier(.45,.05,.3,1)}
+  18%,100%{transform:translate3d(260%,0,0) skewX(-16deg)}}
+@keyframes crLift{
+  0%{opacity:0;animation-timing-function:ease-in-out}
+  9%{opacity:1;animation-timing-function:ease-in-out}
+  20%,100%{opacity:0}}
+html.is-scrolling .hero .cross::before,html.is-scrolling .hero .cross::after,
+html.ov-open .hero .cross::before,html.ov-open .hero .cross::after{animation-play-state:paused}
+
+/* тап по кресту: лёгкое увеличение вместо перерисовки через filter */
+html body .hero .crossw.pulse .cross{background-position:0 0;animation:crTapT .5s ease-out!important}
+@keyframes crTapT{40%{transform:scale(1.045)}}
+
+@media (prefers-reduced-motion:reduce){
+  html body .hero .cross::before,html body .hero .cross::after,html body .hero .crossw.pulse .cross{animation:none!important}
+}
+html.lite .hero .cross::before,html.lite .hero .cross::after{display:none}
+
+/* ГЛАВНАЯ причина лагов на ПК, пока на экране что-то анимируется (крест, заголовок, лампа):
+   закрытые панели и шторки (opacity:0, но не display:none) держали backdrop-filter и пересчитывали размытие заднего плана КАЖДЫЙ кадр.
+   Пока панель закрыта — размытия нет, при открытии оно включается как раньше. */
 #panel:not(.open),#npanel:not(.open),#ppanel:not(.open),#hpanel:not(.open),#rpanel:not(.open),#xp:not(.open),
 #brPop:not(.open),#brCommentary:not(.open),#brHist:not(.open),#brScrim:not(.on){
   -webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+
+/* мягкое «солнечное» сияние вокруг креста: очень плавный градиент без видимой границы, статичный (ничего не пересчитывается) */
+html body .hero .crossw::before{
+  inset:-70% -230% -62%;
+  background:radial-gradient(ellipse 50% 50% at 50% 44%,
+    color-mix(in srgb,var(--head) 21%,#ffe9b8) 0%,
+    color-mix(in srgb,var(--head) 15.4%,transparent) 8%,
+    color-mix(in srgb,var(--head) 11.2%,transparent) 18%,
+    color-mix(in srgb,var(--head) 7.3%,transparent) 30%,
+    color-mix(in srgb,var(--head) 4.5%,transparent) 42%,
+    color-mix(in srgb,var(--head) 2.5%,transparent) 54%,
+    color-mix(in srgb,var(--head) 1.3%,transparent) 66%,
+    color-mix(in srgb,var(--head) 0.5%,transparent) 80%,
+    transparent 100%)}
+
+/* глубокое мягкое «дышащее» свечение вокруг всего креста: статичный градиент, меняется только opacity (GPU, почти бесплатно) */
+html body .hero .crossw::after{
+  content:"";position:absolute;z-index:-1;pointer-events:none;inset:-22% -95% -18%;
+  background:radial-gradient(ellipse 36% 50% at 50% 50%,
+    color-mix(in srgb,var(--head) 21%,transparent) 0%,
+    color-mix(in srgb,var(--head) 13.3%,transparent) 22%,
+    color-mix(in srgb,var(--head) 7%,transparent) 44%,
+    color-mix(in srgb,var(--head) 2.8%,transparent) 66%,
+    transparent 100%);
+  opacity:.3;will-change:opacity;
+  animation:crBreath 8s ease-in-out infinite}
+@keyframes crBreath{0%,100%{opacity:.2}50%{opacity:.6}}
+html.is-scrolling .hero .crossw::after,html.ov-open .hero .crossw::after{animation-play-state:paused}
+html.lite .hero .crossw::after{animation:none;opacity:.35}
+@media (prefers-reduced-motion:reduce){html body .hero .crossw::after{animation:none;opacity:.35}}
