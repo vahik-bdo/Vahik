@@ -3,12 +3,12 @@
    затем так же плавно появляется свёрнутый язычок. */
 (function(){
   var D=document,Y=window.scrollY||0;
-  var OUT=520,IN=620;
+  var OUT=360,IN=450;
   function $(s){return D.querySelector(s)}
   function inUI(t){return !!(t&&t.closest&&t.closest('#brRail,#brPop,#lm,#lb'))}
   var st=D.createElement('style');
   st.textContent=
-   'html body #brRail.rc-closing.open{opacity:0!important;translate:-16px -50%!important;pointer-events:none!important;transition:opacity '+OUT+'ms cubic-bezier(.4,0,.2,1),translate '+OUT+'ms cubic-bezier(.22,1,.36,1)!important}'+
+   'html body #brRail.rc-closing.open{opacity:0!important;translate:-5px -50%!important;pointer-events:none!important;transition:opacity '+OUT+'ms ease-out,translate '+OUT+'ms cubic-bezier(.22,1,.36,1)!important}'+
    'html body #brRail.rc-closing.open #brRb{animation:none!important;opacity:1!important;visibility:visible!important;transform:none!important;transition:none!important}'+
    'html body #brRail.rc-hold{opacity:0!important;transition:none!important}'+
    'html body #brRail.rc-fadein{transition:opacity '+IN+'ms ease!important}';
