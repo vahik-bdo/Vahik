@@ -94,7 +94,7 @@ function tipShow(k,keep){if(!cw)return;k=(k==null)?-1:k;if(!tp){tp=D.createEleme
   tp.addEventListener('mouseleave',function(){if(hov)leave(170)});
   tp.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('.ct-ar');if(a){e.stopPropagation();step(+a.dataset.d||1)}})}
  clearTimeout(tpT);clearTimeout(swT);
- if(k!==cur||!tp.classList.contains('on')){var was=tp.classList.contains('on');cur=k;tipBuild(k);
+ if(k!==cur||!tp.classList.contains('on')){var was=tp.classList.contains('on');cur=k;tipBuild(k);tp.scrollTop=0;tp.classList.remove('sw');if(was){void tp.offsetWidth;tp.classList.add('sw')}
   if(keep&&was){tp.dataset.pin='1';tipClamp()}else{tp.dataset.pin='';tipPos()}}
  else if(!keep&&!sticky)tp.dataset.pin='';
  tp.classList.add('on');cw.setAttribute('aria-expanded','true');
