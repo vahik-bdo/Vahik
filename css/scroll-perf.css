@@ -1,7 +1,0 @@
-/* Плавный скролл главной: на время прокрутки страницы выключаем размытие заднего плана (backdrop-filter).
-   Именно оно пересчитывается каждый кадр и даёт лаги на ПК. Класс is-scrolling ставит js/ui-polish.js
-   и снимает через 160 мс после остановки — размытие возвращается, внешний вид в покое не меняется.
-   Открытые панели/читалка не затронуты: их внутренняя прокрутка класс не включает. */
-html.is-scrolling body :not(#panel):not(#npanel):not(#ppanel):not(#hpanel):not(#rpanel):not(#xp):not(#brPop):not(#brCommentary):not(#brHist){
-  -webkit-backdrop-filter:none!important;backdrop-filter:none!important}
-html.is-scrolling #sbl{display:none!important}
